@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Ext-draw-Surface'>/**
+</span> * A Surface is an interface to render methods inside a draw {@link Ext.draw.Component}.
+ * A Surface contains methods to render sprites, get bounding boxes of sprites, add
+ * sprites to the canvas, initialize other graphic components, etc. One of the most used
+ * methods for this class is the `add` method, to add Sprites to the surface.
+ *
+ * Most of the Surface methods are abstract and they have a concrete implementation
+ * in VML or SVG engines.
+ *
+ * A Surface instance can be accessed as a property of a draw component. For example:
+ *
+ *     drawComponent.surface.add({
+ *         type: 'circle',
+ *         fill: '#ffc',
+ *         radius: 100,
+ *         x: 100,
+ *         y: 100
+ *     });
+ *
+ * The configuration object passed in the `add` method is the same as described in the {@link Ext.draw.Sprite}
+ * class documentation.
+ *
+ * # Listeners
+ *
+ * You can also add event listeners to the surface using the `Observable` listener syntax. Supported events are:
+ *
+ * - mousedown
+ * - mouseup
+ * - mouseover
+ * - mouseout
+ * - mousemove
+ * - mouseenter
+ * - mouseleave
+ * - click
+ *
+ * For example:
+ *
+ *     drawComponent.surface.on({
+ *        'mousemove': function() {
+ *             console.log('moving the mouse over the surface');
+ *         }
+ *     });
+ *
+ * # Example
+ *
+ *     var drawComponent = Ext.create('Ext.draw.Component', {
+ *         width: 800,
+ *         height: 600,
+ *         renderTo: document.body
+ *     }), surface = drawComponent.surface;
+ *
+ *     surface.add([{
+ *         type: 'circle',
+ *         radius: 10,
+ *         fill: '#f00',
+ *         x: 10,
+ *         y: 10,
+ *         group: 'circles'
+ *     }, {
+ *         type: 'circle',
+ *         radius: 10,
+ *         fill: '#0f0',
+ *         x: 50,
+ *         y: 50,
+ *         group: 'circles'
+ *     }, {
+ *         type: 'circle',
+ *         radius: 10,
+ *         fill: '#00f',
+ *         x: 100,
+ *         y: 100,
+ *         group: 'circles'
+ *     }, {
+ *         type: 'rect',
+ *         width: 20,
+ *         height: 20,
+ *         fill: '#f00',
+ *         x: 10,
+ *         y: 10,
+ *         group: 'rectangles'
+ *     }, {
+ *         type: 'rect',
+ *         width: 20,
+ *         height: 20,
+ *         fill: '#0f0',
+ *         x: 50,
+ *         y: 50,
+ *         group: 'rectangles'
+ *     }, {
+ *         type: 'rect',
+ *         width: 20,
+ *         height: 20,
+ *         fill: '#00f',
+ *         x: 100,
+ *         y: 100,
+ *         group: 'rectangles'
+ *     }]);
+ *
+ *     // Get references to my groups
+ *     circles = surface.getGroup('circles');
+ *     rectangles = surface.getGroup('rectangles');
+ *
+ *     // Animate the circles down
+ *     circles.animate({
+ *         duration: 1000,
+ *         to: {
+ *             translate: {
+ *                 y: 200
+ *             }
+ *         }
+ *     });
+ *
+ *     // Animate the rectangles across
+ *     rectangles.animate({
+ *         duration: 1000,
+ *         to: {
+ *             translate: {
+ *                 x: 200
+ *             }
+ *         }
+ *     });
+ */
+Ext.define('Ext.draw.Surface', {
+
+    /* Begin Definitions */
+
+    mixins: {
+        observable: 'Ext.util.Observable'
+    },
+
+    requires: ['Ext.draw.CompositeSprite'],
+    uses: ['Ext.draw.engine.Svg', 'Ext.draw.engine.Vml'],
+
+    separatorRe: /[, ]+/,
+
+    statics: {
+<span id='Ext-draw-Surface-static-method-create'>        /**
+</span>         * Creates and returns a new concrete Surface instance appropriate for the current environment.
+         * @param {Object} config Initial configuration for the Surface instance
+         * @param {String[]} enginePriority (Optional) order of implementations to use; the first one that is
+         * available in the current environment will be used. Defaults to `['Svg', 'Vml']`.
+         * @return {Object} The created Surface or false.
+         * @static
+         */
+        create: function(config, enginePriority) {
+            enginePriority = enginePriority || ['Svg', 'Vml'];
+
+            var i = 0,
+                len = enginePriority.length,
+                surfaceClass;
+
+            for (; i &lt; len; i++) {
+                if (Ext.supports[enginePriority[i]]) {
+                    return Ext.create('Ext.draw.engine.' + enginePriority[i], config);
+                }
+            }
+            return false;
+        }
+    },
+
+    /* End Definitions */
+
+    // @private
+    availableAttrs: {
+        blur: 0,
+        &quot;clip-rect&quot;: &quot;0 0 1e9 1e9&quot;,
+        cursor: &quot;default&quot;,
+        cx: 0,
+        cy: 0,
+        'dominant-baseline': 'auto',
+        fill: &quot;none&quot;,
+        &quot;fill-opacity&quot;: 1,
+        font: '10px &quot;Arial&quot;',
+        &quot;font-family&quot;: '&quot;Arial&quot;',
+        &quot;font-size&quot;: &quot;10&quot;,
+        &quot;font-style&quot;: &quot;normal&quot;,
+        &quot;font-weight&quot;: 400,
+        gradient: &quot;&quot;,
+        height: 0,
+        hidden: false,
+        href: &quot;http://sencha.com/&quot;,
+        opacity: 1,
+        path: &quot;M0,0&quot;,
+        radius: 0,
+        rx: 0,
+        ry: 0,
+        scale: &quot;1 1&quot;,
+        src: &quot;&quot;,
+        stroke: &quot;#000&quot;,
+        &quot;stroke-dasharray&quot;: &quot;&quot;,
+        &quot;stroke-linecap&quot;: &quot;butt&quot;,
+        &quot;stroke-linejoin&quot;: &quot;butt&quot;,
+        &quot;stroke-miterlimit&quot;: 0,
+        &quot;stroke-opacity&quot;: 1,
+        &quot;stroke-width&quot;: 1,
+        target: &quot;_blank&quot;,
+        text: &quot;&quot;,
+        &quot;text-anchor&quot;: &quot;middle&quot;,
+        title: &quot;Ext Draw&quot;,
+        width: 0,
+        x: 0,
+        y: 0,
+        zIndex: 0
+    },
+
+<span id='Ext-draw-Surface-cfg-height'>    /**
+</span>     * @cfg {Number} height
+     * The height of this component in pixels (defaults to auto).
+     */
+<span id='Ext-draw-Surface-cfg-width'>    /**
+</span>     * @cfg {Number} width
+     * The width of this component in pixels (defaults to auto).
+     */
+
+    container: undefined,
+    height: 352,
+    width: 512,
+    x: 0,
+    y: 0,
+
+<span id='Ext-draw-Surface-property-orderSpritesByZIndex'>    /**
+</span>     * @private Flag indicating that the surface implementation requires sprites to be maintained
+     * in order of their zIndex. Impls that don't require this can set it to false.
+     */
+    orderSpritesByZIndex: true,
+
+
+<span id='Ext-draw-Surface-method-constructor'>    /**
+</span>     * Creates new Surface.
+     * @param {Object} config (optional) Config object.
+     */
+    constructor: function(config) {
+        var me = this;
+        config = config || {};
+        Ext.apply(me, config);
+
+        me.domRef = Ext.getDoc().dom;
+
+        me.customAttributes = {};
+
+        me.addEvents(
+            'mousedown',
+            'mouseup',
+            'mouseover',
+            'mouseout',
+            'mousemove',
+            'mouseenter',
+            'mouseleave',
+            'click'
+        );
+
+        me.mixins.observable.constructor.call(me);
+
+        me.getId();
+        me.initGradients();
+        me.initItems();
+        if (me.renderTo) {
+            me.render(me.renderTo);
+            delete me.renderTo;
+        }
+        me.initBackground(config.background);
+    },
+
+    // @private called to initialize components in the surface
+    // this is dependent on the underlying implementation.
+    initSurface: Ext.emptyFn,
+
+    // @private called to setup the surface to render an item
+    //this is dependent on the underlying implementation.
+    renderItem: Ext.emptyFn,
+
+    // @private
+    renderItems: Ext.emptyFn,
+
+    // @private
+    setViewBox: function (x, y, width, height) {
+        if (isFinite(x) &amp;&amp; isFinite(y) &amp;&amp; isFinite(width) &amp;&amp; isFinite(height)) {
+            this.viewBox = {x: x, y: y, width: width, height: height};
+            this.applyViewBox();
+        }
+    },
+
+<span id='Ext-draw-Surface-method-addCls'>    /**
+</span>     * Adds one or more CSS classes to the element. Duplicate classes are automatically filtered out.
+     *
+     * For example:
+     *
+     *     drawComponent.surface.addCls(sprite, 'x-visible');
+     *
+     * @param {Object} sprite The sprite to add the class to.
+     * @param {String/String[]} className The CSS class to add, or an array of classes
+     * @method
+     */
+    addCls: Ext.emptyFn,
+
+<span id='Ext-draw-Surface-method-removeCls'>    /**
+</span>     * Removes one or more CSS classes from the element.
+     *
+     * For example:
+     *
+     *     drawComponent.surface.removeCls(sprite, 'x-visible');
+     *
+     * @param {Object} sprite The sprite to remove the class from.
+     * @param {String/String[]} className The CSS class to remove, or an array of classes
+     * @method
+     */
+    removeCls: Ext.emptyFn,
+
+<span id='Ext-draw-Surface-method-setStyle'>    /**
+</span>     * Sets CSS style attributes to an element.
+     *
+     * For example:
+     *
+     *     drawComponent.surface.setStyle(sprite, {
+     *         'cursor': 'pointer'
+     *     });
+     *
+     * @param {Object} sprite The sprite to add, or an array of classes to
+     * @param {Object} styles An Object with CSS styles.
+     * @method
+     */
+    setStyle: Ext.emptyFn,
+
+    // @private
+    initGradients: function() {
+        var gradients = this.gradients;
+        if (gradients) {
+            Ext.each(gradients, this.addGradient, this);
+        }
+    },
+
+    // @private
+    initItems: function() {
+        var items = this.items;
+        this.items = Ext.create('Ext.draw.CompositeSprite');
+        this.groups = Ext.create('Ext.draw.CompositeSprite');
+        if (items) {
+            this.add(items);
+        }
+    },
+
+    // @private
+    initBackground: function(config) {
+        var me = this,
+            width = me.width,
+            height = me.height,
+            gradientId, gradient, backgroundSprite;
+        if (config) {
+            if (config.gradient) {
+                gradient = config.gradient;
+                gradientId = gradient.id;
+                me.addGradient(gradient);
+                me.background = me.add({
+                    type: 'rect',
+                    x: 0,
+                    y: 0,
+                    width: width,
+                    height: height,
+                    fill: 'url(#' + gradientId + ')'
+                });
+            } else if (config.fill) {
+                me.background = me.add({
+                    type: 'rect',
+                    x: 0,
+                    y: 0,
+                    width: width,
+                    height: height,
+                    fill: config.fill
+                });
+            } else if (config.image) {
+                me.background = me.add({
+                    type: 'image',
+                    x: 0,
+                    y: 0,
+                    width: width,
+                    height: height,
+                    src: config.image
+                });
+            }
+        }
+    },
+
+<span id='Ext-draw-Surface-method-setSize'>    /**
+</span>     * Sets the size of the surface. Accomodates the background (if any) to fit the new size too.
+     *
+     * For example:
+     *
+     *     drawComponent.surface.setSize(500, 500);
+     *
+     * This method is generally called when also setting the size of the draw Component.
+     *
+     * @param {Number} w The new width of the canvas.
+     * @param {Number} h The new height of the canvas.
+     */
+    setSize: function(w, h) {
+        if (this.background) {
+            this.background.setAttributes({
+                width: w,
+                height: h,
+                hidden: false
+            }, true);
+        }
+        this.applyViewBox();
+    },
+
+    // @private
+    scrubAttrs: function(sprite) {
+        var i,
+            attrs = {},
+            exclude = {},
+            sattr = sprite.attr;
+        for (i in sattr) {
+            // Narrow down attributes to the main set
+            if (this.translateAttrs.hasOwnProperty(i)) {
+                // Translated attr
+                attrs[this.translateAttrs[i]] = sattr[i];
+                exclude[this.translateAttrs[i]] = true;
+            }
+            else if (this.availableAttrs.hasOwnProperty(i) &amp;&amp; !exclude[i]) {
+                // Passtrhough attr
+                attrs[i] = sattr[i];
+            }
+        }
+        return attrs;
+    },
+
+    // @private
+    onClick: function(e) {
+        this.processEvent('click', e);
+    },
+
+    // @private
+    onMouseUp: function(e) {
+        this.processEvent('mouseup', e);
+    },
+
+    // @private
+    onMouseDown: function(e) {
+        this.processEvent('mousedown', e);
+    },
+
+    // @private
+    onMouseOver: function(e) {
+        this.processEvent('mouseover', e);
+    },
+
+    // @private
+    onMouseOut: function(e) {
+        this.processEvent('mouseout', e);
+    },
+
+    // @private
+    onMouseMove: function(e) {
+        this.fireEvent('mousemove', e);
+    },
+
+    // @private
+    onMouseEnter: Ext.emptyFn,
+
+    // @private
+    onMouseLeave: Ext.emptyFn,
+
+<span id='Ext-draw-Surface-method-addGradient'>    /**
+</span>     * Adds a gradient definition to the Surface. Note that in some surface engines, adding
+     * a gradient via this method will not take effect if the surface has already been rendered.
+     * Therefore, it is preferred to pass the gradients as an item to the surface config, rather
+     * than calling this method, especially if the surface is rendered immediately (e.g. due to
+     * 'renderTo' in its config). For more information on how to create gradients in the Chart
+     * configuration object please refer to {@link Ext.chart.Chart}.
+     *
+     * The gradient object to be passed into this method is composed by:
+     *
+     * - **id** - string - The unique name of the gradient.
+     * - **angle** - number, optional - The angle of the gradient in degrees.
+     * - **stops** - object - An object with numbers as keys (from 0 to 100) and style objects as values.
+     *
+     * For example:
+     *
+     *    drawComponent.surface.addGradient({
+     *        id: 'gradientId',
+     *        angle: 45,
+     *        stops: {
+     *            0: {
+     *                color: '#555'
+     *            },
+     *            100: {
+     *                color: '#ddd'
+     *            }
+     *        }
+     *    });
+     *
+     * @method
+     */
+    addGradient: Ext.emptyFn,
+
+<span id='Ext-draw-Surface-method-add'>    /**
+</span>     * Adds a Sprite to the surface. See {@link Ext.draw.Sprite} for the configuration object to be
+     * passed into this method.
+     *
+     * For example:
+     *
+     *     drawComponent.surface.add({
+     *         type: 'circle',
+     *         fill: '#ffc',
+     *         radius: 100,
+     *         x: 100,
+     *         y: 100
+     *     });
+     *
+     */
+    add: function() {
+        var args = Array.prototype.slice.call(arguments),
+            sprite,
+            index;
+
+        var hasMultipleArgs = args.length &gt; 1;
+        if (hasMultipleArgs || Ext.isArray(args[0])) {
+            var items = hasMultipleArgs ? args : args[0],
+                results = [],
+                i, ln, item;
+
+            for (i = 0, ln = items.length; i &lt; ln; i++) {
+                item = items[i];
+                item = this.add(item);
+                results.push(item);
+            }
+
+            return results;
+        }
+        sprite = this.prepareItems(args[0], true)[0];
+        this.insertByZIndex(sprite);
+        this.onAdd(sprite);
+        return sprite;
+    },
+
+<span id='Ext-draw-Surface-method-insertByZIndex'>    /**
+</span>     * @private
+     * Inserts a given sprite into the correct position in the items collection, according to
+     * its zIndex. It will be inserted at the end of an 
