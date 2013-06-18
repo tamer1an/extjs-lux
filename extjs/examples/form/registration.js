@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.form.*',
     'Ext.Img',
@@ -33,6 +19,7 @@ Ext.onReady(function() {
             anchor: '100%'
         },
         fieldDefaults: {
+            labelWidth: 110,
             labelAlign: 'left',
             msgTarget: 'none',
             invalidCls: '' //unset the invalidCls so individual fields do not get styled as invalid
@@ -118,8 +105,8 @@ Ext.onReady(function() {
             name: 'acceptTerms',
             fieldLabel: 'Terms of Use',
             hideLabel: true,
-            style: 'margin-top:15px',
-            boxLabel: 'I have read and accept the <a href="http://www.sencha.com/legal/terms-of-use/" class="terms">Terms of Use</a>.',
+            margin: '15 0 0 0',
+            boxLabel: 'I have read and accept the <a href="#" class="terms">Terms of Use</a>.',
 
             // Listener to open the Terms of Use page link in a modal window
             listeners: {
@@ -128,11 +115,21 @@ Ext.onReady(function() {
                     fn: function(e) {
                         var target = e.getTarget('.terms'),
                             win;
+                        
+                        e.preventDefault();
+                        
                         if (target) {
-                            win = Ext.widget('window', {
+                            win = Ext.getCmp('termsWindow') || Ext.widget('window', {
+                                id: 'termsWindow',
+                                closeAction: 'hide',
                                 title: 'Terms of Use',
                                 modal: true,
-                                html: '<iframe src="' + target.href + '" width="950" height="500" style="border:0"></iframe>',
+                                contentEl: Ext.getDom('legalese'),
+                                width: 700,
+                                height: 400,
+                                bodyPadding: '10 20',
+                                autoScroll: true,
+                                
                                 buttons: [{
                                     text: 'Decline',
                                     handler: function() {
@@ -148,7 +145,6 @@ Ext.onReady(function() {
                                 }]
                             });
                             win.show();
-                            e.preventDefault();
                         }
                     }
                 }
@@ -161,6 +157,7 @@ Ext.onReady(function() {
         }],
 
         dockedItems: [{
+            cls: Ext.baseCSSPrefix + 'dd-drop-ok',
             xtype: 'container',
             dock: 'bottom',
             layout: {
@@ -172,11 +169,13 @@ Ext.onReady(function() {
             items: [{
                 xtype: 'component',
                 id: 'formErrorState',
+                invalidCls: Ext.baseCSSPrefix + 'form-invalid-icon',
+                validCls: Ext.baseCSSPrefix + 'dd-drop-icon',
                 baseCls: 'form-error-state',
                 flex: 1,
                 validText: 'Form is valid',
                 invalidText: 'Form has errors',
-                tipTpl: Ext.create('Ext.XTemplate', '<ul><tpl for="."><li><span class="field-name">{name}</span>: <span class="error">{error}</span></li></tpl></ul>'),
+                tipTpl: Ext.create('Ext.XTemplate', '<ul class="' + Ext.plainListCls + '"><tpl for="."><li><span class="field-name">{name}</span>: <span class="error">{error}</span></li></tpl></ul>'),
 
                 getTip: function() {
                     var tip = this.tip;
@@ -184,6 +183,7 @@ Ext.onReady(function() {
                         tip = this.tip = Ext.widget('tooltip', {
                             target: this.el,
                             title: 'Error Details:',
+                            minWidth: 200,
                             autoHide: false,
                             anchor: 'top',
                             mouseOffset: [-11, -2],
@@ -198,21 +198,20 @@ Ext.onReady(function() {
 
                 setErrors: function(errors) {
                     var me = this,
-                        baseCls = me.baseCls,
                         tip = me.getTip();
 
                     errors = Ext.Array.from(errors);
 
                     // Update CSS class and tooltip content
                     if (errors.length) {
-                        me.addCls(baseCls + '-invalid');
-                        me.removeCls(baseCls + '-valid');
+                        me.addCls(me.invalidCls);
+                        me.removeCls(me.validCls);
                         me.update(me.invalidText);
                         tip.setDisabled(false);
                         tip.update(me.tipTpl.apply(errors));
                     } else {
-                        me.addCls(baseCls + '-valid');
-                        me.removeCls(baseCls + '-invalid');
+                        me.addCls(me.validCls);
+                        me.removeCls(me.invalidCls);
                         me.update(me.validText);
                         tip.setDisabled(true);
                         tip.hide();
@@ -241,7 +240,11 @@ Ext.onReady(function() {
                     */
 
                     if (form.isValid()) {
-                        Ext.Msg.alert('Submitted Values', form.getValues(true));
+                        var out = [];
+                        Ext.Object.each(form.getValues(), function(key, value){
+                            out.push(key + '=' + value);
+                        });
+                        Ext.Msg.alert('Submitted Values', out.join('<br />'));
                     }
                 }
             }]
@@ -249,4 +252,3 @@ Ext.onReady(function() {
     });
 
 });
-

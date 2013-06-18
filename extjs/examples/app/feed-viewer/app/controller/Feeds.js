@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.define('FV.controller.Feeds', {
     extend: 'Ext.app.Controller',
 
@@ -34,7 +20,11 @@ Ext.define('FV.controller.Feeds', {
         }
     ],
     
-    requires: ['FV.lib.FeedValidator'],
+    requires: [
+        'FV.lib.FeedValidator',
+        'FV.store.Articles',
+        'FV.store.Feeds'
+    ],
 
     // At this point things haven't rendered yet since init gets called on controllers before the launch function
     // is executed on the Application
@@ -123,7 +113,7 @@ Ext.define('FV.controller.Feeds', {
             success: function() {
                 store.add(feed);
                 form.setLoading(false);
-                win.hide();
+                win.close();
             },
             failure: function() {
                 form.setLoading(false);

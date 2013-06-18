@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.data.*',
     'Ext.grid.*'
@@ -20,10 +6,14 @@ Ext.require([
 Ext.onReady(function(){
     Ext.define('Book',{
         extend: 'Ext.data.Model',
+        proxy: {
+            type: 'ajax',
+            reader: 'xml'
+        },
         fields: [
             // set up the fields mapping into the xml doc
             // The first needs mapping, the others are very basic
-            {name: 'Author', mapping: 'ItemAttributes > Author'},
+            {name: 'Author', mapping: '@author.name'},
             'Title', 'Manufacturer', 'ProductGroup'
         ]
     });
@@ -48,17 +38,16 @@ Ext.onReady(function(){
     });
 
     // create the grid
-    var grid = Ext.create('Ext.grid.Panel', {
+    Ext.create('Ext.grid.Panel', {
         store: store,
         columns: [
-            {text: "Author", flex: 1, dataIndex: 'Author', sortable: true},
-            {text: "Title", width: 180, dataIndex: 'Title', sortable: true},
-            {text: "Manufacturer", width: 115, dataIndex: 'Manufacturer', sortable: true},
-            {text: "Product Group", width: 100, dataIndex: 'ProductGroup', sortable: true}
+            {text: "Author", flex: 1, dataIndex: 'Author'},
+            {text: "Title", width: 180, dataIndex: 'Title'},
+            {text: "Manufacturer", width: 115, dataIndex: 'Manufacturer'},
+            {text: "Product Group", width: 100, dataIndex: 'ProductGroup'}
         ],
         renderTo:'example-grid',
         width: 540,
         height: 200
     });
 });
-

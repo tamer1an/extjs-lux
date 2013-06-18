@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.define('Writer.Form', {
     extend: 'Ext.form.Panel',
     alias: 'widget.writerform',
@@ -196,6 +182,10 @@ Ext.define('Writer.Grid', {
                 text: 'ID',
                 width: 40,
                 sortable: true,
+                resizable: false,
+                draggable: false,
+                hideable: false,
+                menuDisabled: true,
                 dataIndex: 'id'
             }, {
                 header: 'Email',
@@ -288,6 +278,46 @@ Ext.require([
 
 Ext.onReady(function(){
     Ext.tip.QuickTipManager.init();
+    
+    Ext.create('Ext.button.Button', {
+        margin: '0 0 20 20',
+        text: 'Reset sample database back to initial state',
+        renderTo: document.body,
+        tooltip: 'The sample database is stored in the session, including any changes you make. Click this button to reset the sample database to the initial state',
+        handler: function(){
+            Ext.getBody().mask('Resetting...');
+            Ext.Ajax.request({
+                url: 'app.php/example/reset',
+                callback: function(options, success, response) {
+                    Ext.getBody().unmask();
+                    
+                    var didReset = true,
+                        o;
+                    
+                    if (success) {
+                        try {
+                            o = Ext.decode(response.responseText);
+                            didReset = o.success === true;
+                        } catch (e) {
+                            didReset = false;
+                        }
+                    } else {
+                        didReset = false;
+                    }
+                    
+                    if (didReset) {
+                        store.load();
+                        main.down('#form').setActiveRecord(null);
+                        Ext.example.msg('Reset', 'Reset successful');
+                    } else {
+                        Ext.MessageBox.alert('Error', 'Unable to reset example database');
+                    }
+                    
+                }
+            });
+        }
+    })
+    
     var store = Ext.create('Ext.data.Store', {
         model: 'Writer.Person',
         autoLoad: true,
@@ -335,7 +365,7 @@ Ext.onReady(function(){
     var main = Ext.create('Ext.container.Container', {
         padding: '0 0 0 20',
         width: 500,
-        height: 450,
+        height: Ext.themeName === 'neptune' ? 500 : 450,
         renderTo: document.body,
         layout: {
             type: 'vbox',
@@ -344,7 +374,7 @@ Ext.onReady(function(){
         items: [{
             itemId: 'form',
             xtype: 'writerform',
-            height: 150,
+            manageHeight: false,
             margins: '0 0 10 0',
             listeners: {
                 create: function(form, data){
@@ -365,4 +395,3 @@ Ext.onReady(function(){
         }]
     });
 });
-

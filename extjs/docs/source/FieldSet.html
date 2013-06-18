@@ -22,7 +22,7 @@
  * config will be rendered as the fieldset's `legend`.
  *
  * While FieldSets commonly contain simple groups of fields, they are general {@link Ext.container.Container Containers}
- * and may therefore contain any type of components in their {@link #items}, including other nested containers.
+ * and may therefore contain any type of components in their {@link #cfg-items}, including other nested containers.
  * The default {@link #layout} for the FieldSet's items is `'anchor'`, but it can be configured to use any other
  * layout type.
  *
@@ -47,9 +47,6 @@
  *         width: 550,
  *         renderTo: Ext.getBody(),
  *         layout: 'column', // arrange fieldsets side by side
- *         defaults: {
- *             bodyPadding: 4
- *         },
  *         items: [{
  *             // Fieldset in Column 1 - collapsible via toggle button
  *             xtype:'fieldset',
@@ -86,6 +83,9 @@
  */
 Ext.define('Ext.form.FieldSet', {
     extend: 'Ext.container.Container',
+    mixins: {
+        fieldAncestor: 'Ext.form.FieldAncestor'
+    },
     alias: 'widget.fieldset',
     uses: ['Ext.form.field.Checkbox', 'Ext.panel.Tool', 'Ext.layout.container.Anchor', 'Ext.layout.component.FieldSet'],
 
@@ -122,6 +122,13 @@ Ext.define('Ext.form.FieldSet', {
      */
     collapsed: false,
 
+<span id='Ext-form-FieldSet-cfg-toggleOnTitleClick'>    /**
+</span>     * @cfg {Boolean} [toggleOnTitleClick=true]
+     * Set to true will add a listener to the titleCmp property for the click event which will execute the
+     * {@link #toggle} method. This option is only used when the {@link #collapsible} property is set to true.
+     */
+    toggleOnTitleClick : true,
+
 <span id='Ext-form-FieldSet-property-legend'>    /**
 </span>     * @property {Ext.Component} legend
      * The component for the fieldset's legend. Will only be defined if the configuration requires a legend to be
@@ -135,125 +142,231 @@ Ext.define('Ext.form.FieldSet', {
     baseCls: Ext.baseCSSPrefix + 'fieldset',
 
 <span id='Ext-form-FieldSet-cfg-layout'>    /**
-</span>     * @cfg {String} layout
+</span>     * @cfg {Ext.enums.Layout/Object} layout
      * The {@link Ext.container.Container#layout} for the fieldset's immediate child items.
      */
     layout: 'anchor',
 
-    componentLayout: 'fieldset',
+<span id='Ext-form-FieldSet-cfg-componentLayout'>    componentLayout: 'fieldset',
+</span>
+<span id='Ext-form-FieldSet-cfg-autoEl'>    autoEl: 'fieldset',
+</span>
+<span id='Ext-form-FieldSet-property-childEls'>    childEls: [
+</span>        'body'
+    ],
 
-    // No aria role necessary as fieldset has its own recognized semantics
-    ariaRole: '',
+<span id='Ext-form-FieldSet-cfg-renderTpl'>    renderTpl: [
+</span>        '{%this.renderLegend(out,values);%}',
+        '&lt;div id=&quot;{id}-body&quot; class=&quot;{baseCls}-body {bodyTargetCls}&quot;&lt;tpl if=&quot;bodyStyle&quot;&gt; style=&quot;{bodyStyle}&quot;&lt;/tpl&gt;&gt;',
+            '{%this.renderContainer(out,values);%}',
+        '&lt;/div&gt;'
+    ],
 
-    renderTpl: ['&lt;div id=&quot;{id}-body&quot; class=&quot;{baseCls}-body&quot;&gt;&lt;/div&gt;'],
+<span id='Ext-form-FieldSet-cfg-stateEvents'>    stateEvents : [ 'collapse', 'expand' ],
+</span>
+<span id='Ext-form-FieldSet-property-maskOnDisable'>    maskOnDisable: false,
+</span>
+<span id='Ext-form-FieldSet-method-beforeDestroy'>    beforeDestroy: function(){
+</span>        var me = this,
+            legend = me.legend;
 
-    maskOnDisable: false,
-
-    getElConfig: function(){
-        return {tag: 'fieldset', id: this.id};
+        if (legend) {
+            // get rid of the ownerCt since it's not a proper item
+            delete legend.ownerCt;
+            legend.destroy();
+            me.legend = null;
+        }
+        me.callParent();
     },
 
-    initComponent: function() {
-        var me = this,
+<span id='Ext-form-FieldSet-method-initComponent'>    initComponent: function() {
+</span>        var me = this,
             baseCls = me.baseCls;
+                
+        me.initFieldAncestor();
 
         me.callParent();
 
-        // Create the Legend component if needed
-        me.initLegend();
+        // Fieldsets cannot support managePadding because the managePadding config causes
+        // the paddding to be added to the innerCt instead of the fieldset element.  The
+        // padding must be on the fieldset element because the horizontal position of the
+        // legend is determined by the fieldset element's padding
+        // 
+        // As a consequence of the inability to support managePadding, manageOverflow
+        // cannot be supported either because the correct overflow cannot be calculated
+        // without managePadding to adjust for cross-browser differences in the way
+        // padding is handled on overflowing elements.
+        // See Ext.layout.container.Auto for more info.
+        me.layout.managePadding = me.layout.manageOverflow = false;
 
-        // Add body el
-        me.addChildEls('body');
+        me.addEvents(
+
+<span id='Ext-form-FieldSet-event-beforeexpand'>            /**
+</span>             * @event beforeexpand
+             * Fires before this FieldSet is expanded. Return false to prevent the expand.
+             * @param {Ext.form.FieldSet} f The FieldSet being expanded.
+             */
+            &quot;beforeexpand&quot;,
+
+<span id='Ext-form-FieldSet-event-beforecollapse'>            /**
+</span>             * @event beforecollapse
+             * Fires before this FieldSet is collapsed. Return false to prevent the collapse.
+             * @param {Ext.form.FieldSet} f The FieldSet being collapsed.
+             */
+            &quot;beforecollapse&quot;,
+
+<span id='Ext-form-FieldSet-event-expand'>            /**
+</span>             * @event expand
+             * Fires after this FieldSet has expanded.
+             * @param {Ext.form.FieldSet} f The FieldSet that has been expanded.
+             */
+            &quot;expand&quot;,
+
+<span id='Ext-form-FieldSet-event-collapse'>            /**
+</span>             * @event collapse
+             * Fires after this FieldSet has collapsed.
+             * @param {Ext.form.FieldSet} f The FieldSet that has been collapsed.
+             */
+            &quot;collapse&quot;
+        );
 
         if (me.collapsed) {
             me.addCls(baseCls + '-collapsed');
             me.collapse();
         }
+        if (me.title || me.checkboxToggle || me.collapsible) {
+            me.addTitleClasses();
+            me.legend = Ext.widget(me.createLegendCt());
+        }
+        me.initMonitor();
     },
 
-    // private
-    onRender: function(container, position) {
-        this.callParent(arguments);
-        // Make sure the legend is created and rendered
-        this.initLegend();
+<span id='Ext-form-FieldSet-method-initPadding'>    initPadding: function(targetEl) {
+</span>        var me = this,
+            body = me.getProtoBody(),
+            padding = me.padding,
+            bodyPadding;
+
+        if (padding !== undefined) {
+            if (Ext.isIEQuirks || Ext.isIE8m) {
+                // IE8 and below display fieldset top padding outside the border
+                // so we transfer the top padding to the body element.
+                padding = me.parseBox(padding);
+                bodyPadding = Ext.Element.parseBox(0);
+                bodyPadding.top = padding.top;
+                padding.top = 0;
+                body.setStyle('padding', me.unitizeBox(bodyPadding));
+            }
+
+            targetEl.setStyle('padding', me.unitizeBox(padding));
+        }
     },
 
-<span id='Ext-form-FieldSet-method-initLegend'>    /**
-</span>     * @private
-     * Initialize and render the legend component if necessary
-     */
-    initLegend: function() {
-        var me = this,
-            legendItems,
-            legend = me.legend;
+<span id='Ext-form-FieldSet-method-getProtoBody'>    getProtoBody: function () {
+</span>        var me = this,
+            body = me.protoBody;
 
-        // Create the legend component if needed and it hasn't been already
-        if (!legend &amp;&amp; (me.title || me.checkboxToggle || me.collapsible)) {
-            legendItems = [];
-
-            // Checkbox
-            if (me.checkboxToggle) {
-                legendItems.push(me.createCheckboxCmp());
-            }
-            // Toggle button
-            else if (me.collapsible) {
-                legendItems.push(me.createToggleCmp());
-            }
-
-            // Title
-            legendItems.push(me.createTitleCmp());
-
-            legend = me.legend = Ext.create('Ext.container.Container', {
-                baseCls: me.baseCls + '-header',
-                ariaRole: '',
-                ownerCt: this,
-                getElConfig: function(){
-                    var result = {
-                        tag: 'legend',
-                        cls: this.baseCls
-                    };
-
-                    // Gecko3 will kick every &lt;div&gt; out of &lt;legend&gt; and mess up every thing.
-                    // So here we change every &lt;div&gt; into &lt;span&gt;s. Therefore the following
-                    // clearer is not needed and since div introduces a lot of subsequent
-                    // problems, it is actually harmful.
-                    if (!Ext.isGecko3) {
-                        result.children = [{
-                            cls: Ext.baseCSSPrefix + 'clear'
-                        }];
-                    }
-                    return result;
-                },
-                items: legendItems
+        if (!body) {
+            me.protoBody = body = new Ext.util.ProtoElement({
+                styleProp: 'bodyStyle',
+                styleIsText: true
             });
         }
 
-        // Make sure legend is rendered if the fieldset is rendered
-        if (legend &amp;&amp; !legend.rendered &amp;&amp; me.rendered) {
-            me.legend.render(me.el, me.body); //insert before body element
+        return body;
+    },
+
+<span id='Ext-form-FieldSet-method-initRenderData'>    /**
+</span>     * Initialized the renderData to be used when rendering the renderTpl.
+     * @return {Object} Object with keys and values that are going to be applied to the renderTpl
+     * @private
+     */
+    initRenderData: function() {
+        var me = this,
+            data = me.callParent();
+
+        data.bodyTargetCls = me.bodyTargetCls;
+        me.protoBody.writeTo(data);
+        delete me.protoBody;
+
+        return data;
+    },
+
+<span id='Ext-form-FieldSet-method-getState'>    getState: function () {
+</span>        var state = this.callParent();
+
+        state = this.addPropertyToState(state, 'collapsed');
+
+        return state;
+    },
+
+<span id='Ext-form-FieldSet-method-afterCollapse'>    afterCollapse: Ext.emptyFn,
+</span><span id='Ext-form-FieldSet-method-afterExpand'>    afterExpand: Ext.emptyFn,
+</span>
+<span id='Ext-form-FieldSet-method-collapsedHorizontal'>    collapsedHorizontal: function () {
+</span>        return true;
+    },
+
+<span id='Ext-form-FieldSet-method-collapsedVertical'>    collapsedVertical: function () {
+</span>        return true;
+    },
+
+<span id='Ext-form-FieldSet-method-createLegendCt'>    createLegendCt: function () {
+</span>        var me = this,
+            items = [],
+            legend = {
+                xtype: 'container',
+                baseCls: me.baseCls + '-header',
+                id: me.id + '-legend',
+                autoEl: 'legend',
+                items: items,
+                ownerCt: me,
+                shrinkWrap: true,
+                ownerLayout: me.componentLayout
+            };
+
+        // Checkbox
+        if (me.checkboxToggle) {
+            items.push(me.createCheckboxCmp());
+        } else if (me.collapsible) {
+            // Toggle button
+            items.push(me.createToggleCmp());
         }
+
+        // Title
+        items.push(me.createTitleCmp());
+
+        return legend;
     },
 
 <span id='Ext-form-FieldSet-method-createTitleCmp'>    /**
 </span>     * Creates the legend title component. This is only called internally, but could be overridden in subclasses to
-     * customize the title component.
-     * @return Ext.Component
+     * customize the title component. If {@link #toggleOnTitleClick} is set to true, a listener for the click event
+     * will toggle the collapsed state of the FieldSet.
+     * @return {Ext.Component}
      * @protected
      */
     createTitleCmp: function() {
-        var me = this;
-        me.titleCmp = Ext.create('Ext.Component', {
-            html: me.title,
-            getElConfig: function() {
-                return {
-                    tag: Ext.isGecko3 ? 'span' : 'div',
-                    cls: me.titleCmp.cls,
-                    id: me.titleCmp.id
-                };
-            },
-            cls: me.baseCls + '-header-text'
-        });
-        return me.titleCmp;
+        var me  = this,
+            cfg = {
+                xtype : 'component',
+                html  : me.title,
+                cls   : me.baseCls + '-header-text',
+                id    : me.id + '-legendTitle'
+            };
+
+        if (me.collapsible &amp;&amp; me.toggleOnTitleClick) {
+            cfg.listeners = {
+                click : {
+                    element: 'el',
+                    scope : me,
+                    fn : me.toggle
+                }
+            };
+            cfg.cls += ' ' + me.baseCls + '-header-text-collapsible';
+        }
+
+        return (me.titleCmp = Ext.widget(cfg));
     },
 
 <span id='Ext-form-FieldSet-property-checkboxCmp'>    /**
@@ -265,23 +378,19 @@ Ext.define('Ext.form.FieldSet', {
 <span id='Ext-form-FieldSet-method-createCheckboxCmp'>    /**
 </span>     * Creates the checkbox component. This is only called internally, but could be overridden in subclasses to
      * customize the checkbox's configuration or even return an entirely different component type.
-     * @return Ext.Component
+     * @return {Ext.Component}
      * @protected
      */
     createCheckboxCmp: function() {
         var me = this,
             suffix = '-checkbox';
 
-        me.checkboxCmp = Ext.create('Ext.form.field.Checkbox', {
-            getElConfig: function() {
-                return {
-                    tag: Ext.isGecko3 ? 'span' : 'div',
-                    id: me.checkboxCmp.id,
-                    cls: me.checkboxCmp.cls
-                };
-            },
+        me.checkboxCmp = Ext.widget({
+            xtype: 'checkbox',
+            hideEmptyLabel: true,
             name: me.checkboxName || me.id + suffix,
             cls: me.baseCls + '-header' + suffix,
+            id: me.id + '-legendChk',
             checked: !me.collapsed,
             listeners: {
                 change: me.onCheckChange,
@@ -300,63 +409,111 @@ Ext.define('Ext.form.FieldSet', {
 <span id='Ext-form-FieldSet-method-createToggleCmp'>    /**
 </span>     * Creates the toggle button component. This is only called internally, but could be overridden in subclasses to
      * customize the toggle component.
-     * @return Ext.Component
+     * @return {Ext.Component}
      * @protected
      */
     createToggleCmp: function() {
         var me = this;
-        me.toggleCmp = Ext.create('Ext.panel.Tool', {
-            getElConfig: function() {
-                return {
-                    tag: Ext.isGecko3 ? 'span' : 'div',
-                    id: me.toggleCmp.id,
-                    cls: me.toggleCmp.cls
-                };
-            },
+        me.toggleCmp = Ext.widget({
+            xtype: 'tool',
+            height: 15,
+            width: 15,
             type: 'toggle',
             handler: me.toggle,
+            id: me.id + '-legendToggle',
             scope: me
         });
         return me.toggleCmp;
     },
 
+<span id='Ext-form-FieldSet-method-doRenderLegend'>    doRenderLegend: function (out, renderData) {
+</span>        // Careful! This method is bolted on to the renderTpl so all we get for context is
+        // the renderData! The &quot;this&quot; pointer is the renderTpl instance!
+
+        var me = renderData.$comp,
+            legend = me.legend,
+            tree;
+            
+        // Create the Legend component if needed
+        if (legend) {
+            legend.ownerLayout.configureItem(legend);
+            tree = legend.getRenderTree();
+            Ext.DomHelper.generateMarkup(tree, out);
+        }
+    },
+
+<span id='Ext-form-FieldSet-method-finishRender'>    finishRender: function () {
+</span>        var legend = this.legend;
+
+        this.callParent();
+
+        if (legend) {
+            legend.finishRender();
+        }
+    },
+
+<span id='Ext-form-FieldSet-method-getCollapsed'>    getCollapsed: function () {
+</span>        return this.collapsed ? 'top' : false;
+    },
+
+<span id='Ext-form-FieldSet-method-getCollapsedDockedItems'>    getCollapsedDockedItems: function () {
+</span>        var legend = this.legend;
+
+        return legend ? [ legend ] : [];
+    },
+
 <span id='Ext-form-FieldSet-method-setTitle'>    /**
-</span>     * Sets the title of this fieldset
-     * @param {String} title The new title
+</span>     * Sets the title of this fieldset.
+     * @param {String} title The new title.
      * @return {Ext.form.FieldSet} this
      */
     setTitle: function(title) {
-        var me = this;
+        var me = this,
+            legend = me.legend,
+            baseCls = me.baseCls;
+            
         me.title = title;
-        me.initLegend();
-        me.titleCmp.update(title);
+        if (me.rendered) {
+            if (!legend) {
+                me.legend = legend = Ext.widget(me.createLegendCt());
+                me.addTitleClasses();
+                legend.ownerLayout.configureItem(legend);
+                legend.render(me.el, 0);
+            }
+            me.titleCmp.update(title);
+        } else if (legend) {
+            me.titleCmp.update(title);
+        } else {
+            me.addTitleClasses();
+            me.legend = Ext.widget(me.createLegendCt());
+        }
         return me;
     },
-
-    getTargetEl : function() {
-        return this.body || this.frameBody || this.el;
-    },
-
-    getContentTarget: function() {
-        return this.body;
-    },
-
-<span id='Ext-form-FieldSet-method-getRefItems'>    /**
-</span>     * @private
-     * Include the legend component in the items for ComponentQuery
-     */
-    getRefItems: function(deep) {
-        var refItems = this.callParent(arguments),
-            legend = this.legend;
-
-        // Prepend legend items to ensure correct order
-        if (legend) {
-            refItems.unshift(legend);
-            if (deep) {
-                refItems.unshift.apply(refItems, legend.getRefItems(true));
-            }
+    
+<span id='Ext-form-FieldSet-method-addTitleClasses'>    addTitleClasses: function(){
+</span>        var me = this,
+            title = me.title,
+            baseCls = me.baseCls;
+            
+        if (title) {
+            me.addCls(baseCls + '-with-title');
         }
-        return refItems;
+        
+        if (title || me.checkboxToggle || me.collapsible) {
+            me.addCls(baseCls + '-with-header');
+        }
+    },
+
+<span id='Ext-form-FieldSet-method-applyTargetCls'>    applyTargetCls: function(targetCls) {
+</span>        this.bodyTargetCls = targetCls;
+    },
+
+<span id='Ext-form-FieldSet-method-getTargetEl'>    getTargetEl : function() {
+</span>        return this.body || this.frameBody || this.el;
+    },
+
+<span id='Ext-form-FieldSet-method-getDefaultContentTarget'>    getDefaultContentTarget: function() {
+</span>        return this.body;
     },
 
 <span id='Ext-form-FieldSet-method-expand'>    /**
@@ -376,34 +533,59 @@ Ext.define('Ext.form.FieldSet', {
     },
 
 <span id='Ext-form-FieldSet-method-setExpanded'>    /**
-</span>     * @private Collapse or expand the fieldset
+</span>     * @private
+     * Collapse or expand the fieldset.
      */
     setExpanded: function(expanded) {
         var me = this,
-            checkboxCmp = me.checkboxCmp;
+            checkboxCmp = me.checkboxCmp,
+            operation = expanded ? 'expand' : 'collapse';
 
-        expanded = !!expanded;
+        if (!me.rendered || me.fireEvent('before' + operation, me) !== false) {
+            expanded = !!expanded;
 
-        if (checkboxCmp) {
-            checkboxCmp.setValue(expanded);
-        }
+            if (checkboxCmp) {
+                checkboxCmp.setValue(expanded);
+            }
 
-        if (expanded) {
-            me.removeCls(me.baseCls + '-collapsed');
-        } else {
-            me.addCls(me.baseCls + '-collapsed');
+            if (expanded) {
+                me.removeCls(me.baseCls + '-collapsed');
+            } else {
+                me.addCls(me.baseCls + '-collapsed');
+            }
+            me.collapsed = !expanded;
+            if (expanded) {
+                delete me.getHierarchyState().collapsed;
+            } else {
+                me.getHierarchyState().collapsed = true;
+            }
+            if (me.rendered) {
+                // say explicitly we are not root because when we have a fixed/configured height
+                // our ownerLayout would say we are root and so would not have it's height
+                // updated since it's not included in the layout cycle
+                me.updateLayout({ isRoot: false });
+                me.fireEvent(operation, me);
+            }
         }
-        me.collapsed = !expanded;
-        if (expanded) {
-            // ensure subitems will get rendered and layed out when expanding
-            me.getComponentLayout().childrenChanged = true;
-        }
-        me.doComponentLayout();
         return me;
+    },
+    
+<span id='Ext-form-FieldSet-method-getRefItems'>    getRefItems: function(deep) {
+</span>        var refItems = this.callParent(arguments),
+            legend = this.legend;
+
+        // Prepend legend items to ensure correct order
+        if (legend) {
+            refItems.unshift(legend);
+            if (deep) {
+                refItems.unshift.apply(refItems, legend.getRefItems(true));
+            }
+        }
+        return refItems;
     },
 
 <span id='Ext-form-FieldSet-method-toggle'>    /**
-</span>     * Toggle the fieldset's collapsed state to the opposite of what it is currently
+</span>     * Toggle the fieldset's collapsed state to the opposite of what it is currently.
      */
     toggle: function() {
         this.setExpanded(!!this.collapsed);
@@ -411,18 +593,16 @@ Ext.define('Ext.form.FieldSet', {
 
 <span id='Ext-form-FieldSet-method-onCheckChange'>    /**
 </span>     * @private
-     * Handle changes in the checkbox checked state
+     * Handle changes in the checkbox checked state.
      */
     onCheckChange: function(cmp, checked) {
         this.setExpanded(checked);
     },
 
-    beforeDestroy : function() {
-        var legend = this.legend;
-        if (legend) {
-            legend.destroy();
-        }
-        this.callParent();
+<span id='Ext-form-FieldSet-method-setupRenderTpl'>    setupRenderTpl: function (renderTpl) {
+</span>        this.callParent(arguments);
+
+        renderTpl.renderLegend = this.doRenderLegend;
     }
 });
 </pre>

@@ -16,10 +16,7 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-draw-CompositeSprite'>/**
-</span> * @class Ext.draw.CompositeSprite
- * @extends Ext.util.MixedCollection
- *
- * A composite Sprite handles a group of sprites with common methods to a sprite
+</span> * A composite Sprite handles a group of sprites with common methods to a sprite
  * such as `hide`, `show`, `setAttributes`. These methods are applied to the set of sprites
  * added to the group.
  *
@@ -53,53 +50,74 @@ Ext.define('Ext.draw.CompositeSprite', {
     mixins: {
         animate: 'Ext.util.Animate'
     },
-
-    /* End Definitions */
-    isCompositeSprite: true,
-    constructor: function(config) {
-        var me = this;
+<span id='Ext-draw-CompositeSprite-property-autoDestroy'>    autoDestroy: false,
+</span>    
+<span id='Ext-draw-CompositeSprite-property-isCompositeSprite'>    /* End Definitions */
+</span>    isCompositeSprite: true,
+<span id='Ext-draw-CompositeSprite-method-constructor'>    constructor: function(config) {
+</span>        var me = this;
         
         config = config || {};
         Ext.apply(me, config);
 
         me.addEvents(
+<span id='Ext-draw-CompositeSprite-event-mousedown'>            /**
+</span>             * @event
+             * @inheritdoc Ext.draw.Sprite#mousedown
+             */
             'mousedown',
+<span id='Ext-draw-CompositeSprite-event-mouseup'>            /**
+</span>             * @event
+             * @inheritdoc Ext.draw.Sprite#mouseup
+             */
             'mouseup',
+<span id='Ext-draw-CompositeSprite-event-mouseover'>            /**
+</span>             * @event
+             * @inheritdoc Ext.draw.Sprite#mouseover
+             */
             'mouseover',
+<span id='Ext-draw-CompositeSprite-event-mouseout'>            /**
+</span>             * @event
+             * @inheritdoc Ext.draw.Sprite#mouseout
+             */
             'mouseout',
+<span id='Ext-draw-CompositeSprite-event-click'>            /**
+</span>             * @event
+             * @inheritdoc Ext.draw.Sprite#click
+             */
             'click'
         );
         me.id = Ext.id(null, 'ext-sprite-group-');
         me.callParent();
     },
 
-    // @private
-    onClick: function(e) {
+<span id='Ext-draw-CompositeSprite-method-onClick'>    // @private
+</span>    onClick: function(e) {
         this.fireEvent('click', e);
     },
 
-    // @private
-    onMouseUp: function(e) {
+<span id='Ext-draw-CompositeSprite-method-onMouseUp'>    // @private
+</span>    onMouseUp: function(e) {
         this.fireEvent('mouseup', e);
     },
 
-    // @private
-    onMouseDown: function(e) {
+<span id='Ext-draw-CompositeSprite-method-onMouseDown'>    // @private
+</span>    onMouseDown: function(e) {
         this.fireEvent('mousedown', e);
     },
 
-    // @private
-    onMouseOver: function(e) {
+<span id='Ext-draw-CompositeSprite-method-onMouseOver'>    // @private
+</span>    onMouseOver: function(e) {
         this.fireEvent('mouseover', e);
     },
 
-    // @private
-    onMouseOut: function(e) {
+<span id='Ext-draw-CompositeSprite-method-onMouseOut'>    // @private
+</span>    onMouseOut: function(e) {
         this.fireEvent('mouseout', e);
     },
 
-    attachEvents: function(o) {
-        var me = this;
+<span id='Ext-draw-CompositeSprite-method-attachEvents'>    attachEvents: function(o) {
+</span>        var me = this;
         
         o.on({
             scope: me,
@@ -111,19 +129,19 @@ Ext.define('Ext.draw.CompositeSprite', {
         });
     },
 
-    // Inherit docs from MixedCollection
-    add: function(key, o) {
+<span id='Ext-draw-CompositeSprite-method-add'>    // Inherit docs from MixedCollection
+</span>    add: function(key, o) {
         var result = this.callParent(arguments);
         this.attachEvents(result);
         return result;
     },
 
-    insert: function(index, key, o) {
-        return this.callParent(arguments);
+<span id='Ext-draw-CompositeSprite-method-insert'>    insert: function(index, key, o) {
+</span>        return this.callParent(arguments);
     },
 
-    // Inherit docs from MixedCollection
-    remove: function(o) {
+<span id='Ext-draw-CompositeSprite-method-remove'>    // Inherit docs from MixedCollection
+</span>    remove: function(o) {
         var me = this;
         
         o.un({
@@ -157,7 +175,7 @@ Ext.define('Ext.draw.CompositeSprite', {
         
         for (; i &lt; len; i++) {
             sprite = items[i];
-            if (sprite.el) {
+            if (sprite.el &amp;&amp; ! sprite.bboxExcluded) {
                 bb = sprite.getBBox();
                 minX = Math.min(minX, bb.x);
                 minY = Math.min(minY, bb.y);
@@ -178,7 +196,7 @@ Ext.define('Ext.draw.CompositeSprite', {
 </span>     * Iterates through all sprites calling `setAttributes` on each one. For more information {@link Ext.draw.Sprite}
      * provides a description of the attributes that can be set with this method.
      * @param {Object} attrs Attributes to be changed on the sprite.
-     * @param {Boolean} redraw Flag to immediatly draw the change.
+     * @param {Boolean} redraw Flag to immediately draw the change.
      * @return {Ext.draw.CompositeSprite} this
      */
     setAttributes: function(attrs, redraw) {
@@ -193,9 +211,8 @@ Ext.define('Ext.draw.CompositeSprite', {
     },
 
 <span id='Ext-draw-CompositeSprite-method-hide'>    /**
-</span>     * Hides all sprites. If the first parameter of the method is true
-     * then a redraw will be forced for each sprite.
-     * @param {Boolean} redraw Flag to immediatly draw the change.
+</span>     * Hides all sprites. If `true` is passed then a redraw will be forced for each sprite.
+     * @param {Boolean} redraw Flag to immediately draw the change.
      * @return {Ext.draw.CompositeSprite} this
      */
     hide: function(redraw) {
@@ -210,9 +227,8 @@ Ext.define('Ext.draw.CompositeSprite', {
     },
 
 <span id='Ext-draw-CompositeSprite-method-show'>    /**
-</span>     * Shows all sprites. If the first parameter of the method is true
-     * then a redraw will be forced for each sprite.
-     * @param {Boolean} redraw Flag to immediatly draw the change.
+</span>     * Shows all sprites. If `true` is passed then a redraw will be forced for each sprite.
+     * @param {Boolean} redraw Flag to immediately draw the change.
      * @return {Ext.draw.CompositeSprite} this
      */
     show: function(redraw) {
@@ -226,6 +242,9 @@ Ext.define('Ext.draw.CompositeSprite', {
         return this;
     },
 
+<span id='Ext-draw-CompositeSprite-method-redraw'>    /**
+</span>     * Force redraw of all sprites.
+     */
     redraw: function() {
         var me = this,
             i = 0,
@@ -241,6 +260,10 @@ Ext.define('Ext.draw.CompositeSprite', {
         return me;
     },
 
+<span id='Ext-draw-CompositeSprite-method-setStyle'>    /**
+</span>     * Sets style for all sprites.
+     * @param {String} style CSS Style definition.
+     */
     setStyle: function(obj) {
         var i = 0,
             items = this.items,
@@ -256,6 +279,10 @@ Ext.define('Ext.draw.CompositeSprite', {
         }
     },
 
+<span id='Ext-draw-CompositeSprite-method-addCls'>    /**
+</span>     * Adds class to all sprites.
+     * @param {String} cls CSS class name
+     */
     addCls: function(obj) {
         var i = 0,
             items = this.items,
@@ -269,6 +296,10 @@ Ext.define('Ext.draw.CompositeSprite', {
         }
     },
 
+<span id='Ext-draw-CompositeSprite-method-removeCls'>    /**
+</span>     * Removes class from all sprites.
+     * @param {String} cls CSS class name
+     */
     removeCls: function(obj) {
         var i = 0,
             items = this.items,
@@ -296,18 +327,19 @@ Ext.define('Ext.draw.CompositeSprite', {
     },
     
 <span id='Ext-draw-CompositeSprite-method-destroy'>    /**
-</span>     * Destroys the SpriteGroup
+</span>     * Destroys this CompositeSprite.
      */
     destroy: function(){
         var me = this,
             surface = me.getSurface(),
+            destroySprites = me.autoDestroy,
             item;
             
         if (surface) {
             while (me.getCount() &gt; 0) {
                 item = me.first();
                 me.remove(item);
-                surface.remove(item);
+                surface.remove(item, destroySprites);
             }
         }
         me.clearListeners();

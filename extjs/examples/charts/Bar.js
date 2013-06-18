@@ -1,62 +1,35 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require('Ext.chart.*');
-Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
+Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit', 'Ext.window.MessageBox']);
 
 Ext.onReady(function () {
-    Ext.chart.theme.White = Ext.extend(Ext.chart.theme.Base, {
-        constructor: function() {
-           Ext.chart.theme.White.superclass.constructor.call(this, {
+    var textArea;
+    
+    Ext.define('Ext.chart.theme.CustomBlue', {
+        extend: 'Ext.chart.theme.Base',
+        
+        constructor: function(config) {
+            var titleLabel = {
+                font: 'bold 18px Arial'
+            }, axisLabel = {
+                fill: 'rgb(8,69,148)',
+                font: '12px Arial',
+                spacing: 2,
+                padding: 5
+            };
+            
+            this.callParent([Ext.apply({
                axis: {
-                   stroke: 'rgb(8,69,148)',
-                   'stroke-width': 1
+                   stroke: '#084594'
                },
-               axisLabel: {
-                   fill: 'rgb(8,69,148)',
-                   font: '12px Arial',
-                   'font-family': '"Arial',
-                   spacing: 2,
-                   padding: 5,
-                   renderer: function(v) { return v; }
-               },
-               axisTitle: {
-                  font: 'bold 18px Arial'
-               }
-           });
+               axisLabelLeft: axisLabel,
+               axisLabelBottom: axisLabel,
+               axisTitleLeft: titleLabel,
+               axisTitleBottom: titleLabel
+           }, config)]);
         }
     });
-
-    var win = Ext.create('Ext.Window', {
-        width: 800,
-        height: 600,
-        minHeight: 400,
-        minWidth: 550,
-        hidden: false,
-        maximizable: true,
-        title: 'Bar Chart',
-        renderTo: Ext.getBody(),
-        layout: 'fit',
-        tbar: [{
-            text: 'Reload Data',
-            handler: function() {
-                store1.loadData(generateData());
-            }
-        }],
-        items: {
-            id: 'chartCmp',
-            xtype: 'chart',
+    
+    var chart = Ext.create('Ext.chart.Chart', {
             animate: true,
             shadow: true,
             store: store1,
@@ -76,7 +49,7 @@ Ext.onReady(function () {
                 fields: ['name'],
                 title: 'Month of the Year'
             }],
-            theme: 'White',
+            theme: 'CustomBlue',
             background: {
               gradient: {
                 id: 'backgroundGradient',
@@ -114,7 +87,38 @@ Ext.onReady(function () {
                 xField: 'name',
                 yField: ['data1']
             }]
-        }
+        });
+        
+    var win = Ext.create('Ext.window.Window', {
+        width: 800,
+        height: 600,
+        minHeight: 400,
+        minWidth: 550,
+        hidden: false,
+        maximizable: true,
+        title: 'Bar Chart',
+        autoShow: true,
+        layout: 'fit',
+        tbar: [{
+            text: 'Save Chart',
+            handler: function() {
+                Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice){
+                    if(choice == 'yes'){
+                        chart.save({
+                            type: 'image/png'
+                        });
+                    }
+                });
+            }
+        }, {
+            text: 'Reload Data',
+            handler: function() {
+                // Add a short delay to prevent fast sequential clicks
+                window.loadTask.delay(100, function() {
+                    store1.loadData(generateData());
+                });
+            }
+        }],
+        items: chart
     });
 });
-

@@ -1,21 +1,8 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require('Ext.chart.*');
 
 Ext.onReady(function () {
-    var chart;
+    var chart, timeAxis;
+    
     var generateData = (function() {
         var data = [], i = 0,
             last = false,
@@ -74,26 +61,24 @@ Ext.onReady(function () {
         store.loadData(gs);
     }, 1000);
 
-    Ext.create('Ext.Window', {
+    var win = Ext.create('Ext.window.Window', {
         width: 800,
         height: 600,
         minHeight: 400,
         minWidth: 550,
-        hidden: false,
         maximizable: true,
         title: 'Live Animated Chart',
-        renderTo: Ext.getBody(),
+        autoShow: true,
         layout: 'fit',
         items: [{
             xtype: 'chart',
             style: 'background:#fff',
-            id: 'chartCmp',
+            itemId: 'chartCmp',
             store: store,
             shadow: false,
             animate: true,
             axes: [{
                 type: 'Numeric',
-                grid: true,
                 minimum: 0,
                 maximum: 100,
                 position: 'left',
@@ -171,7 +156,6 @@ Ext.onReady(function () {
             }]
         }]
     });
-    chart = Ext.getCmp('chartCmp');
-    var timeAxis = chart.axes.get(1);
+    chart = win.child('#chartCmp');
+    timeAxis = chart.axes.get(1);
 });
-

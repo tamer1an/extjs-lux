@@ -15,7 +15,11 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js"><span id='Ext-EventObject'>/**
+  <pre class="prettyprint lang-js">// @tag dom,core
+// @require EventManager.js
+// @define Ext.EventObject
+
+<span id='Ext-EventObject'>/**
 </span> * @class Ext.EventObject
 
 Just as {@link Ext.Element} wraps around a native DOM node, Ext.EventObject
@@ -268,15 +272,15 @@ Ext.define('Ext.EventObjectImpl', {
         }
 
         return scale;
-    })(),
+    }()),
 
 <span id='Ext-EventObject-property-clickRe'>    /**
 </span>     * Simple click regex
      * @private
      */
     clickRe: /(dbl)?click/,
-    // safari keypress events for special keys return bad keycodes
-    safariKeys: {
+<span id='Ext-EventObject-property-safariKeys'>    // safari keypress events for special keys return bad keycodes
+</span>    safariKeys: {
         3: 13, // enter
         63234: 37, // left
         63235: 39, // right
@@ -288,8 +292,8 @@ Ext.define('Ext.EventObjectImpl', {
         63273: 36, // home
         63275: 35 // end
     },
-    // normalize button clicks, don't see any way to feature detect this.
-    btnMap: Ext.isIE ? {
+<span id='Ext-EventObject-property-btnMap'>    // normalize button clicks, don't see any way to feature detect this.
+</span>    btnMap: Ext.isIE ? {
         1: 0,
         4: 1,
         2: 2
@@ -298,6 +302,20 @@ Ext.define('Ext.EventObjectImpl', {
         1: 1,
         2: 2
     },
+    
+<span id='Ext-EventObject-property-ctrlKey'>    /**
+</span>     * @property {Boolean} ctrlKey
+     * True if the control key was down during the event.
+     * In Mac this will also be true when meta key was down.
+     */
+<span id='Ext-EventObject-property-altKey'>    /**
+</span>     * @property {Boolean} altKey
+     * True if the alt key was down during the event.
+     */
+<span id='Ext-EventObject-property-shiftKey'>    /**
+</span>     * @property {Boolean} shiftKey
+     * True if the shift key was down during the event.
+     */
 
     constructor: function(event, freezeEvent){
         if (event) {
@@ -305,10 +323,10 @@ Ext.define('Ext.EventObjectImpl', {
         }
     },
 
-    setEvent: function(event, freezeEvent){
-        var me = this, button, options;
+<span id='Ext-EventObject-method-setEvent'>    setEvent: function(event, freezeEvent){
+</span>        var me = this, button, options;
 
-        if (event == me || (event &amp;&amp; event.browserEvent)) { // already wrapped
+        if (event === me || (event &amp;&amp; event.browserEvent)) { // already wrapped
             return event;
         }
         me.browserEvent = event;
@@ -476,7 +494,7 @@ Ext.define('Ext.EventObjectImpl', {
      * @return {HTMLElement}
      */
     getRelatedTarget : function(selector, maxDepth, returnEl){
-        if (selector) {
+        if (selector &amp;&amp; this.relatedTarget) {
             return Ext.fly(this.relatedTarget).findParent(selector, maxDepth, returnEl);
         }
         return returnEl ? Ext.get(this.relatedTarget) : this.relatedTarget;
@@ -565,8 +583,8 @@ Ext.getBody().on('click', function(e,t){
 });
 &lt;/code&gt;&lt;/pre&gt;
      * @param {String/HTMLElement/Ext.Element} el The id, DOM element or Ext.Element to check
-     * @param {Boolean} related (optional) true to test if the related target is within el instead of the target
-     * @param {Boolean} allowEl (optional) true to also check if the passed element is the target or related target
+     * @param {Boolean} [related] `true` to test if the related target is within el instead of the target
+     * @param {Boolean} [allowEl] `true` to also check if the passed element is the target or related target
      * @return {Boolean}
      */
     within : function(el, related, allowEl){
@@ -575,7 +593,7 @@ Ext.getBody().on('click', function(e,t){
                 result;
 
             if (t) {
-                result = Ext.fly(el).contains(t);
+                result = Ext.fly(el, '_internal').contains(t);
                 if (!result &amp;&amp; allowEl) {
                     result = t == Ext.getDom(el);
                 }
@@ -618,7 +636,7 @@ Ext.getBody().on('click', function(e,t){
      */
     getPoint : function(){
         var xy = this.getXY();
-        return Ext.create('Ext.util.Point', xy[0], xy[1]);
+        return new Ext.util.Point(xy[0], xy[1]);
     },
 
 <span id='Ext-EventObject-method-hasModifier'>   /**
@@ -666,16 +684,17 @@ Ext.getBody().on('click', function(e,t){
      * is likely to be used when relaying a DOM event. If not specified, {@link #getTarget}
      * is used to determine the target.
      */
-    injectEvent: function () {
+    injectEvent: (function () {
         var API,
-            dispatchers = {}; // keyed by event type (e.g., 'mousedown')
+            dispatchers = {}, // keyed by event type (e.g., 'mousedown')
+            crazyIEButtons;
 
         // Good reference: http://developer.yahoo.com/yui/docs/UserAction.js.html
 
         // IE9 has createEvent, but this code causes major problems with htmleditor (it
         // blocks all mouse events and maybe more). TODO
 
-        if (!Ext.isIE &amp;&amp; document.createEvent) { // if (DOM compliant)
+        if (!Ext.isIE9m &amp;&amp; document.createEvent) { // if (DOM compliant)
             API = {
                 createHtmlEvent: function (doc, type, bubbles, cancelable) {
                     var event = doc.createEvent('HTMLEvents');
@@ -736,7 +755,7 @@ Ext.getBody().on('click', function(e,t){
                 }
             };
         } else if (document.createEventObject) { // else if (IE)
-            var crazyIEButtons = { 0: 1, 1: 4, 2: 2 };
+            crazyIEButtons = { 0: 1, 1: 4, 2: 2 };
 
             API = {
                 createHtmlEvent: function (doc, type, bubbles, cancelable) {
@@ -855,9 +874,7 @@ Ext.getBody().on('click', function(e,t){
             dispatchers = {}; // never mind all those we just built :P
 
             API = {
-                fixTarget: function (t) {
-                    return t;
-                }
+                fixTarget: Ext.identityFn
             };
         }
 
@@ -875,7 +892,7 @@ Ext.getBody().on('click', function(e,t){
             t = API.fixTarget(t);
             dispatcher(t, me);
         };
-    }() // call to produce method
+    }()) // call to produce method
 
 }, function() {
 

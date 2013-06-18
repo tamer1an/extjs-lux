@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
@@ -21,10 +7,14 @@ Ext.require([
 Ext.Loader.onReady(function() {
     Ext.define('Book',{
         extend: 'Ext.data.Model',
+        proxy: {
+            type: 'ajax',
+            reader: 'xml'
+        },
         fields: [
             // set up the fields mapping into the xml doc
             // The first needs mapping, the others are very basic
-            {name: 'Author', mapping: 'ItemAttributes > Author'},
+            {name: 'Author', mapping: '@author.name'},
             'Title',
             'Manufacturer',
             'ProductGroup',
@@ -96,8 +86,8 @@ Ext.Loader.onReady(function() {
             this.columns = [
                 {text: "Author", width: 120, dataIndex: 'Author', sortable: true},
                 {text: "Title", flex: 1, dataIndex: 'Title', sortable: true},
-                {text: "Manufacturer", width: 115, dataIndex: 'Manufacturer', sortable: true},
-                {text: "Product Group", width: 100, dataIndex: 'ProductGroup', sortable: true}
+                {text: "Manufacturer", width: 125, dataIndex: 'Manufacturer', sortable: true},
+                {text: "Product Group", width: 125, dataIndex: 'ProductGroup', sortable: true}
             ];
             // Note the use of a storeId, this will register thisStore
             // with the StoreManager and allow us to retrieve it very easily.
@@ -128,7 +118,7 @@ Ext.Loader.onReady(function() {
         // register the App.BookDetail class with an xtype of bookdetail
         alias: 'widget.bookdetail',
         // add tplMarkup as a new property
-        tplMarkup: [
+        tpl: [
             'Title: <a href="{DetailPageURL}" target="_blank">{Title}</a><br/>',
             'Author: {Author}<br/>',
             'Manufacturer: {Manufacturer}<br/>',
@@ -142,18 +132,9 @@ Ext.Loader.onReady(function() {
         // apply styles to the body of the panel and initialize
         // html to startingMarkup
         initComponent: function() {
-            this.tpl = Ext.create('Ext.Template', this.tplMarkup);
             this.html = this.startingMarkup;
-
-            this.bodyStyle = {
-                background: '#ffffff'
-            };
             // call the superclass's initComponent implementation
             this.callParent();
-        },
-        // add a method which updates the details
-        updateDetail: function(data) {
-            this.tpl.overwrite(this.body, data);
         }
     });
 
@@ -174,7 +155,7 @@ Ext.Loader.onReady(function() {
 
         frame: true,
         title: 'Book List',
-        width: 540,
+        width: 580,
         height: 400,
         layout: 'border',
 
@@ -204,12 +185,6 @@ Ext.Loader.onReady(function() {
             // than a click event from the grid to provide key navigation
             // as well as mouse navigation
             var bookGridSm = this.getComponent('gridPanel').getSelectionModel();
-            ('selectionchange', function(sm, rs) {
-            if (rs.length) {
-                var detailPanel = Ext.getCmp('detailPanel');
-                bookTpl.overwrite(detailPanel.body, rs[0].data);
-            }
-        })
             bookGridSm.on('selectionchange', this.onRowSelect, this);
         },
         // add a method called onRowSelect
@@ -221,7 +196,7 @@ Ext.Loader.onReady(function() {
             // conflicts with the ComponentManager
             if (rs.length) {
                 var detailPanel = this.getComponent('detailPanel');
-                detailPanel.updateDetail(rs[0].data);
+                detailPanel.update(rs[0].getData());
             }
 
         }
@@ -244,4 +219,3 @@ Ext.onReady(function() {
     // via the StoreManager by its storeId
     Ext.data.StoreManager.get('gridBookStore').load();
 });
-

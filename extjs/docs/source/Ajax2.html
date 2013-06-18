@@ -120,7 +120,7 @@
  *
  *     var proxy = new Ext.data.proxy.Ajax({
  *         url: '/users',
- *         pagePage: 'pageNumber'
+ *         pageParam: 'pageNumber'
  *     });
  *
  *     proxy.read(operation); //GET /users?pageNumber=2
@@ -213,7 +213,7 @@
  *
  * @constructor
  * Note that if this HttpProxy is being used by a {@link Ext.data.Store Store}, then the Store's call to
- * {@link Ext.data.Store#load load} will override any specified callback and params options. In this case, use the
+ * {@link Ext.data.Store#method-load load} will override any specified callback and params options. In this case, use the
  * {@link Ext.data.Store Store}'s events to modify parameters, or react to loading events.
  *
  * @param {Object} config (optional) Config object.
@@ -237,24 +237,29 @@ Ext.define('Ext.data.proxy.Ajax', {
         update : 'POST',
         destroy: 'POST'
     },
+
+<span id='Ext-data-proxy-Ajax-cfg-binary'>    /**
+</span>     * @cfg {Boolean} binary
+     * True to request binary data from the server.  This feature requires
+     * the use of a binary reader such as {@link Ext.data.amf.Reader AMF Reader}
+     */
+    binary: false,
     
 <span id='Ext-data-proxy-Ajax-cfg-headers'>    /**
 </span>     * @cfg {Object} headers
      * Any headers to add to the Ajax request. Defaults to undefined.
      */
     
-<span id='Ext-data-proxy-Ajax-method-doRequest'>    /**
-</span>     * @ignore
-     */
     doRequest: function(operation, callback, scope) {
         var writer  = this.getWriter(),
-            request = this.buildRequest(operation, callback, scope);
+            request = this.buildRequest(operation);
             
         if (operation.allowWrite()) {
             request = writer.write(request);
         }
         
         Ext.apply(request, {
+            binary        : this.binary,
             headers       : this.headers,
             timeout       : this.timeout,
             scope         : this,

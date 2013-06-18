@@ -1,42 +1,21 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class Ext.app.Portal
  * @extends Object
  * A sample portal layout application class.
  */
-// TODO: Fill in the content panel -- no AccordionLayout at the moment
-// TODO: Fix container drag/scroll support (waiting on Ext.lib.Anim)
-// TODO: Fix Ext.Tool scope being set to the panel header
-// TODO: Drag/drop does not cause a refresh of scroll overflow when needed
-// TODO: Grid portlet throws errors on destroy (grid bug)
-// TODO: Z-index issues during drag
 
 Ext.define('Ext.app.Portal', {
 
     extend: 'Ext.container.Viewport',
-
-    uses: ['Ext.app.PortalPanel', 'Ext.app.PortalColumn', 'Ext.app.GridPortlet', 'Ext.app.ChartPortlet'],
+    requires: ['Ext.app.PortalPanel', 'Ext.app.PortalColumn', 'Ext.app.GridPortlet', 'Ext.app.ChartPortlet'],
 
     getTools: function(){
         return [{
             xtype: 'tool',
             type: 'gear',
-            handler: function(e, target, panelHeader, tool){
-                var portlet = panelHeader.ownerCt;
-                portlet.setLoading('Working...');
+            handler: function(e, target, header, tool){
+                var portlet = header.ownerCt;
+                portlet.setLoading('Loading...');
                 Ext.defer(function() {
                     portlet.setLoading(false);
                 }, 2000);
@@ -73,8 +52,8 @@ Ext.define('Ext.app.Portal', {
                     maxWidth: 400,
                     split: true,
                     collapsible: true,
-                    layout: 'accordion',
-                    layoutConfig:{
+                    layout:{
+                        type: 'accordion',
                         animate: true
                     },
                     items: [{
@@ -162,4 +141,3 @@ Ext.define('Ext.app.Portal', {
         }
     }
 });
-

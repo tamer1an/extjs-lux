@@ -15,82 +15,103 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js"><span id='Ext-layout-component-Tip'>/**
-</span> * Component layout for Tip/ToolTip/etc. components
- * @class Ext.layout.component.Tip
- * @extends Ext.layout.component.Dock
- * @private
+  <pre class="prettyprint lang-js"><span id='Ext-chart-Tip'>/**
+</span> * @class Ext.chart.Tip
+ * Provides tips for Ext.chart.series.Series.
  */
-
-Ext.define('Ext.layout.component.Tip', {
+Ext.define('Ext.chart.Tip', {
 
     /* Begin Definitions */
 
-    alias: ['layout.tip'],
+    requires: ['Ext.tip.ToolTip', 'Ext.chart.TipSurface'],
 
-    extend: 'Ext.layout.component.Dock',
-
-    /* End Definitions */
-
-    type: 'tip',
-    
-    onLayout: function(width, height) {
+<span id='Ext-chart-Tip-method-constructor'>    /* End Definitions */
+</span>
+    constructor: function(config) {
         var me = this,
-            owner = me.owner,
-            el = owner.el,
-            minWidth,
-            maxWidth,
-            naturalWidth,
-            constrainedWidth,
-            xy = el.getXY();
-
-        // Position offscreen so the natural width is not affected by the viewport's right edge
-        el.setXY([-9999,-9999]);
-
-        // Calculate initial layout
-        this.callParent(arguments);
-
-        // Handle min/maxWidth for auto-width tips
-        if (!Ext.isNumber(width)) {
-            minWidth = owner.minWidth;
-            maxWidth = owner.maxWidth;
-            // IE6/7 in strict mode have a problem doing an autoWidth
-            if (Ext.isStrict &amp;&amp; (Ext.isIE6 || Ext.isIE7)) {
-                constrainedWidth = me.doAutoWidth();
-            } else {
-                naturalWidth = el.getWidth();
-            }
-            if (naturalWidth &lt; minWidth) {
-                constrainedWidth = minWidth;
-            }
-            else if (naturalWidth &gt; maxWidth) {
-                constrainedWidth = maxWidth;
-            }
-            if (constrainedWidth) {
-                this.callParent([constrainedWidth, height]);
+            surface,
+            sprites,
+            tipSurface;
+        if (config.tips) {
+            me.tipTimeout = null;
+            me.tipConfig = Ext.apply({}, config.tips, {
+                renderer: Ext.emptyFn,
+                constrainPosition: true,
+                autoHide: true
+            });
+            me.tooltip = new Ext.tip.ToolTip(me.tipConfig);
+            me.chart.surface.on('mousemove', me.tooltip.onMouseMove, me.tooltip);
+            me.chart.surface.on('mouseleave', function() {
+                me.hideTip();
+            });
+            if (me.tipConfig.surface) {
+                //initialize a surface
+                surface = me.tipConfig.surface;
+                sprites = surface.sprites;
+                tipSurface = new Ext.chart.TipSurface({
+                    id: 'tipSurfaceComponent',
+                    sprites: sprites
+                });
+                if (surface.width &amp;&amp; surface.height) {
+                    tipSurface.setSize(surface.width, surface.height);
+                }
+                me.tooltip.add(tipSurface);
+                me.spriteTip = tipSurface;
             }
         }
-
-        // Restore position
-        el.setXY(xy);
     },
-    
-    doAutoWidth: function(){
-        var me = this,
-            owner = me.owner,
-            body = owner.body,
-            width = body.getTextWidth();
-            
-        if (owner.header) {
-            width = Math.max(width, owner.header.getWidth());
+
+<span id='Ext-chart-Tip-method-showTip'>    showTip: function(item) {
+</span>        var me = this,
+            tooltip,
+            spriteTip,
+            tipConfig,
+            trackMouse,
+            sprite,
+            surface,
+            surfaceExt,
+            pos,
+            x,
+            y;
+        if (!me.tooltip) {
+            return;
         }
-        if (!Ext.isDefined(me.frameWidth)) {
-            me.frameWidth = owner.el.getWidth() - body.getWidth();
+        clearTimeout(me.tipTimeout);
+        tooltip = me.tooltip;
+        spriteTip = me.spriteTip;
+        tipConfig = me.tipConfig;
+        trackMouse = tooltip.trackMouse;
+        if (!trackMouse) {
+            tooltip.trackMouse = true;
+            sprite = item.sprite;
+            surface = sprite.surface;
+            surfaceExt = Ext.get(surface.getId());
+            if (surfaceExt) {
+                pos = surfaceExt.getXY();
+                x = pos[0] + (sprite.attr.x || 0) + (sprite.attr.translation &amp;&amp; sprite.attr.translation.x || 0);
+                y = pos[1] + (sprite.attr.y || 0) + (sprite.attr.translation &amp;&amp; sprite.attr.translation.y || 0);
+                tooltip.targetXY = [x, y];
+            }
         }
-        width += me.frameWidth + body.getPadding('lr');
-        return width;
+        if (spriteTip) {
+            tipConfig.renderer.call(tooltip, item.storeItem, item, spriteTip.surface);
+        } else {
+            tipConfig.renderer.call(tooltip, item.storeItem, item);
+        }
+        tooltip.show();
+        tooltip.trackMouse = trackMouse;
+    },
+
+<span id='Ext-chart-Tip-method-hideTip'>    hideTip: function(item) {
+</span>        var tooltip = this.tooltip;
+        if (!tooltip) {
+            return;
+        }
+        clearTimeout(this.tipTimeout);
+        this.tipTimeout = setTimeout(function() {
+            tooltip.hide();
+        }, 0);
     }
-});
-</pre>
+});</pre>
 </body>
 </html>

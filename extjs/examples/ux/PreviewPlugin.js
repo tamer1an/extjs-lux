@@ -1,28 +1,8 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
- * @class Ext.ux.PreviewPlugin
- * @extends Ext.AbstractPlugin
- *
  * The Preview enables you to show a configurable preview of a record.
  *
  * This plugin assumes that it has control over the features used for this
  * particular grid section and may conflict with other plugins.
- * 
- * @alias plugin.preview
- * @ptype preview
  */
 Ext.define('Ext.ux.PreviewPlugin', {
     extend: 'Ext.AbstractPlugin',
@@ -34,7 +14,7 @@ Ext.define('Ext.ux.PreviewPlugin', {
     
     /**
      * @cfg {String} bodyField
-     * Field to display in the preview. Must me a field within the Model definition
+     * Field to display in the preview. Must be a field within the Model definition
      * that the store is using.
      */
     bodyField: '',
@@ -44,30 +24,34 @@ Ext.define('Ext.ux.PreviewPlugin', {
      */
     previewExpanded: true,
     
-    constructor: function(config) {
+    setCmp: function(grid) {
         this.callParent(arguments);
+        
         var bodyField   = this.bodyField,
             hideBodyCls = this.hideBodyCls,
-            section     = this.getCmp(),
-            features = [{
+            features    = [{
                 ftype: 'rowbody',
                 getAdditionalData: function(data, idx, record, orig, view) {
-                    var o = Ext.grid.feature.RowBody.prototype.getAdditionalData.apply(this, arguments);
-                    Ext.apply(o, {
-                        rowBody: data[bodyField],
-                        rowBodyCls: section.previewExpanded ? '' : hideBodyCls
-                    });
-                    return o;
+                    var getAdditionalData = Ext.grid.feature.RowBody.prototype.getAdditionalData,
+                        additionalData = {
+                            rowBody: data[bodyField],
+                            rowBodyCls: grid.previewExpanded ? '' : hideBodyCls
+                        };
+                        
+                    if (getAdditionalData) {
+                        Ext.apply(additionalData, getAdditionalData.apply(this, arguments));
+                    }
+                    return additionalData;
                 }
-            },{
+            }, {
                 ftype: 'rowwrap'
             }];
         
-        section.previewExpanded = this.previewExpanded;
-        if (!section.features) {
-            section.features = [];
+        grid.previewExpanded = this.previewExpanded;
+        if (!grid.features) {
+            grid.features = [];
         }
-        section.features = features.concat(section.features);
+        grid.features = features.concat(grid.features);
     },
     
     /**

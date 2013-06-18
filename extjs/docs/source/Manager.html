@@ -15,222 +15,317 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js"><span id='Ext-menu-Manager'>/**
-</span> * @class Ext.menu.Manager
- * Provides a common registry of all menus on a page.
+  <pre class="prettyprint lang-js"><span id='Ext-direct-Manager'>/**
+</span> * Ext.Direct aims to streamline communication between the client and server by providing a single interface that
+ * reduces the amount of common code typically required to validate data and handle returned data packets (reading data,
+ * error conditions, etc).
+ *
+ * The Ext.direct namespace includes several classes for a closer integration with the server-side. The Ext.data
+ * namespace also includes classes for working with Ext.data.Stores which are backed by data from an Ext.Direct method.
+ *
+ * # Specification
+ *
+ * For additional information consult the [Ext.Direct Specification][1].
+ *
+ * # Providers
+ *
+ * Ext.Direct uses a provider architecture, where one or more providers are used to transport data to and from the
+ * server. There are several providers that exist in the core at the moment:
+ *
+ * - {@link Ext.direct.JsonProvider JsonProvider} for simple JSON operations
+ * - {@link Ext.direct.PollingProvider PollingProvider} for repeated requests
+ * - {@link Ext.direct.RemotingProvider RemotingProvider} exposes server side on the client.
+ *
+ * A provider does not need to be invoked directly, providers are added via {@link Ext.direct.Manager}.{@link #addProvider}.
+ *
+ * # Router
+ *
+ * Ext.Direct utilizes a &quot;router&quot; on the server to direct requests from the client to the appropriate server-side
+ * method. Because the Ext.Direct API is completely platform-agnostic, you could completely swap out a Java based server
+ * solution and replace it with one that uses C# without changing the client side JavaScript at all.
+ *
+ * # Server side events
+ *
+ * Custom events from the server may be handled by the client by adding listeners, for example:
+ *
+ *     {&quot;type&quot;:&quot;event&quot;,&quot;name&quot;:&quot;message&quot;,&quot;data&quot;:&quot;Successfully polled at: 11:19:30 am&quot;}
+ *
+ *     // add a handler for a 'message' event sent by the server
+ *     Ext.direct.Manager.on('message', function(e){
+ *         out.append(String.format('&lt;p&gt;&lt;i&gt;{0}&lt;/i&gt;&lt;/p&gt;', e.data));
+ *         out.el.scrollTo('t', 100000, true);
+ *     });
+ *
+ *    [1]: http://sencha.com/products/extjs/extdirect
+ *
  * @singleton
+ * @alternateClassName Ext.Direct
  */
-Ext.define('Ext.menu.Manager', {
+
+Ext.define('Ext.direct.Manager', {
     singleton: true,
+
     requires: [
         'Ext.util.MixedCollection',
-        'Ext.util.KeyMap'
+        'Ext.app.domain.Direct'
     ],
-    alternateClassName: 'Ext.menu.MenuMgr',
 
-    uses: ['Ext.menu.Menu'],
-
-    menus: {},
-    groups: {},
-    attached: false,
-    lastShow: new Date(),
-
-    init: function() {
-        var me = this;
-        
-        me.active = Ext.create('Ext.util.MixedCollection');
-        Ext.getDoc().addKeyListener(27, function() {
-            if (me.active.length &gt; 0) {
-                me.hideAll();
-            }
-        }, me);
+    mixins: {
+        observable: 'Ext.util.Observable'
     },
 
-<span id='Ext-menu-Manager-method-hideAll'>    /**
-</span>     * Hides all menus that are currently visible
-     * @return {Boolean} success True if any active menus were hidden.
+<span id='Ext-direct-Manager-property-exceptions'>    /**
+</span>     * Exception types.
      */
-    hideAll: function() {
-        var active = this.active,
-            c;
-        if (active &amp;&amp; active.length &gt; 0) {
-            c = active.clone();
-            c.each(function(m) {
-                m.hide();
-            });
-            return true;
-        }
-        return false;
+    exceptions: {
+        TRANSPORT: 'xhr',
+        PARSE: 'parse',
+        DATA: 'data',
+        LOGIN: 'login',
+        SERVER: 'exception'
     },
+    
+<span id='Ext-direct-Manager-method-constructor'>    constructor: function() {
+</span>        var me = this;
 
-    onHide: function(m) {
-        var me = this,
-            active = me.active;
-        active.remove(m);
-        if (active.length &lt; 1) {
-            Ext.getDoc().un('mousedown', me.onMouseDown, me);
-            me.attached = false;
-        }
-    },
-
-    onShow: function(m) {
-        var me = this,
-            active   = me.active,
-            last     = active.last(),
-            attached = me.attached,
-            menuEl   = m.getEl(),
-            zIndex;
-
-        me.lastShow = new Date();
-        active.add(m);
-        if (!attached) {
-            Ext.getDoc().on('mousedown', me.onMouseDown, me);
-            me.attached = true;
-        }
-        m.toFront();
-    },
-
-    onBeforeHide: function(m) {
-        if (m.activeChild) {
-            m.activeChild.hide();
-        }
-        if (m.autoHideTimer) {
-            clearTimeout(m.autoHideTimer);
-            delete m.autoHideTimer;
-        }
-    },
-
-    onBeforeShow: function(m) {
-        var active = this.active,
-            parentMenu = m.parentMenu;
+        me.addEvents(
+<span id='Ext-direct-Manager-event-event'>            /**
+</span>             * @event event
+             *
+             * Fires after an event.
+             *
+             * @param {Ext.direct.Event} event The Ext.direct.Event type that occurred.
+             * @param {Ext.direct.Provider} provider The {@link Ext.direct.Provider Provider}.
+             */
+            'event',
             
-        active.remove(m);
-        if (!parentMenu &amp;&amp; !m.allowOtherMenus) {
-            this.hideAll();
-        }
-        else if (parentMenu &amp;&amp; parentMenu.activeChild &amp;&amp; m != parentMenu.activeChild) {
-            parentMenu.activeChild.hide();
-        }
-    },
-
-    // private
-    onMouseDown: function(e) {
-        var me = this,
-            active = me.active,
-            lastShow = me.lastShow,
-            target = e.target;
-
-        if (Ext.Date.getElapsed(lastShow) &gt; 50 &amp;&amp; active.length &gt; 0 &amp;&amp; !e.getTarget('.' + Ext.baseCSSPrefix + 'menu')) {
-            me.hideAll();
-            // in IE, if we mousedown on a focusable element, the focus gets cancelled and the focus event is never
-            // fired on the element, so we'll focus it here
-            if (Ext.isIE &amp;&amp; Ext.fly(target).focusable()) {
-                target.focus();
-            }
-        }
-    },
-
-    // private
-    register: function(menu) {
-        var me = this;
-
-        if (!me.active) {
-            me.init();
-        }
-
-        if (menu.floating) {
-            me.menus[menu.id] = menu;
-            menu.on({
-                beforehide: me.onBeforeHide,
-                hide: me.onHide,
-                beforeshow: me.onBeforeShow,
-                show: me.onShow,
-                scope: me
-            });
-        }
-    },
-
-<span id='Ext-menu-Manager-method-get'>    /**
-</span>     * Returns a {@link Ext.menu.Menu} object
-     * @param {String/Object} menu The string menu id, an existing menu object reference, or a Menu config that will
-     * be used to generate and return a new Menu this.
-     * @return {Ext.menu.Menu} The specified menu, or null if none are found
-     */
-    get: function(menu) {
-        var menus = this.menus;
+<span id='Ext-direct-Manager-event-exception'>            /**
+</span>             * @event exception
+             *
+             * Fires after an event exception.
+             *
+             * @param {Ext.direct.Event} event The event type that occurred.
+             */
+            'exception'
+        );
         
-        if (typeof menu == 'string') { // menu id
-            if (!menus) {  // not initialized, no menus to return
-                return null;
-            }
-            return menus[menu];
-        } else if (menu.isMenu) {  // menu instance
-            return menu;
-        } else if (Ext.isArray(menu)) { // array of menu items
-            return Ext.create('Ext.menu.Menu', {items:menu});
-        } else { // otherwise, must be a config
-            return Ext.ComponentManager.create(menu, 'menu');
-        }
+        me.transactions = new Ext.util.MixedCollection();
+        me.providers    = new Ext.util.MixedCollection();
+
+        me.mixins.observable.constructor.call(me);
     },
 
-    // private
-    unregister: function(menu) {
+<span id='Ext-direct-Manager-method-addProvider'>    /**
+</span>     * Adds an Ext.Direct Provider and creates the proxy or stub methods to execute server-side methods. If the provider
+     * is not already connected, it will auto-connect.
+     *
+     *      var pollProv = new Ext.direct.PollingProvider({
+     *          url: 'php/poll2.php'
+     *      });
+     *
+     *      Ext.direct.Manager.addProvider({
+     *          type: 'remoting',           // create a {@link Ext.direct.RemotingProvider}
+     *          url:  'php/router.php',     // url to connect to the Ext.Direct server-side router.
+     *          actions: {                  // each property within the actions object represents a Class
+     *              TestAction: [{          // array of methods within each server side Class
+     *                  name: 'doEcho',     // name of method
+     *                  len:  1
+     *              }, {
+     *                  name: 'multiply',
+     *                  len:  1
+     *              }, {
+     *                  name: 'doForm',
+     *                  formHandler: true   // handle form on server with Ext.Direct.Transaction
+     *              }]
+     *          },
+     *          namespace: 'myApplication', // namespace to create the Remoting Provider in
+     *      }, {
+     *          type: 'polling',            // create a {@link Ext.direct.PollingProvider}
+     *          url:  'php/poll.php'
+     *      },
+     *      pollProv);                      // reference to previously created instance
+     *
+     * @param {Ext.direct.Provider/Object...} provider
+     * Accepts any number of Provider descriptions (an instance or config object for
+     * a Provider). Each Provider description instructs Ext.Direct how to create
+     * client-side stub methods.
+     */
+    addProvider: function(provider) {
         var me = this,
-            menus = me.menus,
-            active = me.active;
+            args = arguments,
+            relayers = me.relayers || (me.relayers = {}),
+            i, len;
 
-        delete menus[menu.id];
-        active.remove(menu);
-        menu.un({
-            beforehide: me.onBeforeHide,
-            hide: me.onHide,
-            beforeshow: me.onBeforeShow,
-            show: me.onShow,
-            scope: me
-        });
-    },
-
-    // private
-    registerCheckable: function(menuItem) {
-        var groups  = this.groups,
-            groupId = menuItem.group;
-
-        if (groupId) {
-            if (!groups[groupId]) {
-                groups[groupId] = [];
+        if (args.length &gt; 1) {
+            for (i = 0, len = args.length; i &lt; len; ++i) {
+                me.addProvider(args[i]);
             }
-
-            groups[groupId].push(menuItem);
+            
+            return;
         }
+
+        // if provider has not already been instantiated
+        if (!provider.isProvider) {
+            provider = Ext.create('direct.' + provider.type + 'provider', provider);
+        }
+        
+        me.providers.add(provider);
+        provider.on('data', me.onProviderData, me);
+        
+        if (provider.relayedEvents) {
+            relayers[provider.id] = me.relayEvents(provider, provider.relayedEvents);
+        }
+
+        if (!provider.isConnected()) {
+            provider.connect();
+        }
+
+        return provider;
     },
 
-    // private
-    unregisterCheckable: function(menuItem) {
-        var groups  = this.groups,
-            groupId = menuItem.group;
-
-        if (groupId) {
-            Ext.Array.remove(groups[groupId], menuItem);
-        }
+<span id='Ext-direct-Manager-method-getProvider'>    /**
+</span>     * Retrieves a {@link Ext.direct.Provider provider} by the **{@link Ext.direct.Provider#id id}** specified when the
+     * provider is {@link #addProvider added}.
+     *
+     * @param {String/Ext.direct.Provider} id The id of the provider, or the provider instance.
+     */
+    getProvider: function(id) {
+        return id.isProvider ? id : this.providers.get(id);
     },
 
-    onCheckChange: function(menuItem, state) {
-        var groups  = this.groups,
-            groupId = menuItem.group,
-            i       = 0,
-            group, ln, curr;
+<span id='Ext-direct-Manager-method-removeProvider'>    /**
+</span>     * Removes the provider.
+     *
+     * @param {String/Ext.direct.Provider} provider The provider instance or the id of the provider.
+     *
+     * @return {Ext.direct.Provider} The provider, null if not found.
+     */
+    removeProvider: function(provider) {
+        var me = this,
+            providers = me.providers,
+            relayers = me.relayers,
+            id;
 
-        if (groupId &amp;&amp; state) {
-            group = groups[groupId];
-            ln = group.length;
-            for (; i &lt; ln; i++) {
-                curr = group[i];
-                if (curr != menuItem) {
-                    curr.setChecked(false);
-                }
+        provider = provider.isProvider ? provider : providers.get(provider);
+
+        if (provider) {
+            provider.un('data', me.onProviderData, me);
+
+            id = provider.id;
+            
+            if (relayers[id]) {
+                relayers[id].destroy();
+                delete relayers[id];
             }
+            
+            providers.remove(provider);
+            
+            return provider;
         }
+        
+        return null;
+    },
+
+<span id='Ext-direct-Manager-method-addTransaction'>    /**
+</span>     * Adds a transaction to the manager.
+     *
+     * @param {Ext.direct.Transaction} transaction The transaction to add
+     *
+     * @return {Ext.direct.Transaction} transaction
+     *
+     * @private
+     */
+    addTransaction: function(transaction) {
+        this.transactions.add(transaction);
+        
+        return transaction;
+    },
+
+<span id='Ext-direct-Manager-method-removeTransaction'>    /**
+</span>     * Removes a transaction from the manager.
+     *
+     * @param {String/Ext.direct.Transaction} transaction The transaction/id of transaction to remove
+     *
+     * @return {Ext.direct.Transaction} transaction
+     *
+     * @private
+     */
+    removeTransaction: function(transaction) {
+        var me = this;
+        
+        transaction = me.getTransaction(transaction);
+        me.transactions.remove(transaction);
+        
+        return transaction;
+    },
+
+<span id='Ext-direct-Manager-method-getTransaction'>    /**
+</span>     * Gets a transaction
+     *
+     * @param {String/Ext.direct.Transaction} transaction The transaction/id of transaction to get
+     *
+     * @return {Ext.direct.Transaction}
+     *
+     * @private
+     */
+    getTransaction: function(transaction) {
+        return typeof transaction === 'object' ? transaction : this.transactions.get(transaction);
+    },
+
+<span id='Ext-direct-Manager-method-onProviderData'>    onProviderData: function(provider, event) {
+</span>        var me = this,
+            i, len;
+
+        if (Ext.isArray(event)) {
+            for (i = 0, len = event.length; i &lt; len; ++i) {
+                me.onProviderData(provider, event[i]);
+            }
+            
+            return;
+        }
+        
+        if (event.name &amp;&amp; event.name != 'event' &amp;&amp; event.name != 'exception') {
+            me.fireEvent(event.name, event);
+        }
+        else if (event.status === false) {
+            me.fireEvent('exception', event);
+        }
+        
+        me.fireEvent('event', event, provider);
+    },
+    
+<span id='Ext-direct-Manager-method-parseMethod'>    /**
+</span>     * Parses a direct function. It may be passed in a string format, for example:
+     * &quot;MyApp.Person.read&quot;.
+     *
+     * @param {String/Function} fn The direct function
+     *
+     * @return {Function} The function to use in the direct call. Null if not found
+     *
+     * @protected
+     */
+    parseMethod: function(fn) {
+        if (Ext.isString(fn)) {
+            var parts = fn.split('.'),
+                i = 0,
+                len = parts.length,
+                current = Ext.global;
+                
+            while (current &amp;&amp; i &lt; len) {
+                current = current[parts[i]];
+                ++i;
+            }
+            
+            fn = Ext.isFunction(current) ? current : null;
+        }
+        
+        return fn || null;
     }
-});</pre>
+    
+}, function() {
+    // Backwards compatibility
+    Ext.Direct = Ext.direct.Manager;
+});
+</pre>
 </body>
 </html>

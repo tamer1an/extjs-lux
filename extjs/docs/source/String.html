@@ -683,9 +683,392 @@
  *         return s.replace(test, convert);
  *     }
  *
- * @param {RegExp} regexp A RegExp object. The match is replaced by the return value of parameter #2.
- * @param {String} substr A String that is to be replaced by `newSubStr`.
- * @param {String} newSubStr The String that replaces the substring received from parameter #1. A
- * number of special replacement patterns are supported; see the &quot;Specifying a string as a parameter&quot;
- * section below.
- * @param {Function} function A function to be invo
+ * @param {String/RegExp} pattern Either a string or regular expression pattern to search for.
+ *
+ * @param {String/Function} replacement Either string or function:
+ *
+ * - The String to replace the `pattern` with. Number of special replacement patterns are supported;
+ *   see the &quot;Specifying a string as a parameter&quot; section above.
+ * - A function to be invoked to create the replacement.
+ *   The arguments supplied to this function are described in the &quot;Specifying a function as a parameter&quot;
+ *   section above.
+ *
+ * @return {String} String of matched replaced items.
+ */
+
+<span id='String-method-search'>/**
+</span> * @method search
+ * Executes the search for a match between a regular expression and a specified string.
+ *
+ * If successful, search returns the index of the regular expression inside the string. Otherwise, it
+ * returns -1.
+ *
+ * When you want to know whether a pattern is found in a string use search (similar to the regular
+ * expression `test` method); for more information (but slower execution) use `match` (similar to the
+ * regular expression `exec` method).
+ *
+ * The following example prints a message which depends on the success of the test.
+ *
+ *     function testinput(re, str){
+ *         if (str.search(re) != -1)
+ *             midstring = &quot; contains &quot;;
+ *         else
+ *             midstring = &quot; does not contain &quot;;
+ *         document.write (str + midstring + re);
+ *     }
+ *
+ * @param {RegExp} regexp A regular expression object. If a non-RegExp object obj is passed, it is
+ * implicitly converted to a RegExp by using `new RegExp(obj)`.
+ * @return {Number} If successful, search returns the index of the regular
+ * expression inside the string. Otherwise, it returns -1.
+ */
+
+<span id='String-method-slice'>/**
+</span> * @method slice
+ * Extracts a section of a string and returns a new string.
+ *
+ * `slice` extracts the text from one string and returns a new string. Changes to the text in one
+ * string do not affect the other string.
+ *
+ * `slice` extracts up to but not including `endSlice`. `string.slice(1,4)` extracts the second
+ * character through the fourth character (characters indexed 1, 2, and 3).
+ *
+ * As a negative index, `endSlice` indicates an offset from the end of the string. `string.slice(2,-1)`
+ * extracts the third character through the second to last character in the string.
+ *
+ * The following example uses slice to create a new string.
+ *
+ *     // assumes a print function is defined
+ *     var str1 = &quot;The morning is upon us.&quot;;
+ *     var str2 = str1.slice(4, -2);
+ *     print(str2);
+ *
+ * This writes:
+ *
+ *     morning is upon u
+ *
+ * @param {Number} beginSlice The zero-based index at which to begin extraction.
+ * @param {Number} endSlice The zero-based index at which to end extraction. If omitted, `slice`
+ * extracts to the end of the string.
+ * @return {String} All characters from specified start up to (but excluding)
+ * end.
+ */
+
+<span id='String-method-split'>/**
+</span> * @method split
+ * Splits a `String` object into an array of strings by separating the string into substrings.
+ *
+ * The `split` method returns the new array.
+ *
+ * When found, `separator` is removed from the string and the substrings are returned in an array. If
+ * `separator` is omitted, the array contains one element consisting of the entire string.
+ *
+ * If `separator` is a regular expression that contains capturing parentheses, then each time separator
+ * is matched the results (including any undefined results) of the capturing parentheses are spliced
+ * into the output array. However, not all browsers support this capability.
+ *
+ * Note: When the string is empty, `split` returns an array containing one empty string, rather than an
+ * empty array.
+ *
+ * The following example defines a function that splits a string into an array of strings using the
+ * specified separator. After splitting the string, the function displays messages indicating the
+ * original string (before the split), the separator used, the number of elements in the array, and the
+ * individual array elements.
+ *
+ *     function splitString(stringToSplit,separator)
+ *     {
+ *         var arrayOfStrings = stringToSplit.split(separator);
+ *         print('The original string is: &quot;' + stringToSplit + '&quot;');
+ *         print('The separator is: &quot;' + separator + '&quot;');
+ *         print(&quot;The array has &quot; + arrayOfStrings.length + &quot; elements: &quot;);
+ *
+ *         for (var i=0; i &lt; arrayOfStrings.length; i++)
+ *             print(arrayOfStrings[i] + &quot; / &quot;);
+ *     }
+ *
+ *     var tempestString = &quot;Oh brave new world that has such people in it.&quot;;
+ *     var monthString = &quot;Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec&quot;;
+ *
+ *     var space = &quot; &quot;;
+ *     var comma = &quot;,&quot;;
+ *
+ *     splitString(tempestString, space);
+ *     splitString(tempestString);
+ *     splitString(monthString, comma);
+ *
+ * This example produces the following output:
+ *
+ *     The original string is: &quot;Oh brave new world that has such people in it.&quot;
+ *     The separator is: &quot; &quot;
+ *     The array has 10 elements: Oh / brave / new / world / that / has / such / people / in / it. /
+ *
+ *     The original string is: &quot;Oh brave new world that has such people in it.&quot;
+ *     The separator is: &quot;undefined&quot;
+ *     The array has 1 elements: Oh brave new world that has such people in it. /
+ *
+ * The original string is: &quot;Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec&quot;
+ * The separator is: &quot;,&quot;
+ * The array has 12 elements: Jan / Feb / Mar / Apr / May / Jun / Jul / Aug / Sep / Oct / Nov / Dec /
+ *
+ * In the following example, `split` looks for 0 or more spaces followed by a semicolon followed by 0
+ * or more spaces and, when found, removes the spaces from the string. nameList is the array returned
+ * as a result of split.
+ *
+ *     var names = &quot;Harry Trump ;Fred Barney; Helen Rigby ; Bill Abel ;Chris Hand &quot;;
+ *     print(names);
+ *     var re = /\s*;\s*\/;
+ *     var nameList = names.split(re);
+ *     print(nameList);
+ *
+ * This prints two lines; the first line prints the original string, and the second line prints the
+ * resulting array.
+ *
+ *     Harry Trump ;Fred Barney; Helen Rigby ; Bill Abel ;Chris Hand
+ *     Harry Trump,Fred Barney,Helen Rigby,Bill Abel,Chris Hand
+ *
+ * In the following example, split looks for 0 or more spaces in a string and returns the first 3
+ * splits that it finds.
+ *
+ *     var myString = &quot;Hello World. How are you doing?&quot;;
+ *     var splits = myString.split(&quot; &quot;, 3);
+ *     print(splits);
+ *
+ * This script displays the following:
+ *
+ *     Hello,World.,How
+ *
+ * If `separator` contains capturing parentheses, matched results are returned in the array.
+ *
+ *     var myString = &quot;Hello 1 word. Sentence number 2.&quot;;
+ *     var splits = myString.split(/(\d)/);
+ *     print(splits);
+ *
+ * This script displays the following:
+ *
+ *     Hello ,1, word. Sentence number ,2, .
+ *
+ * @param {String} seperator Specifies the character to use for separating the string. The separator is treated as a string or a
+ * regular expression. If separator is omitted, the array returned contains one element consisting of the entire string.
+ * @param {Number} limit Integer specifying a limit on the number of splits to be found.  The split method still splits on every
+ * match of separator, but it truncates the returned array to at most limit elements.
+ * @return {Array} Substrings are returned in an array.
+ */
+
+<span id='String-method-substr'>/**
+</span> * @method substr
+ * Returns the characters in a string beginning at the specified location through the specified number
+ * of characters.
+ *
+ * `start` is a character index. The index of the first character is 0, and the index of the last
+ * character is 1 less than the length of the string. `substr` begins extracting characters at start
+ * and collects length characters (unless it reaches the end of the string first, in which case it will
+ * return fewer).
+ *
+ * If `start` is positive and is greater than or equal to the length of the string, `substr` returns an
+ * empty string.
+ *
+ * If `start` is negative, `substr` uses it as a character index from the end of the string. If start
+ * is negative and abs(start) is larger than the length of the string, `substr` uses 0 as the start
+ * index. Note: the described handling of negative values of the start argument is not supported by
+ * Microsoft JScript.
+ *
+ * If length is 0 or negative, `substr` returns an empty string. If length is omitted, `substr`
+ * extracts characters to the end of the string.
+ *
+ * Consider the following script:
+ *
+ *     // assumes a print function is defined
+ *     var str = &quot;abcdefghij&quot;;
+ *     print(&quot;(1,2): &quot;    + str.substr(1,2));
+ *     print(&quot;(-3,2): &quot;   + str.substr(-3,2));
+ *     print(&quot;(-3): &quot;     + str.substr(-3));
+ *     print(&quot;(1): &quot;      + str.substr(1));
+ *     print(&quot;(-20, 2): &quot; + str.substr(-20,2));
+ *     print(&quot;(20, 2): &quot;  + str.substr(20,2));
+ *
+ * This script displays:
+ *
+ *     (1,2): bc
+ *     (-3,2): hi
+ *     (-3): hij
+ *     (1): bcdefghij
+ *     (-20, 2): ab
+ *     (20, 2):
+ *
+ * @param {Number} start Location at which to begin extracting characters.
+ * @param {Number} length The number of characters to extract.
+ * @return {String} Modified string.
+ */
+
+<span id='String-method-substring'>/**
+</span> * @method substring
+ * Returns the characters in a string between two indexes into the string.
+ *
+ * substring extracts characters from indexA up to but not including indexB. In particular:
+ * *   If `indexA` equals `indexB`, `substring` returns an empty string.
+ * *   If `indexB` is omitted, substring extracts characters to the end of the string.
+ * *   If either argument is less than 0 or is `NaN`, it is treated as if it were 0.
+ * *   If either argument is greater than `stringName.length`, it is treated as if it were
+ * `stringName.length`.
+ *
+ * If `indexA` is larger than `indexB`, then the effect of substring is as if the two arguments were
+ * swapped; for example, `str.substring(1, 0) == str.substring(0, 1)`.
+ *
+ * The following example uses substring to display characters from the string &quot;Sencha&quot;:
+ *
+ *     // assumes a print function is defined
+ *     var anyString = &quot;Sencha&quot;;
+ *
+ *     // Displays &quot;Sen&quot;
+ *     print(anyString.substring(0,3));
+ *     print(anyString.substring(3,0));
+ *
+ *     // Displays &quot;cha&quot;
+ *     print(anyString.substring(3,6));
+ *     print(anyString.substring(6,3));
+ *
+ *     // Displays &quot;Sencha&quot;
+ *     print(anyString.substring(0,6));
+ *     print(anyString.substring(0,10));
+ *
+ * The following example replaces a substring within a string. It will replace both individual
+ * characters and `substrings`. The function call at the end of the example changes the string &quot;Brave
+ * New World&quot; into &quot;Brave New Web&quot;.
+ *
+ *     function replaceString(oldS, newS, fullS) {
+ *         // Replaces oldS with newS in the string fullS
+ *         for (var i = 0; i &lt; fullS.length; i++) {
+ *             if (fullS.substring(i, i + oldS.length) == oldS) {
+ *                 fullS = fullS.substring(0, i) + newS + fullS.substring(i + oldS.length,
+ * fullS.length);
+ *             }
+ *         }
+ *         return fullS;
+ *     }
+ *
+ *     replaceString(&quot;World&quot;, &quot;Web&quot;, &quot;Brave New World&quot;);
+ *
+ * @param {Number} indexA An integer between 0 and one less than the length of the string.
+ * @param {Number} indexB (optional) An integer between 0 and the length of the string.
+ * @return {String} Returns the characters in a string between two indexes into the string.
+ */
+
+<span id='String-method-toLocaleLowerCase'>/**
+</span> * @method toLocaleLowerCase
+ * The characters within a string are converted to lower case while respecting the current locale. For
+ * most languages, this will return the same as `toLowerCase`.
+ *
+ * The `toLocaleLowerCase` method returns the value of the string converted to lower case according to
+ * any locale-specific case mappings. `toLocaleLowerCase` does not affect the value of the string
+ * itself. In most cases, this will produce the same result as `toLowerCase()`, but for some locales,
+ * such as Turkish, whose case mappings do not follow the default case mappings in Unicode, there may
+ * be a different result.
+ *
+ * The following example displays the string &quot;sencha&quot;:
+ *
+ *     var upperText=&quot;SENCHA&quot;;
+ *     document.write(upperText.toLocaleLowerCase());
+ *
+ * @return {String} Returns value of the string in lowercase.
+ */
+
+<span id='String-method-toLocaleUpperCase'>/**
+</span> * @method toLocaleUpperCase
+ * The characters within a string are converted to upper case while respecting the current locale. For
+ * most languages, this will return the same as `toUpperCase`.
+ *
+ * The `toLocaleUpperCase` method returns the value of the string converted to upper case according to
+ * any locale-specific case mappings. `toLocaleUpperCase` does not affect the value of the string
+ * itself. In most cases, this will produce the same result as `toUpperCase()`, but for some locales,
+ * such as Turkish, whose case mappings do not follow the default case mappings in Unicode, there may
+ * be a different result.
+ *
+ * The following example displays the string &quot;SENCHA&quot;:
+ *
+ *     var lowerText=&quot;sencha&quot;;
+ *     document.write(lowerText.toLocaleUpperCase());
+ *
+ * @return {String} Returns value of the string in uppercase.
+ */
+
+<span id='String-method-toLowerCase'>/**
+</span> * @method toLowerCase
+ * Returns the calling string value converted to lower case.
+ *
+ * The `toLowerCase` method returns the value of the string converted to lowercase. `toLowerCase` does
+ * not affect the value of the string itself.
+ *
+ * The following example displays the lowercase string &quot;sencha&quot;:
+ *
+ *     var upperText=&quot;SENCHA&quot;;
+ *     document.write(upperText.toLowerCase());
+ *
+ * @return {String} Returns value of the string in lowercase.
+ */
+
+<span id='String-method-toString'>/**
+</span> * @method toString
+ * Returns a string representing the specified object. Overrides the `Object.toString` method.
+ *
+ * The `String` object overrides the `toString` method of the `Object` object; it does not inherit
+ * `Object.toString`. For `String` objects, the `toString` method returns a string representation of
+ * the object.
+ *
+ * The following example displays the string value of a String object:
+ *
+ *     x = new String(&quot;Hello world&quot;);
+ *     alert(x.toString())      // Displays &quot;Hello world&quot;
+ *
+ * @return {String} A string representation of the object.
+ */
+
+<span id='String-method-toUpperCase'>/**
+</span> * @method toUpperCase
+ * Returns the calling string value converted to uppercase.
+ *
+ * The `toUpperCase` method returns the value of the string converted to uppercase. `toUpperCase` does
+ * not affect the value of the string itself.
+ *
+ * The following example displays the string &quot;SENCHA&quot;:
+
+ *     var lowerText=&quot;sencha&quot;;
+ *     document.write(lowerText.toUpperCase());
+ *
+ * @return {String} Returns value of the string in uppercase.
+ */
+
+<span id='String-method-valueOf'>/**
+</span> * @method valueOf
+ * Returns the primitive value of the specified object. Overrides the `Object.valueOf` method.
+ *
+ * The `valueOf` method of String returns the primitive value of a `String` object as a string data
+ * type. This value is equivalent to `String.toString`.
+ *
+ * This method is usually called internally by JavaScript and not explicitly in code.
+ *
+ *     x = new String(&quot;Hello world&quot;);
+ *     alert(x.valueOf())          // Displays &quot;Hello world&quot;
+ *
+ * @return {String} Returns value of string.
+ */
+
+// ECMAScript 5 methods
+
+<span id='String-method-trim'>/**
+</span> * @method trim
+ * Removes whitespace from both ends of the string.
+ *
+ * Does not affect the value of the string itself.
+ *
+ * The following example displays the lowercase string `&quot;foo&quot;`:
+ *
+ *     var orig = &quot;   foo  &quot;;
+ *     alert(orig.trim());
+ *
+ * **NOTE:** This method is part of the ECMAScript 5 standard.
+ *
+ * @return {String} A string stripped of whitespace on both ends.
+ */
+</pre>
+</body>
+</html>

@@ -1,19 +1,9 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-Ext.require('Ext.chart.*');
-Ext.require('Ext.layout.container.Fit');
+Ext.require([
+    'Ext.chart.*',
+    'Ext.layout.container.Fit',
+    'Ext.window.MessageBox',
+    'Ext.grid.Panel'
+]);
 
 Ext.onReady(function () {
     
@@ -87,14 +77,7 @@ Ext.onReady(function () {
         ]
     });
     
-    var panel1 = Ext.create('widget.panel', {
-        width: 800,
-        height: 400,
-        title: 'Line Chart',
-        renderTo: Ext.getBody(),
-        layout: 'fit',
-        items: [{
-            xtype: 'chart',
+    var chart = Ext.create('Ext.chart.Chart', {
             animate: true,
             shadow: true,
             store: store1,
@@ -152,7 +135,27 @@ Ext.onReady(function () {
                     }
                 }
             }]
-        }]
+        });
+
+
+    var panel1 = Ext.create('widget.panel', {
+        width: 800,
+        height: 400,
+        title: 'Line Chart',
+        renderTo: Ext.getBody(),
+        layout: 'fit',
+        tbar: [{
+            text: 'Save Chart',
+            handler: function() {
+                Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice){
+                    if(choice == 'yes'){
+                        chart.save({
+                            type: 'image/png'
+                        });
+                    }
+                });
+            }
+        }],
+        items: chart
     });
 });
-

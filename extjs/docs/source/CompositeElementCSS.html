@@ -17,7 +17,6 @@
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-fx-target-CompositeElementCSS'>/**
 </span> * @class Ext.fx.target.CompositeElementCSS
- * @extends Ext.fx.target.CompositeElement
  * 
  * This class represents a animation target for a {@link Ext.CompositeElement}, where the
  * constituent elements support CSS based animation. It allows each {@link Ext.Element} in 
@@ -33,8 +32,8 @@ Ext.define('Ext.fx.target.CompositeElementCSS', {
 
     requires: ['Ext.fx.target.ElementCSS'],
 
-    /* End Definitions */
-    setAttr: function() {
+<span id='Ext-fx-target-CompositeElementCSS-method-setAttr'>    /* End Definitions */
+</span>    setAttr: function() {
         return Ext.fx.target.ElementCSS.prototype.setAttr.apply(this, arguments);
     }
 });</pre>

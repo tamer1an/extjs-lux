@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.direct.*',
     'Ext.panel.Panel',
@@ -67,6 +53,7 @@ Ext.onReady(function(){
     });
     
     var main = Ext.create('Ext.panel.Panel', {
+        // The id is used for styling
         id: 'logger',
         title: 'Remote Call Log',
         renderTo: document.body,
@@ -75,7 +62,7 @@ Ext.onReady(function(){
         tpl: '<p>{data}</p>',
         tplWriteMode: 'append',
         autoScroll: true,
-        bodyStyle: 'padding: 5px;',
+        bodyPadding: 5,
         dockedItems: [{
             dock: 'bottom',
             xtype: 'toolbar',
@@ -102,7 +89,7 @@ Ext.onReady(function(){
                 hideLabel: true,
                 itemId: 'multiplyText',
                 xtype: 'textfield',
-                width: 80,
+                width: 90,
                 emptyText: 'Multiply x 8',
                 listeners: {
                     specialkey: function(field, event){
@@ -121,4 +108,3 @@ Ext.onReady(function(){
         }]
 	});
 });
-

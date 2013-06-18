@@ -16,38 +16,33 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-Editor'>/**
-</span> * @class Ext.Editor
- * @extends Ext.Component
- *
- * &lt;p&gt;
- * The Editor class is used to provide inline editing for elements on the page. The editor
+</span> * The Editor class is used to provide inline editing for elements on the page. The editor
  * is backed by a {@link Ext.form.field.Field} that will be displayed to edit the underlying content.
  * The editor is a floating Component, when the editor is shown it is automatically aligned to
  * display over the top of the bound element it is editing. The Editor contains several options
  * for how to handle key presses:
- * &lt;ul&gt;
- * &lt;li&gt;{@link #completeOnEnter}&lt;/li&gt;
- * &lt;li&gt;{@link #cancelOnEsc}&lt;/li&gt;
- * &lt;li&gt;{@link #swallowKeys}&lt;/li&gt;
- * &lt;/ul&gt;
+ *
+ * - {@link #completeOnEnter}
+ * - {@link #cancelOnEsc}
+ * - {@link #swallowKeys}
+ *
  * It also has options for how to use the value once the editor has been activated:
- * &lt;ul&gt;
- * &lt;li&gt;{@link #revertInvalid}&lt;/li&gt;
- * &lt;li&gt;{@link #ignoreNoChange}&lt;/li&gt;
- * &lt;li&gt;{@link #updateEl}&lt;/li&gt;
- * &lt;/ul&gt;
+ *
+ * - {@link #revertInvalid}
+ * - {@link #ignoreNoChange}
+ * - {@link #updateEl}
+ *
  * Sample usage:
- * &lt;/p&gt;
- * &lt;pre&gt;&lt;code&gt;
-var editor = new Ext.Editor({
-    updateEl: true, // update the innerHTML of the bound element when editing completes
-    field: {
-        xtype: 'textfield'
-    }
-});
-var el = Ext.get('my-text'); // The element to 'edit'
-editor.startEdit(el); // The value of the field will be taken as the innerHTML of the element.
- * &lt;/code&gt;&lt;/pre&gt;
+ *
+ *     var editor = new Ext.Editor({
+ *         updateEl: true, // update the innerHTML of the bound element when editing completes
+ *         field: {
+ *             xtype: 'textfield'
+ *         }
+ *     });
+ *     var el = Ext.get('my-text'); // The element to 'edit'
+ *     editor.startEdit(el); // The value of the field will be taken as the innerHTML of the element.
+ *
  * {@img Ext.Editor/Ext.Editor.png Ext.Editor component}
  *
  */
@@ -55,15 +50,15 @@ Ext.define('Ext.Editor', {
 
     /* Begin Definitions */
 
-    extend: 'Ext.Component',
+    extend: 'Ext.container.Container',
 
     alias: 'widget.editor',
 
-    requires: ['Ext.layout.component.Editor'],
+    requires: ['Ext.layout.container.Editor'],
 
-    /* End Definitions */
-
-   componentLayout: 'editor',
+<span id='Ext-Editor-cfg-layout'>    /* End Definitions */
+</span>
+   layout: 'editor',
 
 <span id='Ext-Editor-cfg-field'>    /**
 </span>    * @cfg {Ext.form.field.Field} field
@@ -84,19 +79,18 @@ Ext.define('Ext.Editor', {
      * 'field'. If a dimension is not specified, it will use the underlying height/width specified on
      * the editor object.
      * Examples:
-     * &lt;pre&gt;&lt;code&gt;
-autoSize: true // The editor will be sized to the height/width of the field
-
-height: 21,
-autoSize: {
-    width: 'boundEl' // The width will be determined by the width of the boundEl, the height from the editor (21)
-}
-
-autoSize: {
-    width: 'field', // Width from the field
-    height: 'boundEl' // Height from the boundEl
-}
-     * &lt;/pre&gt;&lt;/code&gt;
+     *
+     *     autoSize: true // The editor will be sized to the height/width of the field
+     *
+     *     height: 21,
+     *     autoSize: {
+     *         width: 'boundEl' // The width will be determined by the width of the boundEl, the height from the editor (21)
+     *     }
+     *
+     *     autoSize: {
+     *         width: 'field', // Width from the field
+     *         height: 'boundEl' // Height from the boundEl
+     *     }
      */
 
 <span id='Ext-Editor-cfg-revertInvalid'>    /**
@@ -126,13 +120,13 @@ autoSize: {
 
 <span id='Ext-Editor-cfg-alignment'>    /**
 </span>     * @cfg {String} alignment
-     * The position to align to (see {@link Ext.Element#alignTo} for more details).
+     * The position to align to (see {@link Ext.util.Positionable#alignTo} for more details).
      */
     alignment: 'c-c?',
 
 <span id='Ext-Editor-cfg-offsets'>    /**
 </span>     * @cfg {Number[]} offsets
-     * The offsets to use when aligning (see {@link Ext.Element#alignTo} for more details.
+     * The offsets to use when aligning (see {@link Ext.util.Positionable#alignTo} for more details.
      */
     offsets: [0, 0],
 
@@ -172,17 +166,22 @@ autoSize: {
      */
     updateEl : false,
 
+<span id='Ext-Editor-cfg-focusOnToFront'>    // Do not participate in the ZIndexManager's focus switching operations.
+</span>    // When an editor is hidden, the ZIndexManager will not automatically activate
+    // the last visible floater on the stack.
+    focusOnToFront: false,
+
 <span id='Ext-Editor-cfg-parentEl'>    /**
-</span>     * @cfg {String/HTMLElement/Ext.Element} parentEl
-     * An element to render to. Defaults to the &lt;tt&gt;document.body&lt;/tt&gt;.
+</span>     * @cfg {String/HTMLElement/Ext.Element} [parentEl=document.body]
+     * An element to render to.
      */
 
-    // private overrides
-    hidden: true,
-    baseCls: Ext.baseCSSPrefix + 'editor',
-
-    initComponent : function() {
-        var me = this,
+<span id='Ext-Editor-cfg-hidden'>    // private overrides
+</span>    hidden: true,
+<span id='Ext-Editor-cfg-baseCls'>    baseCls: Ext.baseCSSPrefix + 'editor',
+</span>
+<span id='Ext-Editor-method-initComponent'>    initComponent : function() {
+</span>        var me = this,
             field = me.field = Ext.ComponentManager.create(me.field, 'textfield');
 
         Ext.apply(field, {
@@ -191,20 +190,17 @@ autoSize: {
         });
         me.mon(field, {
             scope: me,
-            blur: {
-                fn: me.onBlur,
-                // slight delay to avoid race condition with startEdits (e.g. grid view refresh)
-                delay: 1
-            },
+            blur: me.onFieldBlur,
             specialkey: me.onSpecialKey
         });
 
         if (field.grow) {
-            me.mon(field, 'autosize', me.onAutoSize,  me, {delay: 1});
+            me.mon(field, 'autosize', me.onFieldAutosize,  me, {delay: 1});
         }
         me.floating = {
             constrain: me.constrain
         };
+        me.items = field;
 
         me.callParent(arguments);
 
@@ -260,28 +256,26 @@ autoSize: {
              * Fires when any key related to navigation (arrows, tab, enter, esc, etc.) is pressed.  You can check
              * {@link Ext.EventObject#getKey} to determine which key was pressed.
              * @param {Ext.Editor} this
-             * @param {Ext.form.field.Field} The field attached to this editor
+             * @param {Ext.form.field.Field} field The field attached to this editor
              * @param {Ext.EventObject} event The event object
              */
             'specialkey'
         );
     },
 
-    // private
-    onAutoSize: function(){
-        this.doComponentLayout();
+<span id='Ext-Editor-method-onFieldAutosize'>    // private
+</span>    onFieldAutosize: function(){
+        this.updateLayout();
     },
 
-    // private
-    onRender : function(ct, position) {
+<span id='Ext-Editor-method-afterRender'>    // private
+</span>    afterRender : function(ct, position) {
         var me = this,
             field = me.field,
             inputEl = field.inputEl;
 
         me.callParent(arguments);
 
-        field.render(me.el);
-        //field.hide();
         // Ensure the field doesn't get submitted as part of any form
         if (inputEl) {
             inputEl.dom.name = '';
@@ -294,8 +288,8 @@ autoSize: {
         }
     },
 
-    // private
-    onSpecialKey : function(field, event) {
+<span id='Ext-Editor-method-onSpecialKey'>    // private
+</span>    onSpecialKey : function(field, event) {
         var me = this,
             key = event.getKey(),
             complete = me.completeOnEnter &amp;&amp; key == event.ENTER,
@@ -312,12 +306,12 @@ autoSize: {
                     me.cancelEdit();
                 }
                 if (field.triggerBlur) {
-                    field.triggerBlur();
+                    field.triggerBlur(event);
                 }
             }, 10);
         }
 
-        this.fireEvent('specialkey', this, field, event);
+        me.fireEvent('specialkey', me, field, event);
     },
 
 <span id='Ext-Editor-method-startEdit'>    /**
@@ -332,19 +326,30 @@ autoSize: {
 
         me.completeEdit();
         me.boundEl = Ext.get(el);
-        value = Ext.isDefined(value) ? value : me.boundEl.dom.innerHTML;
+        value = Ext.isDefined(value) ? value : Ext.String.trim(me.boundEl.dom.innerText || me.boundEl.dom.innerHTML);
 
         if (!me.rendered) {
+            // Render to the ownerCt's element
+            // Being floating, we do not need to use the actual layout's target.
+            // Indeed, it's better if we do not so that we do not interfere with layout's child management,
+            // especially with CellEditors in the element of a TablePanel.
+            if (me.ownerCt) {
+                me.parentEl = me.ownerCt.el;
+                me.parentEl.position();
+            }
             me.render(me.parentEl || document.body);
         }
 
         if (me.fireEvent('beforestartedit', me, me.boundEl, value) !== false) {
             me.startValue = value;
             me.show();
+            // temporarily suspend events on field to prevent the &quot;change&quot; event from firing when reset() and setValue() are called
+            field.suspendEvents();
             field.reset();
             field.setValue(value);
+            field.resumeEvents();
             me.realign(true);
-            field.focus(false, 10);
+            field.focus();
             if (field.autoSize) {
                 field.autoSize();
             }
@@ -359,7 +364,7 @@ autoSize: {
     realign : function(autoSize) {
         var me = this;
         if (autoSize === true) {
-            me.doComponentLayout();
+            me.updateLayout();
         }
         me.alignTo(me.boundEl, me.alignment, me.offsets);
     },
@@ -406,15 +411,15 @@ autoSize: {
         }
     },
 
-    // private
-    onShow : function() {
+<span id='Ext-Editor-method-onShow'>    // private
+</span>    onShow : function() {
         var me = this;
 
         me.callParent(arguments);
         if (me.hideEl !== false) {
             me.boundEl.hide();
         }
-        me.fireEvent(&quot;startedit&quot;, me.boundEl, me.startValue);
+        me.fireEvent('startedit', me, me.boundEl, me.startValue);
     },
 
 <span id='Ext-Editor-method-cancelEdit'>    /**
@@ -425,36 +430,46 @@ autoSize: {
     cancelEdit : function(remainVisible) {
         var me = this,
             startValue = me.startValue,
+            field = me.field,
             value;
 
         if (me.editing) {
             value = me.getValue();
+            // temporarily suspend events on field to prevent the &quot;change&quot; event from firing when setValue() is called
+            field.suspendEvents();
             me.setValue(startValue);
+            field.resumeEvents();
             me.hideEdit(remainVisible);
             me.fireEvent('canceledit', me, value, startValue);
         }
     },
 
-    // private
-    hideEdit: function(remainVisible) {
+<span id='Ext-Editor-method-hideEdit'>    // private
+</span>    hideEdit: function(remainVisible) {
         if (remainVisible !== true) {
             this.editing = false;
             this.hide();
         }
     },
 
-    // private
-    onBlur : function() {
-        var me = this;
+<span id='Ext-Editor-method-onFieldBlur'>    // private
+</span>    onFieldBlur : function(field, e) {
+        var me = this,
+            target = Ext.Element.getActiveElement();
 
-        // selectSameEditor flag allows the same editor to be started without onBlur firing on itself
+        // selectSameEditor flag allows the same editor to be started without onFieldBlur firing on itself
         if(me.allowBlur === true &amp;&amp; me.editing &amp;&amp; me.selectSameEditor !== true) {
             me.completeEdit();
         }
+
+        // If newly active element is focusable, prevent reacquisition of focus by editor owner
+        if (Ext.fly(target).isFocusable() || target.getAttribute('tabIndex')) {
+            target.focus();
+        }
     },
 
-    // private
-    onHide : function() {
+<span id='Ext-Editor-method-onHide'>    // private
+</span>    onHide : function() {
         var me = this,
             field = me.field;
 
@@ -462,7 +477,11 @@ autoSize: {
             me.completeEdit();
             return;
         }
-        field.blur();
+        // Fields which mimic blur have to be told to fire t heir blur events.
+        // All other types of field are automatically blurred when an ancestor hides.
+        if (field.hasFocus &amp;&amp; field.triggerBlur) {
+            field.triggerBlur();
+        }
         if (field.collapse) {
             field.collapse();
         }
@@ -490,8 +509,8 @@ autoSize: {
         return this.field.getValue();
     },
 
-    beforeDestroy : function() {
-        var me = this;
+<span id='Ext-Editor-method-beforeDestroy'>    beforeDestroy : function() {
+</span>        var me = this;
 
         Ext.destroy(me.field);
         delete me.field;
@@ -500,6 +519,7 @@ autoSize: {
 
         me.callParent(arguments);
     }
-});</pre>
+});
+</pre>
 </body>
 </html>

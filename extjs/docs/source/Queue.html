@@ -25,13 +25,13 @@ Ext.define('Ext.fx.Queue', {
 
     requires: ['Ext.util.HashMap'],
 
-    constructor: function() {
-        this.targets = Ext.create('Ext.util.HashMap');
+<span id='Ext-fx-Queue-method-constructor'>    constructor: function() {
+</span>        this.targets = new Ext.util.HashMap();
         this.fxQueue = {};
     },
 
-    // @private
-    getFxDefaults: function(targetId) {
+<span id='Ext-fx-Queue-method-getFxDefaults'>    // @private
+</span>    getFxDefaults: function(targetId) {
         var target = this.targets.get(targetId);
         if (target) {
             return target.fxDefaults;
@@ -39,16 +39,16 @@ Ext.define('Ext.fx.Queue', {
         return {};
     },
 
-    // @private
-    setFxDefaults: function(targetId, obj) {
+<span id='Ext-fx-Queue-method-setFxDefaults'>    // @private
+</span>    setFxDefaults: function(targetId, obj) {
         var target = this.targets.get(targetId);
         if (target) {
             target.fxDefaults = Ext.apply(target.fxDefaults || {}, obj);
         }
     },
 
-    // @private
-    stopAnimation: function(targetId) {
+<span id='Ext-fx-Queue-method-stopAnimation'>    // @private
+</span>    stopAnimation: function(targetId) {
         var me = this,
             queue = me.getFxQueue(targetId),
             ln = queue.length;
@@ -67,14 +67,14 @@ Ext.define('Ext.fx.Queue', {
         return (queue &amp;&amp; !!queue.length) ? queue[0] : false;
     },
 
-    // @private
-    hasFxBlock: function(targetId) {
+<span id='Ext-fx-Queue-method-hasFxBlock'>    // @private
+</span>    hasFxBlock: function(targetId) {
         var queue = this.getFxQueue(targetId);
         return queue &amp;&amp; queue[0] &amp;&amp; queue[0].block;
     },
 
-    // @private get fx queue for passed target, create if needed.
-    getFxQueue: function(targetId) {
+<span id='Ext-fx-Queue-method-getFxQueue'>    // @private get fx queue for passed target, create if needed.
+</span>    getFxQueue: function(targetId) {
         if (!targetId) {
             return false;
         }
@@ -98,8 +98,8 @@ Ext.define('Ext.fx.Queue', {
         return me.fxQueue[targetId];
     },
 
-    // @private
-    queueFx: function(anim) {
+<span id='Ext-fx-Queue-method-queueFx'>    // @private
+</span>    queueFx: function(anim) {
         var me = this,
             target = anim.target,
             queue, ln;
@@ -126,6 +126,9 @@ Ext.define('Ext.fx.Queue', {
         }
         anim.on('afteranimate', function() {
             Ext.Array.remove(queue, anim);
+            if (queue.length === 0) {
+                me.targets.remove(anim.target);
+            }
             if (anim.remove) {
                 if (target.type == 'element') {
                     var el = Ext.get(target.id);
@@ -134,7 +137,9 @@ Ext.define('Ext.fx.Queue', {
                     }
                 }
             }
-        }, this);
+        }, me, {
+            single: true
+        });
         queue.push(anim);
     }
 });</pre>

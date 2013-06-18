@@ -45,7 +45,7 @@
  *             value: '11'
  *         }],
  *         buttons: [{
- *             text: 'Update',
+ *             text: 'Update'
  *         }]
  *     });
  */
@@ -54,13 +54,21 @@ Ext.define('Ext.form.field.Display', {
     alias: 'widget.displayfield',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
     alternateClassName: ['Ext.form.DisplayField', 'Ext.form.Display'],
-    fieldSubTpl: [
-        '&lt;div id=&quot;{id}&quot; class=&quot;{fieldCls}&quot;&gt;&lt;/div&gt;',
+<span id='Ext-form-field-Display-cfg-fieldSubTpl'>    fieldSubTpl: [
+</span>        '&lt;div id=&quot;{id}&quot; role=&quot;input&quot; ',
+        '&lt;tpl if=&quot;fieldStyle&quot;&gt; style=&quot;{fieldStyle}&quot;&lt;/tpl&gt;', 
+        ' class=&quot;{fieldCls}&quot;&gt;{value}&lt;/div&gt;',
         {
             compiled: true,
             disableFormats: true
         }
     ],
+
+<span id='Ext-form-field-Display-cfg-readOnly'>    /**
+</span>     * @cfg {Boolean} readOnly
+     * @private
+     */
+    readOnly: true,
 
 <span id='Ext-form-field-Display-cfg-fieldCls'>    /**
 </span>     * @cfg {String} [fieldCls=&quot;x-form-display-field&quot;]
@@ -68,69 +76,104 @@ Ext.define('Ext.form.field.Display', {
      */
     fieldCls: Ext.baseCSSPrefix + 'form-display-field',
 
+<span id='Ext-form-field-Display-cfg-fieldBodyCls'>    fieldBodyCls: Ext.baseCSSPrefix + 'form-display-field-body',
+</span>
 <span id='Ext-form-field-Display-cfg-htmlEncode'>    /**
 </span>     * @cfg {Boolean} htmlEncode
-     * false to skip HTML-encoding the text when rendering it. This might be useful if you want to
-     * include tags in the field's innerHTML rather than rendering them as string literals per the default logic.
+     * True to escape HTML in text when rendering it.
      */
     htmlEncode: false,
+    
+<span id='Ext-form-field-Display-cfg-renderer'>    /**
+</span>     * @cfg {Function} renderer
+     * A function to transform the raw value for display in the field. The function will receive 2 arguments, the raw value
+     * and the {@link Ext.form.field.Display} object.
+     */
+    
+<span id='Ext-form-field-Display-cfg-scope'>    /**
+</span>     * @cfg {Object} scope
+     * The scope to execute the {@link #renderer} function. Defaults to this.
+     */
 
+    noWrap: false,
+    
+<span id='Ext-form-field-Display-cfg-validateOnChange'>    /**
+</span>     * @cfg {Boolean} validateOnChange
+     * @private
+     */
     validateOnChange: false,
 
-    initEvents: Ext.emptyFn,
-
-    submitValue: false,
-
-    isValid: function() {
-        return true;
+<span id='Ext-form-field-Display-method-initEvents'>    initEvents: Ext.emptyFn,
+</span>
+<span id='Ext-form-field-Display-cfg-submitValue'>    submitValue: false,
+</span>    
+<span id='Ext-form-field-Display-method-isDirty'>    isDirty: function(){
+</span>        return false;
     },
 
-    validate: function() {
-        return true;
+<span id='Ext-form-field-Display-method-isValid'>    isValid: function() {
+</span>        return true;
     },
 
-    getRawValue: function() {
-        return this.rawValue;
+<span id='Ext-form-field-Display-method-validate'>    validate: function() {
+</span>        return true;
     },
 
-    setRawValue: function(value) {
-        var me = this;
+<span id='Ext-form-field-Display-method-getRawValue'>    getRawValue: function() {
+</span>        return this.rawValue;
+    },
+
+<span id='Ext-form-field-Display-method-setRawValue'>    setRawValue: function(value) {
+</span>        var me = this;
+            
         value = Ext.value(value, '');
         me.rawValue = value;
         if (me.rendered) {
-            me.inputEl.dom.innerHTML = me.htmlEncode ? Ext.util.Format.htmlEncode(value) : value;
+            me.inputEl.dom.innerHTML = me.getDisplayValue();
+            me.updateLayout();
         }
         return value;
     },
 
-    // private
-    getContentTarget: function() {
-        return this.inputEl;
+<span id='Ext-form-field-Display-method-getDisplayValue'>    /**
+</span>     * @private
+     * Format the value to display.
+     */
+    getDisplayValue: function() {
+        var me = this,
+            value = this.getRawValue(),
+            display;
+        if (me.renderer) {
+             display = me.renderer.call(me.scope || me, value, me);
+        } else {
+             display = me.htmlEncode ? Ext.util.Format.htmlEncode(value) : value;
+        }
+        return display;
+    },
+        
+<span id='Ext-form-field-Display-method-getSubTplData'>    getSubTplData: function() {
+</span>        var ret = this.callParent(arguments);
+
+        ret.value = this.getDisplayValue();
+
+        return ret;
     }
 
 <span id='Ext-form-field-Display-cfg-inputType'>    /**
 </span>     * @cfg {String} inputType
-     * @hide
+     * @private
      */
 <span id='Ext-form-field-Display-cfg-disabled'>    /**
 </span>     * @cfg {Boolean} disabled
-     * @hide
-     */
-<span id='Ext-form-field-Display-cfg-readOnly'>    /**
-</span>     * @cfg {Boolean} readOnly
-     * @hide
-     */
-<span id='Ext-form-field-Display-cfg-validateOnChange'>    /**
-</span>     * @cfg {Boolean} validateOnChange
-     * @hide
+     * @private
      */
 <span id='Ext-form-field-Display-cfg-checkChangeEvents'>    /**
 </span>     * @cfg {Number} checkChangeEvents
-     * @hide
+     * @private
      */
 <span id='Ext-form-field-Display-cfg-checkChangeBuffer'>    /**
 </span>     * @cfg {Number} checkChangeBuffer
-     * @hide
+     * @private
      */
 });
 </pre>

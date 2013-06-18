@@ -63,11 +63,6 @@ Ext.define('Ext.ProgressBar', {
     * A floating point value between 0 and 1 (e.g., .5)
     */
 
-<span id='Ext-ProgressBar-cfg-text'>   /**
-</span>    * @cfg {String} [text='']
-    * The progress bar text (defaults to '')
-    */
-
 <span id='Ext-ProgressBar-cfg-textEl'>   /**
 </span>    * @cfg {String/HTMLElement/Ext.Element} textEl
     * The element to render the progress text to (defaults to the progress bar's internal text element)
@@ -84,41 +79,44 @@ Ext.define('Ext.ProgressBar', {
     */
     baseCls: Ext.baseCSSPrefix + 'progress',
 
-    config: {
-<span id='Ext-ProgressBar-cfg-animate'>        /**
-</span>        * @cfg {Boolean} animate
-        * True to animate the progress bar during transitions
-        */
-        animate: false,
+<span id='Ext-ProgressBar-cfg-animate'>    /**
+</span>     * @cfg {Boolean/Object} animate
+     * True to animate the progress bar during transitions, or an animation configuration
+     * (see the {@link #method-animate} method for details).
+     */
+    animate: false,
 
-<span id='Ext-ProgressBar-cfg-text'>        /**
-</span>         * @cfg {String} text
-         * The text shown in the progress bar
-         */
-        text: ''
-    },
+<span id='Ext-ProgressBar-cfg-text'>    /**
+</span>     * @cfg {String} text
+     * The text shown in the progress bar.
+     */
+    text: '',
 
-    // private
-    waitTimer: null,
+<span id='Ext-ProgressBar-property-waitTimer'>    // private
+</span>    waitTimer: null,
 
-    renderTpl: [
-        '&lt;div class=&quot;{baseCls}-text {baseCls}-text-back&quot;&gt;',
-            '&lt;div&gt;&amp;#160;&lt;/div&gt;',
-        '&lt;/div&gt;',
-        '&lt;div id=&quot;{id}-bar&quot; class=&quot;{baseCls}-bar&quot;&gt;',
-            '&lt;div class=&quot;{baseCls}-text&quot;&gt;',
-                '&lt;div&gt;&amp;#160;&lt;/div&gt;',
-            '&lt;/div&gt;',
+<span id='Ext-ProgressBar-property-childEls'>    childEls: [
+</span>        'bar'
+    ],
+
+<span id='Ext-ProgressBar-cfg-renderTpl'>    renderTpl: [
+</span>        '&lt;tpl if=&quot;internalText&quot;&gt;',
+            '&lt;div class=&quot;{baseCls}-text {baseCls}-text-back&quot;&gt;{text}&lt;/div&gt;',
+        '&lt;/tpl&gt;',
+        '&lt;div id=&quot;{id}-bar&quot; class=&quot;{baseCls}-bar {baseCls}-bar-{ui}&quot; style=&quot;width:{percentage}%&quot;&gt;',
+            '&lt;tpl if=&quot;internalText&quot;&gt;',
+                '&lt;div class=&quot;{baseCls}-text&quot;&gt;',
+                    '&lt;div&gt;{text}&lt;/div&gt;',
+                '&lt;/div&gt;',
+            '&lt;/tpl&gt;',
         '&lt;/div&gt;'
     ],
 
-    componentLayout: 'progressbar',
-
-    // private
-    initComponent: function() {
+<span id='Ext-ProgressBar-cfg-componentLayout'>    componentLayout: 'progressbar',
+</span>
+<span id='Ext-ProgressBar-method-initComponent'>    // private
+</span>    initComponent: function() {
         this.callParent();
-
-        this.addChildEls('bar');
 
         this.addEvents(
 <span id='Ext-ProgressBar-event-update'>            /**
@@ -132,20 +130,30 @@ Ext.define('Ext.ProgressBar', {
         );
     },
 
-    afterRender : function() {
-        var me = this;
+<span id='Ext-ProgressBar-method-initRenderData'>    initRenderData: function() {
+</span>        var me = this;
+        return Ext.apply(me.callParent(), {
+            internalText : !me.hasOwnProperty('textEl'),
+            text         : me.text || '&amp;#160;',
+            percentage   : me.value ? me.value * 100 : 0
+        });
+    },
 
-        // This produces a composite w/2 el's (which is why we cannot use childEls or
-        // renderSelectors):
-        me.textEl = me.textEl ? Ext.get(me.textEl) : me.el.select('.' + me.baseCls + '-text');
+<span id='Ext-ProgressBar-method-onRender'>    onRender : function() {
+</span>        var me = this;
 
         me.callParent(arguments);
 
-        if (me.value) {
-            me.updateProgress(me.value, me.text);
-        }
-        else {
+        // External text display
+        if (me.textEl) {
+            me.textEl = Ext.get(me.textEl);
             me.updateText(me.text);
+        }
+        // Inline text display
+        else {
+            // This produces a composite w/2 el's (which is why we cannot use childEls or
+            // renderSelectors):
+            me.textEl = me.el.select('.' + me.baseCls + '-text');
         }
     },
 
@@ -162,31 +170,25 @@ Ext.define('Ext.ProgressBar', {
      */
     updateProgress: function(value, text, animate) {
         var me = this,
-            newWidth;
-            
+            oldValue = me.value;
+
         me.value = value || 0;
         if (text) {
             me.updateText(text);
         }
         if (me.rendered &amp;&amp; !me.isDestroyed) {
-            if (me.isVisible(true)) {
-                newWidth = Math.floor(me.value * me.el.getWidth(true));
-                if (Ext.isForcedBorderBox) {
-                    newWidth += me.bar.getBorderWidth(&quot;lr&quot;);
-                }
-                if (animate === true || (animate !== false &amp;&amp; me.animate)) {
-                    me.bar.stopAnimation();
-                    me.bar.animate(Ext.apply({
-                        to: {
-                            width: newWidth + 'px'
-                        }
-                    }, me.animate));
-                } else {
-                    me.bar.setWidth(newWidth);
-                }
+            if (animate === true || (animate !== false &amp;&amp; me.animate)) {
+                me.bar.stopAnimation();
+                me.bar.animate(Ext.apply({
+                    from: {
+                        width: (oldValue * 100) + '%'
+                    },
+                    to: {
+                        width: (me.value * 100) + '%'
+                    }
+                }, me.animate));
             } else {
-                // force a layout when we're visible again
-                me.doComponentLayout();
+                me.bar.setStyle('width', (me.value * 100) + '%');
             }
         }
         me.fireEvent('update', me, me.value, text);
@@ -209,8 +211,12 @@ Ext.define('Ext.ProgressBar', {
         return me;
     },
 
-    applyText : function(text) {
-        this.updateText(text);
+<span id='Ext-ProgressBar-method-applyText'>    applyText : function(text) {
+</span>        this.updateText(text);
+    },
+    
+<span id='Ext-ProgressBar-method-getText'>    getText: function(){
+</span>        return this.text;    
     },
 
 <span id='Ext-ProgressBar-method-wait'>    /**
@@ -271,7 +277,7 @@ Ext.define('Ext.ProgressBar', {
      * @return {Ext.ProgressBar} this
      */
     wait: function(o) {
-        var me = this;
+        var me = this, scope;
             
         if (!me.waitTimer) {
             scope = me;
@@ -322,8 +328,8 @@ Ext.define('Ext.ProgressBar', {
         return me;
     },
 
-    // private
-    clearTimer: function(){
+<span id='Ext-ProgressBar-method-clearTimer'>    // private
+</span>    clearTimer: function(){
         var me = this;
         
         if (me.waitTimer) {
@@ -333,8 +339,9 @@ Ext.define('Ext.ProgressBar', {
         }
     },
 
-    onDestroy: function(){
-        var me = this;
+<span id='Ext-ProgressBar-method-onDestroy'>    onDestroy: function(){
+</span>        var me = this,
+            bar = me.bar;
         
         me.clearTimer();
         if (me.rendered) {
@@ -342,6 +349,9 @@ Ext.define('Ext.ProgressBar', {
                 me.textEl.clear();
             }
             Ext.destroyMembers(me, 'textEl', 'progressBar');
+            if (bar &amp;&amp; me.animate) {
+                bar.stopAnimation();
+            }
         }
         me.callParent();
     }

@@ -40,7 +40,7 @@ Ext.define('Ext.form.field.Picker', {
 
 <span id='Ext-form-field-Picker-cfg-pickerAlign'>    /**
 </span>     * @cfg {String} pickerAlign
-     * The {@link Ext.Element#alignTo alignment position} with which to align the picker. Defaults to &quot;tl-bl?&quot;
+     * The {@link Ext.util.Positionable#alignTo alignment position} with which to align the picker. Defaults to &quot;tl-bl?&quot;
      */
     pickerAlign: 'tl-bl?',
 
@@ -51,9 +51,8 @@ Ext.define('Ext.form.field.Picker', {
      */
 
 <span id='Ext-form-field-Picker-cfg-openCls'>    /**
-</span>     * @cfg {String} openCls
+</span>     * @cfg {String} [openCls='x-pickerfield-open']
      * A class to be added to the field's {@link #bodyEl} element when the picker is opened.
-     * Defaults to 'x-pickerfield-open'.
      */
     openCls: Ext.baseCSSPrefix + 'pickerfield-open',
 
@@ -71,8 +70,8 @@ Ext.define('Ext.form.field.Picker', {
     editable: true,
 
 
-    initComponent: function() {
-        this.callParent();
+<span id='Ext-form-field-Picker-method-initComponent'>    initComponent: function() {
+</span>        this.callParent();
 
         // Custom events
         this.addEvents(
@@ -100,20 +99,18 @@ Ext.define('Ext.form.field.Picker', {
     },
 
 
-    initEvents: function() {
-        var me = this;
+<span id='Ext-form-field-Picker-method-initEvents'>    initEvents: function() {
+</span>        var me = this;
         me.callParent();
 
         // Add handlers for keys to expand/collapse the picker
-        me.keyNav = Ext.create('Ext.util.KeyNav', me.inputEl, {
-            down: function() {
-                if (!me.isExpanded) {
-                    // Don't call expand() directly as there may be additional processing involved before
-                    // expanding, e.g. in the case of a ComboBox query.
-                    me.onTriggerClick();
-                }
+        me.keyNav = new Ext.util.KeyNav(me.inputEl, {
+            down: me.onDownArrow,
+            esc: {
+                handler: me.onEsc,
+                scope: me,
+                defaultEventAction: false
             },
-            esc: me.collapse,
             scope: me,
             forceKeyDown: true
         });
@@ -129,6 +126,29 @@ Ext.define('Ext.form.field.Picker', {
         }
     },
 
+<span id='Ext-form-field-Picker-method-onEsc'>    // private
+</span>    onEsc: function(e) {
+        if (Ext.isIE) {
+            // Stop the esc key from &quot;restoring&quot; the previous value in IE
+            // For example, type &quot;foo&quot;. Highlight all the text, hit backspace.
+            // Hit esc, &quot;foo&quot; will be restored. This behaviour doesn't occur
+            // in any other browsers
+            e.preventDefault();
+        }
+        
+        if (this.isExpanded) {
+            this.collapse();
+            e.stopEvent();
+        }
+    },
+
+<span id='Ext-form-field-Picker-method-onDownArrow'>    onDownArrow: function(e) {
+</span>        if (!this.isExpanded) {
+            // Don't call expand() directly as there may be additional processing involved before
+            // expanding, e.g. in the case of a ComboBox query.
+            this.onTriggerClick();
+        }
+    },
 
 <span id='Ext-form-field-Picker-method-expand'>    /**
 </span>     * Expands this field's picker dropdown.
@@ -138,6 +158,7 @@ Ext.define('Ext.form.field.Picker', {
             bodyEl, picker, collapseIf;
 
         if (me.rendered &amp;&amp; !me.isExpanded &amp;&amp; !me.isDestroyed) {
+            me.expanding = true;
             bodyEl = me.bodyEl;
             picker = me.getPicker();
             collapseIf = me.collapseIf;
@@ -157,24 +178,24 @@ Ext.define('Ext.form.field.Picker', {
             Ext.EventManager.onWindowResize(me.alignPicker, me);
             me.fireEvent('expand', me);
             me.onExpand();
+            delete me.expanding;
         }
     },
 
-    onExpand: Ext.emptyFn,
-
+<span id='Ext-form-field-Picker-method-onExpand'>    onExpand: Ext.emptyFn,
+</span>
 <span id='Ext-form-field-Picker-method-alignPicker'>    /**
 </span>     * Aligns the picker to the input element
      * @protected
      */
     alignPicker: function() {
         var me = this,
-            picker;
+            picker = me.getPicker();
 
         if (me.isExpanded) {
-            picker = me.getPicker();
             if (me.matchFieldWidth) {
                 // Auto the height (it will be constrained by min and max width) unless there are no records to display.
-                picker.setSize(me.bodyEl.getWidth(), picker.store &amp;&amp; picker.store.getCount() ? null : 0);
+                picker.setWidth(me.bodyEl.getWidth());
             }
             if (picker.isFloating()) {
                 me.doAlign();
@@ -192,7 +213,9 @@ Ext.define('Ext.form.field.Picker', {
             aboveSfx = '-above',
             isAbove;
 
-        me.picker.alignTo(me.inputEl, me.pickerAlign, me.pickerOffset);
+        // Align to the trigger wrap because the border isn't always on the input element, which
+        // can cause the offset to be off
+        me.picker.alignTo(me.triggerWrap, me.pickerAlign, me.pickerOffset);
         // add the {openCls}-above class if the picker was aligned above
         // the field due to hitting the bottom of the viewport
         isAbove = picker.el.getY() &lt; me.inputEl.getY();
@@ -229,8 +252,8 @@ Ext.define('Ext.form.field.Picker', {
         }
     },
 
-    onCollapse: Ext.emptyFn,
-
+<span id='Ext-form-field-Picker-method-onCollapse'>    onCollapse: Ext.emptyFn,
+</span>
 
 <span id='Ext-form-field-Picker-method-collapseIf'>    /**
 </span>     * @private
@@ -238,7 +261,8 @@ Ext.define('Ext.form.field.Picker', {
      */
     collapseIf: function(e) {
         var me = this;
-        if (!me.isDestroyed &amp;&amp; !e.within(me.bodyEl, false, true) &amp;&amp; !e.within(me.picker.el, false, true)) {
+
+        if (!me.isDestroyed &amp;&amp; !e.within(me.bodyEl, false, true) &amp;&amp; !e.within(me.picker.el, false, true) &amp;&amp; !me.isEventWithinPickerLoadMask(e)) {
             me.collapse();
         }
     },
@@ -276,18 +300,27 @@ Ext.define('Ext.form.field.Picker', {
             me.inputEl.focus();
         }
     },
+    
+<span id='Ext-form-field-Picker-method-triggerBlur'>    triggerBlur: function() {
+</span>        var picker = this.picker;
+            
+        this.callParent(arguments);
+        if (picker &amp;&amp; picker.isVisible()) {
+            picker.hide();
+        }
+    },
 
-    mimicBlur: function(e) {
-        var me = this,
+<span id='Ext-form-field-Picker-method-mimicBlur'>    mimicBlur: function(e) {
+</span>        var me = this,
             picker = me.picker;
         // ignore mousedown events within the picker element
-        if (!picker || !e.within(picker.el, false, true)) {
+        if (!picker || !e.within(picker.el, false, true) &amp;&amp; !me.isEventWithinPickerLoadMask(e)) {
             me.callParent(arguments);
         }
     },
 
-    onDestroy : function(){
-        var me = this,
+<span id='Ext-form-field-Picker-method-onDestroy'>    onDestroy : function(){
+</span>        var me = this,
             picker = me.picker;
 
         Ext.EventManager.removeResizeListener(me.alignPicker, me);
@@ -297,6 +330,18 @@ Ext.define('Ext.form.field.Picker', {
             picker.destroy();
         }
         me.callParent();
+    },
+
+<span id='Ext-form-field-Picker-method-isEventWithinPickerLoadMask'>    /**
+</span>     * returns true if the picker has a load mask and the passed event is within the load mask
+     * @private
+     * @param {Ext.EventObject} e
+     * @return {Boolean}
+     */
+    isEventWithinPickerLoadMask: function(e) {
+        var loadMask = this.picker.loadMask;
+
+        return loadMask ? e.within(loadMask.maskEl, false, true) || e.within(loadMask.el, false, true) : false;
     }
 
 });

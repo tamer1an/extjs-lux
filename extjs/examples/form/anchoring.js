@@ -1,31 +1,30 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.form.*',
     'Ext.window.Window'
 ]);
 
 Ext.onReady(function() {
-    var form = Ext.create('Ext.form.Panel', {
+    
+    var field = new Ext.form.field.Text({
+        renderTo: document.body
+    }), fieldHeight = field.getHeight(),
+        padding = 5,
+        remainingHeight;
+    
+    field.destroy();
+    
+    // Because the theme can be different, the remaining amount of height differs
+    // because the field size can change, so we go ahead and calculate it here. This
+    // type of layout would be better served by using an HBox layout.
+    remainingHeight = padding + fieldHeight * 2;
+    
+    var form = new Ext.form.Panel({
         border: false,
         fieldDefaults: {
-            labelWidth: 55
+            labelWidth: 60
         },
-        url: 'save-form.php',
         defaultType: 'textfield',
-        bodyPadding: 5,
+        bodyPadding: padding,
 
         items: [{
             fieldLabel: 'Send To',
@@ -39,11 +38,12 @@ Ext.onReady(function() {
             xtype: 'textarea',
             hideLabel: true,
             name: 'msg',
-            anchor: '100% -47'  // anchor width by percentage and height by raw adjustment
+            anchor: '100% -' + remainingHeight  // anchor width by percentage and height by raw adjustment
         }]
     });
 
-    var win = Ext.create('Ext.window.Window', {
+    new Ext.window.Window({
+        autoShow: true,
         title: 'Resize Me',
         width: 500,
         height:300,
@@ -59,6 +59,4 @@ Ext.onReady(function() {
             text: 'Cancel'
         }]
     });
-
-    win.show();
 });

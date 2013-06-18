@@ -17,7 +17,6 @@
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-chart-axis-Gauge'>/**
 </span> * @class Ext.chart.axis.Gauge
- * @extends Ext.chart.axis.Abstract
  *
  * Gauge Axis is the axis to be used with a Gauge series. The Gauge axis
  * displays numeric data from an interval defined by the `minimum`, `maximum` and
@@ -72,8 +71,8 @@ Ext.define('Ext.chart.axis.Gauge', {
 
     alias: 'axis.gauge',
 
-    drawAxis: function(init) {
-        var chart = this.chart,
+<span id='Ext-chart-axis-Gauge-method-drawAxis'>    drawAxis: function(init) {
+</span>        var chart = this.chart,
             surface = chart.surface,
             bbox = chart.chartBBox,
             centerX = bbox.x + (bbox.width / 2),
@@ -129,8 +128,8 @@ Ext.define('Ext.chart.axis.Gauge', {
         }
     },
 
-    drawTitle: function() {
-        var me = this,
+<span id='Ext-chart-axis-Gauge-method-drawTitle'>    drawTitle: function() {
+</span>        var me = this,
             chart = me.chart,
             surface = chart.surface,
             bbox = chart.chartBBox,
@@ -138,10 +137,10 @@ Ext.define('Ext.chart.axis.Gauge', {
             labelBBox;
 
         if (!labelSprite) {
-            me.titleSprite = labelSprite = surface.add({
+            me.titleSprite = labelSprite = surface.add(Ext.apply({
                 type: 'text',
                 zIndex: 2
-            });
+            }, me.axisTitleStyle, me.labelTitle));
         }
         labelSprite.setAttributes(Ext.apply({
             text: me.title
@@ -162,8 +161,8 @@ Ext.define('Ext.chart.axis.Gauge', {
         this.drawTitle();
     },
 
-    drawLabel: function() {
-        var chart = this.chart,
+<span id='Ext-chart-axis-Gauge-method-drawLabel'>    drawLabel: function() {
+</span>        var chart = this.chart,
             surface = chart.surface,
             bbox = chart.chartBBox,
             centerX = bbox.x + (bbox.width / 2),
@@ -173,13 +172,14 @@ Ext.define('Ext.chart.axis.Gauge', {
             round = Math.round,
             labelArray = [], label,
             maxValue = this.maximum || 0,
+            minValue = this.minimum || 0,
             steps = this.steps, i = 0,
             adjY,
             pi = Math.PI,
             cos = Math.cos,
             sin = Math.sin,
             labelConf = this.label,
-            renderer = labelConf.renderer || function(v) { return v; };
+            renderer = labelConf.renderer || Ext.identityFn;
 
         if (!this.labelArray) {
             //draw scale
@@ -188,7 +188,7 @@ Ext.define('Ext.chart.axis.Gauge', {
                 adjY = (i === 0 || i === steps) ? 7 : 0;
                 label = surface.add({
                     type: 'text',
-                    text: renderer(round(i / steps * maxValue)),
+                    text: renderer(round(minValue + i / steps * (maxValue - minValue))),
                     x: centerX + rho * cos(i / steps * pi - pi),
                     y: centerY + rho * sin(i / steps * pi - pi) - adjY,
                     'text-anchor': 'middle',
@@ -209,7 +209,7 @@ Ext.define('Ext.chart.axis.Gauge', {
                 // TODO Adjust for height of text / 2 instead
                 adjY = (i === 0 || i === steps) ? 7 : 0;
                 labelArray[i].setAttributes({
-                    text: renderer(round(i / steps * maxValue)),
+                    text: renderer(round(minValue + i / steps * (maxValue - minValue))),
                     x: centerX + rho * cos(i / steps * pi - pi),
                     y: centerY + rho * sin(i / steps * pi - pi) - adjY
                 }, true);

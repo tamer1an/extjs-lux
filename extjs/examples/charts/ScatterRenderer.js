@@ -1,19 +1,5 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require('Ext.chart.*');
-Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
+Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit', 'Ext.window.MessageBox']);
 
 var Renderers = {};
 
@@ -32,7 +18,7 @@ var Renderers = {};
 
            v = maxVal;
 
-           if (delta == 0) {
+           if (delta === 0) {
              return [0, 0, v];
            } else {
              s = delta / maxVal;
@@ -70,7 +56,7 @@ var Renderers = {};
                v = hsv[2] / 100,
                r, g, b, rd = Math.round;
 
-           if (s == 0) {
+           if (s === 0) {
              v *= 255;
              return [v, v, v];
            } else {
@@ -188,13 +174,12 @@ Ext.onReady(function () {
     };
     //update the visualization with the new renderer configuration
     function refresh() {
-        var chart = Ext.getCmp('chartCmp'),
-            series = chart.series.items,
+        var series = chart.series.items,
             len = series.length,
             rc = rendererConfiguration,
-            color, grayscale, radius, s;
+            color, grayscale, radius, s, i;
 
-        for(var i = 0; i < len; i++) {
+        for(i = 0; i < len; i++) {
             s = series[i];
             s.xField = rc.xField;
             s.yField = rc.yField;
@@ -271,51 +256,44 @@ Ext.onReady(function () {
     };
 
     var xAxisMenu = Ext.create('Ext.menu.Menu', {
-        id: 'xAxisMenu',
-        items: [ {
-             text: 'data1',
-             handler: xAxisHandler,
-             checked: true,
-             group: 'x'
-           },
-           {
-             text: 'data2',
-             handler: xAxisHandler,
-               checked: false,
-               group: 'x'
-           },
-           {
-             text: 'data3',
-             handler: xAxisHandler,
-             checked: false,
-             group: 'x'
-           } ]
+        items: [{
+            text: 'data1',
+            handler: xAxisHandler,
+            checked: true,
+            group: 'x'
+        }, {
+            text: 'data2',
+            handler: xAxisHandler,
+            checked: false,
+            group: 'x'
+        }, {
+            text: 'data3',
+            handler: xAxisHandler,
+            checked: false,
+            group: 'x'
+        }]
     });
 
     var yAxisMenu = Ext.create('Ext.menu.Menu', {
-        id: 'yAxisMenu',
-        items: [ {
+        items: [{
             text: 'data1',
             handler: yAxisHandler,
             checked: false,
             group: 'y'
-          },
-          {
-        text: 'data2',
+        }, {
+            text: 'data2',
             handler: yAxisHandler,
             checked: true,
             group: 'y'
-          },
-          {
+        }, {
             text: 'data3',
             handler: yAxisHandler,
             checked: false,
             group: 'y'
-          } ]
+        }]
     });
 
     var colorMenu = Ext.create('Ext.menu.Menu', {
-        id: 'colorMenu',
         items: [ { text: 'data1', handler: colorVariableHandler, checked: false, group: 'color' },
                  { text: 'data2', handler: colorVariableHandler, checked: false, group: 'color' },
                  { text: 'data3', handler: colorVariableHandler, checked: false, group: 'color' },
@@ -349,7 +327,6 @@ Ext.onReady(function () {
     });
 
     var grayscaleMenu = Ext.create('Ext.menu.Menu', {
-        id: 'grayscaleMenu',
         items: [ { text: 'data1', handler: grayscaleVariableHandler, checked: false, group: 'gs' },
                  { text: 'data2', handler: grayscaleVariableHandler, checked: false, group: 'gs' },
                  { text: 'data3', handler: grayscaleVariableHandler, checked: false, group: 'gs' },
@@ -377,7 +354,6 @@ Ext.onReady(function () {
     });
 
     var radiusMenu = Ext.create('Ext.menu.Menu', {
-        id: 'radiusMenu',
         style: {
             overflow: 'visible'     // For the Combo popup
         },
@@ -396,21 +372,56 @@ Ext.onReady(function () {
                ]
     });
 
-     var win = Ext.create('Ext.Window', {
+    var chart = Ext.create('Ext.chart.Chart', {
+            style: 'background:#fff',
+            animate: true,
+            store: store1,
+            axes: false,
+            insetPadding: 50,
+            series: [{
+                type: 'scatter',
+                axis: false,
+                xField: 'data1',
+                yField: 'data2',
+                color: '#ccc',
+                markerConfig: {
+                    type: 'circle',
+                    radius: 20,
+                    size: 20
+                }
+            }]
+        });
+
+    
+     var win = Ext.create('Ext.window.Window', {
         width: 800,
         height: 600,
         minHeight: 400,
-        minWidth: 550,
+        minWidth: 650,
         hidden: false,
         maximizable: true,
         title: 'Scatter Chart Renderer',
         renderTo: Ext.getBody(),
         layout: 'fit',
-        tbar: [
+        tbar: [{
+            text: 'Save Chart',
+            handler: function() {
+                Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice){
+                    if(choice == 'yes'){
+                        chart.save({
+                            type: 'image/png'
+                        });
+                    }
+                });
+            }
+        },
         {
             text: 'Reload Data',
             handler: function() {
-                store1.loadData(generateData());
+                // Add a short delay to prevent fast sequential clicks
+                window.loadTask.delay(100, function() {
+                    store1.loadData(generateData());
+                });
             }
         },
         {
@@ -435,27 +446,6 @@ Ext.onReady(function () {
             menu: radiusMenu
         }
         ],
-        items: {
-            id: 'chartCmp',
-            xtype: 'chart',
-            style: 'background:#fff',
-            animate: true,
-            store: store1,
-            axes: false,
-            insetPadding: 50,
-            series: [{
-                type: 'scatter',
-                axis: false,
-                xField: 'data1',
-                yField: 'data2',
-                color: '#ccc',
-                markerConfig: {
-                    type: 'circle',
-                    radius: 20,
-                    size: 20
-                }
-            }]
-        }
+        items: chart
     });
 });
-

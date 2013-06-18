@@ -1,18 +1,4 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-Ext.require('widget.panel');
+Ext.require('Ext.panel.Panel');
 
 Ext.onReady(function(){
     var data = {
@@ -34,54 +20,45 @@ Ext.onReady(function(){
         }]
     };
 
-    Ext.create('Ext.Panel', {
+    new Ext.panel.Panel({
         width: 300,
         renderTo: 'template-example',
-        style: "margin:15px",
-        bodyStyle: "padding:5px;font-size:11px;",
+        margin: 15,
+        bodyPadding: 5,
         title: 'Basic Template',
+        tpl: [
+            '<p>Name: {name}</p>',
+            '<p>Company: {company}</p>',
+            '<p>Location: {city}, {state}</p>'
+        ],
         tbar: [{
             text: 'Apply Template',
-            listeners: {
-                click: function() {
-                    var panel = this.up("panel"),
-                        tpl = Ext.create('Ext.Template', 
-                            '<p>Name: {name}</p>',
-                            '<p>Company: {company}</p>',
-                            '<p>Location: {city}, {state}</p>'
-                        );
-
-                    tpl.overwrite(panel.body, data);
-                    panel.doComponentLayout();
-                }
+            handler: function() {
+                this.up('panel').update(data);
             }
         }],
         html: '<p><i>Apply the template to see results here</i></p>'
     });
 
-    Ext.create('Ext.Panel', {
+    new Ext.panel.Panel({
         width: 300,
         renderTo: 'xtemplate-example',
-        style: "margin:15px",
-        bodyStyle: "padding:5px;font-size:11px;",
+        margin: 15,
+        bodyPadding: 5,
         title: 'XTemplate',
+        tpl: [
+            '<p>Name: {name}</p>',
+            '<p>Company: {company}</p>',
+            '<p>Location: {city}, {state}</p>',
+            '<p>Kids: ',
+            '<tpl for="kids">',
+                '<tpl if="age &gt; 1"><p>{#}. {parent.name}\'s kid - {name}</p></tpl>',
+            '</tpl></p>'
+        ],
         tbar: [{
             text: 'Apply Template',
-            listeners: {
-                click: function() {
-                    var panel = this.up('panel'),
-                        tpl =Ext.create('Ext.XTemplate',
-                            '<p>Name: {name}</p>',
-                            '<p>Company: {company}</p>',
-                            '<p>Location: {city}, {state}</p>',
-                            '<p>Kids: ',
-                            '<tpl for="kids" if="name==\'Abe Elias\'">',
-                                '<tpl if="age &gt; 1"><p>{#}. {parent.name}\'s kid - {name}</p></tpl>',
-                            '</tpl></p>'
-                        );
-                    tpl.overwrite(panel.body, data);
-                    panel.doComponentLayout();
-                }
+            handler: function() {
+                this.up('panel').update(data);
             }
         }],
         html: '<p><i>Apply the template to see results here</i></p>'

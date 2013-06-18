@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class FeedViewer.FeedDetail
  * @extends Ext.panel.Panel
@@ -180,9 +166,10 @@ Ext.define('FeedViewer.FeedDetail', {
      * @return {Ext.panel.Panel} south
      */
     createSouth: function(){
-        this.south =  Ext.create('Ext.container.Container', {
+        this.south =  Ext.create('Ext.panel.Panel', {
             layout: 'fit',
             region: 'south',
+            border: false,
             split: true,
             flex: 2,
             minHeight: 150,

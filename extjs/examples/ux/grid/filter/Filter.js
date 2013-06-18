@@ -1,20 +1,4 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
- * @class Ext.ux.grid.filter.Filter
- * @extends Ext.util.Observable
  * Abstract base class for filter implementations.
  */
 Ext.define('Ext.ux.grid.filter.Filter', {
@@ -82,8 +66,7 @@ Ext.define('Ext.ux.grid.filter.Filter', {
         );
         Ext.ux.grid.filter.Filter.superclass.constructor.call(this);
 
-        // setting filtered to true on all filter instances ensures that the filter won't be blurred when the mouse leaves the component
-        this.menu = this.createMenu(Ext.applyIf({filtered: true}, config));
+        this.menu = this.createMenu(config);
         this.init(config);
         if(config && config.value){
             this.setValue(config.value);
@@ -116,6 +99,7 @@ Ext.define('Ext.ux.grid.filter.Filter', {
      * @return {Ext.menu.Menu}
      */
     createMenu: function(config) {
+        config.plain = true;
         return Ext.create('Ext.menu.Menu', config);
     },
 
@@ -124,7 +108,7 @@ Ext.define('Ext.ux.grid.filter.Filter', {
      * get and return the value of the filter.
      * Defaults to Ext.emptyFn.
      * @return {Object} The 'serialized' form of this filter
-     * @methodOf Ext.ux.grid.filter.Filter
+     * @template
      */
     getValue : Ext.emptyFn,
 
@@ -133,7 +117,7 @@ Ext.define('Ext.ux.grid.filter.Filter', {
      * set the value of the filter and fire the 'update' event.
      * Defaults to Ext.emptyFn.
      * @param {Object} data The value to set the filter
-     * @methodOf Ext.ux.grid.filter.Filter
+     * @template
      */
     setValue : Ext.emptyFn,
 
@@ -171,7 +155,6 @@ Ext.define('Ext.ux.grid.filter.Filter', {
      * and fires the 'serialize' event.
      * @return {Object/Array} An object or collection of objects containing
      * key value pairs representing the current configuration of the filter.
-     * @methodOf Ext.ux.grid.filter.Filter
      */
     serialize : function(){
         var args = this.getSerialArgs();
@@ -191,7 +174,6 @@ Ext.define('Ext.ux.grid.filter.Filter', {
      * Sets the status of the filter and fires the appropriate events.
      * @param {Boolean} active        The new filter state.
      * @param {Boolean} suppressEvent True to prevent events from being fired.
-     * @methodOf Ext.ux.grid.filter.Filter
      */
     setActive : function(active, suppressEvent){
         if(this.active != active){
@@ -202,4 +184,3 @@ Ext.define('Ext.ux.grid.filter.Filter', {
         }
     }
 });
-

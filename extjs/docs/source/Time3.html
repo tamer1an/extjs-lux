@@ -15,172 +15,186 @@
   </script>
 </head>
 <body onload="prettyPrint(); highlight();">
-  <pre class="prettyprint lang-js"><span id='Ext-chart-axis-Time'>/**
-</span> * @class Ext.chart.axis.Time
- * @extends Ext.chart.axis.Numeric
+  <pre class="prettyprint lang-js"><span id='Ext-picker-Time'>/**
+</span> * A time picker which provides a list of times from which to choose. This is used by the Ext.form.field.Time
+ * class to allow browsing and selection of valid times, but could also be used with other components.
  *
- * A type of axis whose units are measured in time values. Use this axis
- * for listing dates that you will want to group or dynamically change.
- * If you just want to display dates as categories then use the
- * Category class for axis instead.
+ * By default, all times starting at midnight and incrementing every 15 minutes will be presented. This list of
+ * available times can be controlled using the {@link #minValue}, {@link #maxValue}, and {@link #increment}
+ * configuration properties. The format of the times presented in the list can be customized with the {@link #format}
+ * config.
  *
- * For example:
+ * To handle when the user selects a time from the list, you can subscribe to the {@link #selectionchange} event.
  *
- *     axes: [{
- *         type: 'Time',
- *         position: 'bottom',
- *         fields: 'date',
- *         title: 'Day',
- *         dateFormat: 'M d',
- *
- *         constrain: true,
- *         fromDate: new Date('1/1/11'),
- *         toDate: new Date('1/7/11')
- *     }]
- *
- * In this example we're creating a time axis that has as title *Day*.
- * The field the axis is bound to is `date`.
- * The date format to use to display the text for the axis labels is `M d`
- * which is a three letter month abbreviation followed by the day number.
- * The time axis will show values for dates between `fromDate` and `toDate`.
- * Since `constrain` is set to true all other values for other dates not between
- * the fromDate and toDate will not be displayed.
- *
+ *     @example
+ *     Ext.create('Ext.picker.Time', {
+ *        width: 60,
+ *        minValue: Ext.Date.parse('04:30:00 AM', 'h:i:s A'),
+ *        maxValue: Ext.Date.parse('08:00:00 AM', 'h:i:s A'),
+ *        renderTo: Ext.getBody()
+ *     });
  */
-Ext.define('Ext.chart.axis.Time', {
+Ext.define('Ext.picker.Time', {
+    extend: 'Ext.view.BoundList',
+    alias: 'widget.timepicker',
+    requires: ['Ext.data.Store', 'Ext.Date'],
 
-    /* Begin Definitions */
-
-    extend: 'Ext.chart.axis.Numeric',
-
-    alternateClassName: 'Ext.chart.TimeAxis',
-
-    alias: 'axis.time',
-
-    requires: ['Ext.data.Store', 'Ext.data.JsonStore'],
-
-    /* End Definitions */
-
-<span id='Ext-chart-axis-Time-cfg-dateFormat'>    /**
-</span>     * @cfg {String/Boolean} dateFormat
-     * Indicates the format the date will be rendered on.
-     * For example: 'M d' will render the dates as 'Jan 30', etc.
-     * For a list of possible format strings see {@link Ext.Date Date}
+<span id='Ext-picker-Time-cfg-minValue'>    /**
+</span>     * @cfg {Date} minValue
+     * The minimum time to be shown in the list of times. This must be a Date object (only the time fields will be
+     * used); no parsing of String values will be done.
      */
-    dateFormat: false,
 
-<span id='Ext-chart-axis-Time-cfg-fromDate'>    /**
-</span>     * @cfg {Date} fromDate The starting date for the time axis.
+<span id='Ext-picker-Time-cfg-maxValue'>    /**
+</span>     * @cfg {Date} maxValue
+     * The maximum time to be shown in the list of times. This must be a Date object (only the time fields will be
+     * used); no parsing of String values will be done.
      */
-    fromDate: false,
 
-<span id='Ext-chart-axis-Time-cfg-toDate'>    /**
-</span>     * @cfg {Date} toDate The ending date for the time axis.
+<span id='Ext-picker-Time-cfg-increment'>    /**
+</span>     * @cfg {Number} increment
+     * The number of minutes between each time value in the list.
      */
-    toDate: false,
+    increment: 15,
 
-<span id='Ext-chart-axis-Time-cfg-step'>    /**
-</span>     * @cfg {Array/Boolean} step
-     * An array with two components: The first is the unit of the step (day, month, year, etc).
-     * The second one is the number of units for the step (1, 2, etc.).
-     * Defaults to `[Ext.Date.DAY, 1]`.
+    //&lt;locale&gt;
+<span id='Ext-picker-Time-cfg-format'>    /**
+</span>     * @cfg {String} [format=undefined]
+     * The default time format string which can be overriden for localization support. The format must be valid
+     * according to {@link Ext.Date#parse}.
+     *
+     * Defaults to `'g:i A'`, e.g., `'3:15 PM'`. For 24-hour time format try `'H:i'` instead.
      */
-    step: [Ext.Date.DAY, 1],
-    
-<span id='Ext-chart-axis-Time-cfg-constrain'>    /**
-</span>     * @cfg {Boolean} constrain
-     * If true, the values of the chart will be rendered only if they belong between the fromDate and toDate.
-     * If false, the time axis will adapt to the new values by adding/removing steps.
-     */
-    constrain: false,
+    format : &quot;g:i A&quot;,
+    //&lt;/locale&gt;
 
-    // Avoid roundtoDecimal call in Numeric Axis's constructor
-    roundToDecimal: false,
-    
-    constructor: function (config) {
-        var me = this, label, f, df;
-        me.callParent([config]);
-        label = me.label || {};
-        df = this.dateFormat;
-        if (df) {
-            if (label.renderer) {
-                f = label.renderer;
-                label.renderer = function(v) {
-                    v = f(v);
-                    return Ext.Date.format(new Date(f(v)), df);
-                };
-            } else {
-                label.renderer = function(v) {
-                    return Ext.Date.format(new Date(v &gt;&gt; 0), df);
-                };
-            }
-        }
+<span id='Ext-picker-Time-property-displayField'>    /**
+</span>     * @private
+     * The field in the implicitly-generated Model objects that gets displayed in the list. This is
+     * an internal field name only and is not useful to change via config.
+     */
+    displayField: 'disp',
+
+<span id='Ext-picker-Time-property-initDate'>    /**
+</span>     * @private
+     * Year, month, and day that all times will be normalized into internally.
+     */
+    initDate: [2008,0,1],
+
+<span id='Ext-picker-Time-cfg-componentCls'>    componentCls: Ext.baseCSSPrefix + 'timepicker',
+</span>
+<span id='Ext-picker-Time-cfg-loadMask'>    /**
+</span>     * @cfg
+     * @private
+     */
+    loadMask: false,
+
+<span id='Ext-picker-Time-method-initComponent'>    initComponent: function() {
+</span>        var me = this,
+            dateUtil = Ext.Date,
+            clearTime = dateUtil.clearTime,
+            initDate = me.initDate;
+
+        // Set up absolute min and max for the entire day
+        me.absMin = clearTime(new Date(initDate[0], initDate[1], initDate[2]));
+        me.absMax = dateUtil.add(clearTime(new Date(initDate[0], initDate[1], initDate[2])), 'mi', (24 * 60) - 1);
+
+        me.store = me.createStore();
+
+        // Add our min/max range filter, but do not apply it.
+        // The owning TimeField will filter it.
+        me.store.addFilter(me.rangeFilter = new Ext.util.Filter({
+            id: 'time-picker-filter'
+        }), false);
+
+        // Updates the range filter's filterFn according to our configured min and max
+        me.updateList();
+
+        me.callParent();
     },
 
-    doConstrain: function () {
+<span id='Ext-picker-Time-method-setMinValue'>    /**
+</span>     * Set the {@link #minValue} and update the list of available times. This must be a Date object (only the time
+     * fields will be used); no parsing of String values will be done.
+     * @param {Date} value
+     */
+    setMinValue: function(value) {
+        this.minValue = value;
+        this.updateList();
+    },
+
+<span id='Ext-picker-Time-method-setMaxValue'>    /**
+</span>     * Set the {@link #maxValue} and update the list of available times. This must be a Date object (only the time
+     * fields will be used); no parsing of String values will be done.
+     * @param {Date} value
+     */
+    setMaxValue: function(value) {
+        this.maxValue = value;
+        this.updateList();
+    },
+
+<span id='Ext-picker-Time-method-normalizeDate'>    /**
+</span>     * @private
+     * Sets the year/month/day of the given Date object to the {@link #initDate}, so that only
+     * the time fields are significant. This makes values suitable for time comparison.
+     * @param {Date} date
+     */
+    normalizeDate: function(date) {
+        var initDate = this.initDate;
+        date.setFullYear(initDate[0], initDate[1], initDate[2]);
+        return date;
+    },
+
+<span id='Ext-picker-Time-method-updateList'>    /**
+</span>     * Update the list of available times in the list to be constrained within the {@link #minValue}
+     * and {@link #maxValue}.
+     */
+    updateList: function() {
         var me = this,
-            store = me.chart.store,
-            data = [],
-            series = me.chart.series.items,
-            math = Math,
-            mmax = math.max,
-            mmin = math.min,
-            fields = me.fields,
-            ln = fields.length,
-            range = me.getRange(),
-            min = range.min, max = range.max, i, l, excludes = [],
-            value, values, rec, data = [];
-        for (i = 0, l = series.length; i &lt; l; i++) {
-            excludes[i] = series[i].__excludes;
-        }
-        store.each(function(record) {
-            for (i = 0; i &lt; ln; i++) {
-                if (excludes[i]) {
-                    continue;
-                }
-                value = record.get(fields[i]);
-                if (+value &lt; +min) return;
-                if (+value &gt; +max) return;
-            }
-            data.push(record);
-        })
-        me.chart.substore = Ext.create('Ext.data.JsonStore', { model: store.model, data: data });
+            min = me.normalizeDate(me.minValue || me.absMin),
+            max = me.normalizeDate(me.maxValue || me.absMax);
+
+        me.rangeFilter.setFilterFn(function(record) {
+            var date = record.get('date');
+            return date &gt;= min &amp;&amp; date &lt;= max;
+        });
+        me.store.filter();
     },
 
-    // Before rendering, set current default step count to be number of records.
-    processView: function () {
-        var me = this;
-        if (me.fromDate) {
-            me.minimum = +me.fromDate;
-        }
-        if (me.toDate) {
-            me.maximum = +me.toDate;
-        }
-        if (me.constrain) {
-            me.doConstrain();
-        }
-     },
+<span id='Ext-picker-Time-method-createStore'>    /**
+</span>     * @private
+     * Creates the internal {@link Ext.data.Store} that contains the available times. The store
+     * is loaded with all possible times, and it is later filtered to hide those times outside
+     * the minValue/maxValue.
+     */
+    createStore: function() {
+        var me = this,
+            utilDate = Ext.Date,
+            times = [],
+            min = me.absMin,
+            max = me.absMax;
 
-    // @private modifies the store and creates the labels for the axes.
-    calcEnds: function() {
-        var me = this, range, step = me.step;
-        if (step) {
-            range = me.getRange();
-            range = Ext.draw.Draw.snapEndsByDateAndStep(new Date(range.min), new Date(range.max), Ext.isNumber(step) ? [Date.MILLI, step]: step);
-            if (me.minimum) {
-                range.from = me.minimum;
-            }
-            if (me.maximum) {
-                range.to = me.maximum;
-            }
-            range.step = (range.to - range.from) / range.steps;
-            return range;
-        } else {
-            return me.callParent(arguments);
+        while(min &lt;= max){
+            times.push({
+                disp: utilDate.dateFormat(min, me.format),
+                date: min
+            });
+            min = utilDate.add(min, 'mi', me.increment);
         }
+
+        return new Ext.data.Store({
+            fields: ['disp', 'date'],
+            data: times
+        });
+    },
+
+<span id='Ext-picker-Time-method-focusNode'>    focusNode: function (rec) {
+</span>        // We don't want the view being focused when interacting with the inputEl (see Ext.form.field.ComboBox:onKeyUp)
+        // so this is here to prevent focus of the boundlist view. See EXTJSIV-7319.
+        return false;
     }
- });
 
+});
 </pre>
 </body>
 </html>

@@ -1,20 +1,4 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
- * @class Ext.ux.ToolbarDroppable
- * @extends Object
  * Plugin which allows items to be dropped onto a toolbar and be turned into new Toolbar items.
  * To use the plugin, you just need to provide a createItem implementation that takes the drop
  * data as an argument and returns an object that can be placed onto the toolbar. Example:
@@ -30,10 +14,10 @@ If you are unsure which license is appropriate for your use, please contact the 
  * the item has been created.
  */
  Ext.define('Ext.ux.ToolbarDroppable', {
-    extend: 'Object',
 
     /**
-     * @constructor
+     * Creates new ToolbarDroppable.
+     * @param {Object} config Config options.
      */
     constructor: function(config) {
       Ext.apply(this, config);
@@ -85,32 +69,30 @@ If you are unsure which license is appropriate for your use, please contact the 
      * drag event
      * @param {Ext.EventObject} e The event object
      * @return {Number} The index at which to insert the new button
-     */
+     */    
     calculateEntryIndex: function(e) {
         var entryIndex = 0,
-            toolbar    = this.toolbar,
-            items      = toolbar.items.items,
-            count      = items.length,
-            xTotal     = toolbar.getEl().getXY()[0],
-            xHover     = e.getXY()[0] - xTotal;
-
-        for (var index = 0; index < count; index++) {
-            var item     = items[index],
-                width    = item.getEl().getWidth(),
-                midpoint = xTotal + width / 2;
-
-            xTotal += width;
-
+            toolbar = this.toolbar,
+            items = toolbar.items.items,
+            count = items.length,
+            xHover = e.getXY()[0],
+            index = 0,
+            el, xTotal, width, midpoint;
+ 
+        for (; index < count; index++) {
+            el = items[index].getEl();
+            xTotal = el.getXY()[0];
+            width = el.getWidth();
+            midpoint = xTotal + width / 2;
+ 
             if (xHover < midpoint) {
-                entryIndex = index;
-
+                entryIndex = index; 
                 break;
             } else {
                 entryIndex = index + 1;
             }
-        }
-
-        return entryIndex;
+       }
+       return entryIndex;
     },
 
     /**
@@ -167,4 +149,3 @@ If you are unsure which license is appropriate for your use, please contact the 
      */
     afterLayout: Ext.emptyFn
 });
-

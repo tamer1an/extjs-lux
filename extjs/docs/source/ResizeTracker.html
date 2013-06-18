@@ -16,23 +16,23 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-resizer-ResizeTracker'>/**
-</span> * @class Ext.resizer.ResizeTracker
- * @extends Ext.dd.DragTracker
- * Private utility class for Ext.resizer.Resizer.
+</span> * Private utility class for Ext.resizer.Resizer.
  * @private
  */
 Ext.define('Ext.resizer.ResizeTracker', {
     extend: 'Ext.dd.DragTracker',
-    dynamic: true,
-    preserveRatio: false,
-
-    // Default to no constraint
-    constrainTo: null,
+<span id='Ext-resizer-ResizeTracker-property-dynamic'>    dynamic: true,
+</span><span id='Ext-resizer-ResizeTracker-property-preserveRatio'>    preserveRatio: false,
+</span>
+<span id='Ext-resizer-ResizeTracker-cfg-constrainTo'>    // Default to no constraint
+</span>    constrainTo: null,
     
-    proxyCls:  Ext.baseCSSPrefix + 'resizable-proxy',
-
-    constructor: function(config) {
-        var me = this;
+<span id='Ext-resizer-ResizeTracker-property-proxyCls'>    proxyCls:  Ext.baseCSSPrefix + 'resizable-proxy',
+</span>
+<span id='Ext-resizer-ResizeTracker-method-constructor'>    constructor: function(config) {
+</span>        var me = this,
+            widthRatio, heightRatio,
+            throttledResizeFn;
 
         if (!config.el) {
             if (config.target.isComponent) {
@@ -45,8 +45,8 @@ Ext.define('Ext.resizer.ResizeTracker', {
 
         // Ensure that if we are preserving aspect ratio, the largest minimum is honoured
         if (me.preserveRatio &amp;&amp; me.minWidth &amp;&amp; me.minHeight) {
-            var widthRatio = me.minWidth / me.el.getWidth(),
-                heightRatio = me.minHeight / me.el.getHeight();
+            widthRatio = me.minWidth / me.el.getWidth();
+            heightRatio = me.minHeight / me.el.getHeight();
 
             // largest ratio of minimum:size must be preserved.
             // So if a 400x200 pixel image has
@@ -61,7 +61,7 @@ Ext.define('Ext.resizer.ResizeTracker', {
         // If configured as throttled, create an instance version of resize which calls
         // a throttled function to perform the resize operation.
         if (me.throttle) {
-            var throttledResizeFn = Ext.Function.createThrottled(function() {
+            throttledResizeFn = Ext.Function.createThrottled(function() {
                     Ext.resizer.ResizeTracker.prototype.resize.apply(me, arguments);
                 }, me.throttle);
 
@@ -75,9 +75,9 @@ Ext.define('Ext.resizer.ResizeTracker', {
         }
     },
 
-    onBeforeStart: function(e) {
-        // record the startBox
-        this.startBox = this.el.getBox();
+<span id='Ext-resizer-ResizeTracker-method-onBeforeStart'>    onBeforeStart: function(e) {
+</span>        // record the startBox
+        this.startBox = this.target.getBox();
     },
 
 <span id='Ext-resizer-ResizeTracker-method-getDynamicTarget'>    /**
@@ -97,7 +97,7 @@ Ext.define('Ext.resizer.ResizeTracker', {
         me.proxy.show();
         return me.proxy;
     },
-    
+
 <span id='Ext-resizer-ResizeTracker-method-createProxy'>    /**
 </span>     * Create a proxy for this resizer
      * @param {Ext.Component/Ext.Element} target The target
@@ -105,31 +105,24 @@ Ext.define('Ext.resizer.ResizeTracker', {
      */
     createProxy: function(target){
         var proxy,
-            cls = this.proxyCls,
-            renderTo;
-            
+            cls = this.proxyCls;
+
         if (target.isComponent) {
             proxy = target.getProxy().addCls(cls);
         } else {
-            renderTo = Ext.getBody();
-            if (Ext.scopeResetCSS) {
-                renderTo = Ext.getBody().createChild({
-                    cls: Ext.baseCSSPrefix + 'reset'
-                });
-            }
             proxy = target.createProxy({
                 tag: 'div',
                 cls: cls,
                 id: target.id + '-rzproxy'
-            }, renderTo);
+            }, Ext.getBody());
         }
         proxy.removeCls(Ext.baseCSSPrefix + 'proxy-el');
         return proxy;
     },
 
-    onStart: function(e) {
-        // returns the Ext.ResizeHandle that the user started dragging
-        this.activeResizeHandle = Ext.getCmp(this.getDragTarget().id);
+<span id='Ext-resizer-ResizeTracker-method-onStart'>    onStart: function(e) {
+</span>        // returns the Ext.ResizeHandle that the user started dragging
+        this.activeResizeHandle = Ext.get(this.getDragTarget().id);
 
         // If we are using a proxy, ensure it is sized.
         if (!this.dynamic) {
@@ -140,15 +133,15 @@ Ext.define('Ext.resizer.ResizeTracker', {
         }
     },
 
-    onDrag: function(e) {
-        // dynamic resizing, update dimensions during resize
+<span id='Ext-resizer-ResizeTracker-method-onDrag'>    onDrag: function(e) {
+</span>        // dynamic resizing, update dimensions during resize
         if (this.dynamic || this.proxy) {
             this.updateDimensions(e);
         }
     },
 
-    updateDimensions: function(e, atEnd) {
-        var me = this,
+<span id='Ext-resizer-ResizeTracker-method-updateDimensions'>    updateDimensions: function(e, atEnd) {
+</span>        var me = this,
             region = me.activeResizeHandle.region,
             offset = me.getOffset(me.constrainTo ? 'dragTarget' : null),
             box = me.startBox,
@@ -163,7 +156,11 @@ Ext.define('Ext.resizer.ResizeTracker', {
             horizDir = offset[0] &lt; 0 ? 'right' : 'left',
             vertDir = offset[1] &lt; 0 ? 'down' : 'up',
             oppositeCorner,
-            axis; // 1 = x, 2 = y, 3 = x and y.
+            axis, // 1 = x, 2 = y, 3 = x and y.
+            newBox,
+            newHeight, newWidth;
+
+        region = me.convertRegionName(region);
 
         switch (region) {
             case 'south':
@@ -214,7 +211,7 @@ Ext.define('Ext.resizer.ResizeTracker', {
                 break;
         }
 
-        var newBox = {
+        newBox = {
             width: box.width + widthAdjust,
             height: box.height + heightAdjust,
             x: box.x + adjustX,
@@ -270,9 +267,6 @@ Ext.define('Ext.resizer.ResizeTracker', {
 
         // If this is configured to preserve the aspect ratio, or they are dragging using the shift key
         if (me.preserveRatio || e.shiftKey) {
-            var newHeight,
-                newWidth;
-
             ratio = me.startBox.width / me.startBox.height;
 
             // Calculate aspect ratio constrained values.
@@ -326,31 +320,31 @@ Ext.define('Ext.resizer.ResizeTracker', {
         }, atEnd);
     },
 
-    getResizeTarget: function(atEnd) {
-        return atEnd ? this.target : this.getDynamicTarget();
+<span id='Ext-resizer-ResizeTracker-method-getResizeTarget'>    getResizeTarget: function(atEnd) {
+</span>        return atEnd ? this.target : this.getDynamicTarget();
     },
 
-    resize: function(box, direction, atEnd) {
-        var target = this.getResizeTarget(atEnd);
-        if (target.isComponent) {
-            if (target.floating) {
-                target.setPagePosition(box.x, box.y);
-            }
-            target.setSize(box.width, box.height);
-        } else {
-            target.setBox(box);
-            // update the originalTarget if this was wrapped.
-            if (this.originalTarget) {
-                this.originalTarget.setBox(box);
-            }
+<span id='Ext-resizer-ResizeTracker-method-resize'>    resize: function(box, direction, atEnd) {
+</span>        var me = this,
+            target = me.getResizeTarget(atEnd);
+
+        target.setBox(box);
+
+        // update the originalTarget if it was wrapped, and the target passed in was the wrap el.
+        if (me.originalTarget &amp;&amp; (me.dynamic || atEnd)) {
+            me.originalTarget.setBox(box);
         }
     },
 
-    onEnd: function(e) {
-        this.updateDimensions(e, true);
+<span id='Ext-resizer-ResizeTracker-method-onEnd'>    onEnd: function(e) {
+</span>        this.updateDimensions(e, true);
         if (this.proxy) {
             this.proxy.hide();
         }
+    },
+
+<span id='Ext-resizer-ResizeTracker-method-convertRegionName'>    convertRegionName: function(name) {
+</span>        return name;
     }
 });
 </pre>

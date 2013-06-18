@@ -16,27 +16,28 @@
 </head>
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js"><span id='Ext-resizer-Handle'>/**
-</span> * @class Ext.resizer.Handle
- * @extends Ext.Component
- *
- * Provides a handle for 9-point resizing of Elements or Components.
+</span> * Provides a handle for 9-point resizing of Elements or Components.
  */
 Ext.define('Ext.resizer.Handle', {
     extend: 'Ext.Component',
-    handleCls: '',
-    baseHandleCls: Ext.baseCSSPrefix + 'resizable-handle',
-    // Ext.resizer.Resizer.prototype.possiblePositions define the regions
-    // which will be passed in as a region configuration.
+<span id='Ext-resizer-Handle-property-handleCls'>    handleCls: '',
+</span><span id='Ext-resizer-Handle-property-baseHandleCls'>    baseHandleCls: Ext.baseCSSPrefix + 'resizable-handle',
+</span><span id='Ext-resizer-Handle-cfg-region'>    // Ext.resizer.Resizer.prototype.possiblePositions define the regions
+</span>    // which will be passed in as a region configuration.
     region: '',
 
-    onRender: function() {
-        this.addCls(
-            this.baseHandleCls,
-            this.baseHandleCls + '-' + this.region,
-            this.handleCls
+<span id='Ext-resizer-Handle-method-beforeRender'>    beforeRender: function() {
+</span>        var me = this;
+
+        me.callParent();
+
+        me.protoEl.unselectable();
+
+        me.addCls(
+            me.baseHandleCls,
+            me.baseHandleCls + '-' + me.region,
+            me.handleCls
         );
-        this.callParent(arguments);
-        this.el.unselectable();
     }
 });
 </pre>

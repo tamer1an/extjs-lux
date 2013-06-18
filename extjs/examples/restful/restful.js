@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require(['Ext.data.*', 'Ext.grid.*']);
 
 Ext.define('Person', {
@@ -72,7 +58,16 @@ Ext.onReady(function(){
         }
     });
     
-    var rowEditing = Ext.create('Ext.grid.plugin.RowEditing');
+    var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        listeners: {
+            cancelEdit: function(rowEditing, context) {
+                // Canceling editing of a locally added, unsaved record: remove it
+                if (context.record.phantom) {
+                    store.remove(context.record);
+                }
+            }
+        }
+    });
     
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
@@ -141,4 +136,3 @@ Ext.onReady(function(){
         grid.down('#delete').setDisabled(selections.length === 0);
     });
 });
-

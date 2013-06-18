@@ -61,7 +61,7 @@
  * Container classes delegate the rendering of child Components to a layout manager class which must be configured into
  * the Container using the `{@link #layout}` configuration property.
  *
- * When either specifying child `{@link #items}` of a Container, or dynamically {@link #add adding} Components to a
+ * When either specifying child `{@link #cfg-items}` of a Container, or dynamically {@link #method-add adding} Components to a
  * Container, remember to consider how you wish the Container to arrange those child elements, and whether those child
  * elements need to be sized using one of Ext's built-in `{@link #layout}` schemes. By default, Containers use the
  * {@link Ext.layout.container.Auto Auto} scheme which only renders child components, appending them one after the other
@@ -77,7 +77,7 @@
  * Ext.layout.container.HBox, and Ext.layout.container.Table. For example:
  *
  *     //  Create the GridPanel.
- *     var myNewGrid = new Ext.grid.Panel({
+ *     var myNewGrid = Ext.create('Ext.grid.Panel', {
  *         store: myStore,
  *         headers: myHeaders,
  *         title: 'Results', // the title becomes the title of the tab
@@ -169,21 +169,22 @@ Ext.define('Ext.container.Container', {
 <span id='Ext-container-Container-method-getChildByElement'>    /**
 </span>     * Return the immediate child Component in which the passed element is located.
      * @param {Ext.Element/HTMLElement/String} el The element to test (or ID of element).
+     * @param {Boolean} deep If `true`, returns the deepest descendant Component which contains the passed element.
      * @return {Ext.Component} The child item which contains the passed element.
      */
-    getChildByElement: function(el) {
+    getChildByElement: function(el, deep) {
         var item,
             itemEl,
             i = 0,
-            it = this.items.items,
+            it = this.getRefItems(),
             ln = it.length;
 
         el = Ext.getDom(el);
         for (; i &lt; ln; i++) {
             item = it[i];
             itemEl = item.getEl();
-            if ((itemEl.dom === el) || itemEl.contains(el)) {
-                return item;
+            if (itemEl &amp;&amp; ((itemEl.dom === el) || itemEl.contains(el))) {
+                return (deep &amp;&amp; item.getChildByElement) ? item.getChildByElement(el, deep) : item;
             }
         }
         return null;

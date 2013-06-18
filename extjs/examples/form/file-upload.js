@@ -1,24 +1,16 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.form.field.File',
+    'Ext.form.field.Number',
     'Ext.form.Panel',
     'Ext.window.MessageBox'
 ]);
 
-Ext.onReady(function(){
+Ext.onReady(function() {
+
+//  Class which shows invisible file input field.
+    if (window.location.href.indexOf('debug') !== -1) {
+        Ext.getBody().addCls('x-debug');
+    }
 
     var msg = function(title, msg) {
         Ext.Msg.show({
@@ -42,7 +34,7 @@ Ext.onReady(function(){
         renderTo: 'fi-basic-btn',
         handler: function(){
             var v = fibasic.getValue();
-            msg('Selected File', v && v != '' ? v : 'None');
+            msg('Selected File', v && v !== '' ? v : 'None');
         }
     });
 
@@ -72,6 +64,11 @@ Ext.onReady(function(){
         }
     });
 
+    var tpl = new Ext.XTemplate(
+        'File processed on the server.<br />',
+        'Name: {fileName}<br />',
+        'Size: {fileSize:fileSize}'
+    );
     Ext.create('Ext.form.Panel', {
         renderTo: 'fi-form',
         width: 500,
@@ -110,7 +107,69 @@ Ext.onReady(function(){
                         url: 'file-upload.php',
                         waitMsg: 'Uploading your photo...',
                         success: function(fp, o) {
+                            msg('Success', tpl.apply(o.result));
+                        }
+                    });
+                }
+            }
+        },{
+            text: 'Reset',
+            handler: function() {
+                this.up('form').getForm().reset();
+            }
+        }]
+    });
+
+    Ext.create('Ext.form.Panel', {
+        renderTo: 'fi-form-failure',
+        width: 500,
+        frame: true,
+        title: 'Upload error test',
+        bodyPadding: '10 10 0',
+
+        defaults: {
+            anchor: '100%',
+            allowBlank: false,
+            msgTarget: 'side',
+            labelWidth: 70
+        },
+
+        items: [{
+            xtype: 'textfield',
+            fieldLabel: 'Name'
+        },{
+            xtype: 'filefield',
+            id: 'form-file-fail',
+            emptyText: 'Select an image',
+            fieldLabel: 'Photo',
+            name: 'photo-path',
+            buttonText: '',
+            buttonConfig: {
+                iconCls: 'upload-icon'
+            }
+        }, {
+            xtype: 'numberfield',
+            fieldLabel: 'HTTP status',
+            value: 200,
+            minValue: 200,
+            maxValue: 599,
+            allowBlank: false,
+            name: 'returnResponse'
+        }],
+
+        buttons: [{
+            text: 'Save',
+            handler: function(){
+                var form = this.up('form').getForm();
+                if(form.isValid()){
+                    form.submit({
+                        url: 'file-upload.php',
+                        waitMsg: 'Uploading your photo...',
+                        success: function(fp, o) {
                             msg('Success', 'Processed file "' + o.result.file + '" on the server');
+                        },
+                        failure: function() {
+                            Ext.Msg.alert("Error", Ext.JSON.decode(this.response.responseText).message);
                         }
                     });
                 }

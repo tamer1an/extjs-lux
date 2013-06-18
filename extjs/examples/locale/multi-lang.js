@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.Loader.setConfig({enabled: true});
 
 Ext.Loader.setPath('Ext.ux', '../ux/');
@@ -36,7 +22,7 @@ Ext.onReady(function(){
             
                 /* Language chooser combobox  */
                 var store = Ext.create('Ext.data.ArrayStore', {
-                    fields: ['code', 'language', 'charset'],
+                    fields: ['code', 'language'],
                     data : Ext.exampledata.languages // from languages.js
                 });
                 
@@ -51,7 +37,7 @@ Ext.onReady(function(){
                         select: {
                             fn: function(cb, records) {
                                 var record = records[0];
-                                window.location.search = Ext.urlEncode({"lang":record.get("code"),"charset":record.get("charset")});
+                                window.location.search = Ext.urlEncode({"lang":record.get("code")});
                             },
                             scope: this
                         }
@@ -68,20 +54,18 @@ Ext.onReady(function(){
                 }            
             
                 if (params.lang) {
-                    var url = Ext.util.Format.format("../../locale/ext-lang-{0}.js", params.lang);
-                
-                    Ext.Ajax.request({
-                        url: url,
-                        success: this.onSuccess,
-                        failure: this.onFailure,
-                        scope: this 
-                    });
+                    var record = store.findRecord('code', params.lang, null, null, null, true),
+                        url = Ext.util.Format.format("../../locale/ext-lang-{0}.js", params.lang);
+                    Ext.Loader.injectScriptElement(
+                        url,
+                        this.onSuccess,
+                        this.onFailure,
+                        this);
                 } else {
                     this.setupDemo();
                 }
             },
-            onSuccess: function(response, opts) {
-                eval(response.responseText);
+            onSuccess: function() {
                 this.setupDemo();
             },
             onFailure: function() {
@@ -89,6 +73,10 @@ Ext.onReady(function(){
                 this.setupDemo();
             },
             setupDemo: function() {
+                // Grid needs to be this wide to handle the largest language case for the toolbar.
+                // In this case, it's Russian.
+                
+                var width = 500;
                 /* Email field */
                 Ext.create('Ext.FormPanel', {
                     renderTo: 'emailfield',
@@ -96,10 +84,10 @@ Ext.onReady(function(){
                     frame: true,
                     title: 'Email Field',
                     bodyStyle: 'padding:5px 5px 0',
-                    width: 380,
+                    width: width,
                     defaults: {
                         msgTarget: 'side',
-                        width: 340
+                        width: width - 40
                     },
                     defaultType: 'textfield',
                     items: [{
@@ -116,10 +104,10 @@ Ext.onReady(function(){
                     frame: true,
                     title: 'Datepicker',
                     bodyStyle: 'padding:5px 5px 0',
-                    width: 380,
+                    width: width,
                     defaults: {
                         msgTarget: 'side',
-                        width: 340
+                        width: width - 40
                     },
                     defaultType: 'datefield',
                     items: [{
@@ -145,7 +133,7 @@ Ext.onReady(function(){
                              
                  Ext.create('Ext.grid.Panel', {
                      renderTo: 'grid',
-                     width: 380,
+                     width: width,
                      height: 203,
                      title:'Month Browser',
                      columns:[{

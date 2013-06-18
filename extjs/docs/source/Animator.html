@@ -84,6 +84,10 @@ Ext.define('Ext.fx.Animator', {
 
     /* End Definitions */
 
+<span id='Ext-fx-Animator-property-isAnimator'>    /**
+</span>     * @property {Boolean} isAnimator
+     * `true` in this class to identify an object as an instantiated Animator, or subclass thereof.
+     */
     isAnimator: true,
 
 <span id='Ext-fx-Animator-cfg-duration'>    /**
@@ -98,8 +102,8 @@ Ext.define('Ext.fx.Animator', {
      */
     delay: 0,
 
-    /* private used to track a delayed starting time */
-    delayStart: 0,
+<span id='Ext-fx-Animator-property-delayStart'>    /* private used to track a delayed starting time */
+</span>    delayStart: 0,
 
 <span id='Ext-fx-Animator-cfg-dynamic'>    /**
 </span>     * @cfg {Boolean} dynamic
@@ -261,7 +265,7 @@ keyframes : {
             attrs = [],
             to = me.to || {},
             duration = me.duration,
-            prevMs, ms, i, ln, pct, anim, nextAnim, attr;
+            prevMs, ms, i, ln, pct, attr;
 
         for (pct in keyframes) {
             if (keyframes.hasOwnProperty(pct) &amp;&amp; me.animKeyFramesRE.test(pct)) {
@@ -306,9 +310,8 @@ keyframes : {
         var me = this,
             anims = [],
             timeline = me.timeline,
-            reverse = me.reverse,
             ln = timeline.length,
-            anim, easing, damper, initial, attrs, lastAttrs, i;
+            anim, easing, damper, attrs, i;
 
         if (me.fireEvent('beforeanimate', me) !== false) {
             for (i = 0; i &lt; ln; i++) {
@@ -318,7 +321,7 @@ keyframes : {
                 damper = attrs.damper || me.damper;
                 delete attrs.easing;
                 delete attrs.damper;
-                anim = Ext.create('Ext.fx.Anim', {
+                anim = new Ext.fx.Anim({
                     target: target,
                     easing: easing,
                     damper: damper,
@@ -410,6 +413,15 @@ keyframes : {
     end: function() {
         var me = this;
         me.fireEvent('afteranimate', me, me.startTime, new Date() - me.startTime);
+    },
+    
+<span id='Ext-fx-Animator-method-isReady'>    isReady: function() {
+</span>        return this.paused === false &amp;&amp; this.running === false &amp;&amp; this.iterations &gt; 0;
+    },
+    
+<span id='Ext-fx-Animator-method-isRunning'>    isRunning: function() {
+</span>        // Explicitly return false, we don't want to be run continuously by the manager
+        return false;
     }
 });</pre>
 </body>

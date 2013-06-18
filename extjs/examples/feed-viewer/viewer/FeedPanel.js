@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class FeedViewer.FeedPanel
  * @extends Ext.panel.Panel
@@ -66,6 +52,7 @@ Ext.define('FeedViewer.FeedPanel', {
      */
     createView: function(){
         this.view = Ext.create('widget.dataview', {
+            autoScroll: true,
             store: Ext.create('Ext.data.Store', {
                 model: 'Feed',
                 data: this.feeds
@@ -156,7 +143,9 @@ Ext.define('FeedViewer.FeedPanel', {
     onSelectionChange: function(){
         var selected = this.getSelectedItem();
         this.toolbar.getComponent('remove').setDisabled(!selected);
-        this.loadFeed(selected);
+        if (selected) {
+            this.loadFeed(selected);
+        }
     },
 
     /**
@@ -203,18 +192,21 @@ Ext.define('FeedViewer.FeedPanel', {
      * React to a feed being removed
      * @private
      */
-    onRemoveFeedClick: function(){
+    onRemoveFeedClick: function() {
         var active = this.menu.activeFeed || this.getSelectedItem();
 
 
-        this.animateNode(this.view.getNode(active), 1, 0, {
-            scope: this,
-            afteranimate: function(){
-                this.view.store.remove(active);
-            }
-        });
-        this.fireEvent('feedremove', this, active.get('title'), active.get('url'));
-
+        if (active) {
+            this.view.getSelectionModel().deselectAll();
+            this.animateNode(this.view.getNode(active), 1, 0, {
+                scope: this,
+                afteranimate: function() {
+                    this.view.store.remove(active);
+                    
+                }
+            });
+            this.fireEvent('feedremove', this, active.get('title'), active.get('url'));
+        }
     },
 
     /**
@@ -222,12 +214,13 @@ Ext.define('FeedViewer.FeedPanel', {
      * @private
      */
     onAddFeedClick: function(){
-        var win = Ext.create('widget.feedwindow', {
+        var win = this.addFeedWindow || (this.addFeedWindow = Ext.create('widget.feedwindow', {
             listeners: {
                 scope: this,
                 feedvalid: this.onFeedValid
             }
-        });
+        }));
+        win.form.getForm().reset();
         win.show();
     },
 
@@ -278,4 +271,3 @@ Ext.define('FeedViewer.FeedPanel', {
         this.menu.destroy();
     }
 });
-

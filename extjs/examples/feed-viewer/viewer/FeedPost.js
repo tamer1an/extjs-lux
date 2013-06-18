@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class FeedViewer.FeedPost
  * @extends Ext.panel.Panel
@@ -66,8 +52,12 @@ Ext.define('FeedViewer.FeedPost', {
      * @param {Ext.data.Model} rec The record
      */
     setActive: function(rec) {
-        this.active = rec;
-        this.update(rec.data);
+        var me = this,
+            gotoButton = me.down('button[text=Go to post]');
+
+        me.active = rec;
+        me.update(rec.data);
+        gotoButton.setHref(rec.get('link'));
     },
 
     /**
@@ -90,8 +80,8 @@ Ext.define('FeedViewer.FeedPost', {
             config.cls = 'x-docked-noborder-top';
         }
         items.push({
-            scope: this,
-            handler: this.goToPost,
+            href: this.inTab ? this.data.link : '#',
+            target: '_blank',
             text: 'Go to post',
             iconCls: 'post-go'
         });
@@ -116,4 +106,3 @@ Ext.define('FeedViewer.FeedPost', {
     }
 
 });
-

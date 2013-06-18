@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.form.*',
     'Ext.layout.container.Absolute',
@@ -30,6 +16,7 @@ Ext.onReady(function() {
             fieldWidth: 60,
             msgTarget: 'side',
             allowBlank: false,
+            vtype: 'email',
             x: 5,
             y: 5,
             name: 'to',
@@ -53,6 +40,7 @@ Ext.onReady(function() {
     });
 
     var win = Ext.create('Ext.window.Window', {
+        autoShow: true,
         title: 'Resize Me',
         width: 500,
         height: 300,
@@ -68,6 +56,4 @@ Ext.onReady(function() {
             text: 'Cancel'
         }]
     });
-
-    win.show();
 });

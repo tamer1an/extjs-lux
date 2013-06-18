@@ -1,17 +1,3 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 Ext.require([
     'Ext.window.MessageBox',
     'Ext.tip.*'
@@ -85,6 +71,7 @@ Ext.onReady(function(){
            wait:true,
            waitConfig: {interval:200},
            icon:'ext-mb-download', //custom class in msg-box.html
+           iconHeight: 50,
            animateTarget: 'mb7'
        });
         setTimeout(function(){
@@ -116,11 +103,24 @@ Ext.onReady(function(){
        });
     });
 
+    Ext.get('mb10').on('click', function(){
+        Ext.MessageBox.show({
+            title: 'What, really?',
+            msg: 'Are you sure?',
+            buttons: Ext.MessageBox.YESNO,
+            buttonText:{ 
+                yes: "Definitely!", 
+                no: "No chance!" 
+            },
+            fn: showResult
+        });
+    });
+
     function showResult(btn){
         Ext.example.msg('Button Click', 'You clicked the {0} button', btn);
-    };
+    }
 
     function showResultText(btn, text){
         Ext.example.msg('Button Click', 'You clicked the {0} button and entered the text "{1}".', btn, text);
-    };
+    }
 });

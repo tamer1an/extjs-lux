@@ -1,29 +1,9 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-Ext.Loader.setConfig({
-    enabled: true
-});
-Ext.Loader.setPath('Ext.ux', '../ux');
-
 Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
     'Ext.util.*',
     'Ext.state.*',
-    'Ext.form.*',
-    'Ext.ux.CheckColumn'
+    'Ext.form.*'
 ]);
 
 Ext.onReady(function(){
@@ -48,11 +28,9 @@ Ext.onReady(function(){
             usedNames = {},
             data = [],
             s = new Date(2007, 0, 1),
+            eDate = Ext.Date,
             now = new Date(),
-
-            getRandomInt = function(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            },
+            getRandomInt = Ext.Number.randomInt,
 
             generateName = function() {
                 var name = firsts[getRandomInt(0, firstLen - 1)] + ' ' + lasts[getRandomInt(0, lastLen - 1)];
@@ -68,14 +46,14 @@ Ext.onReady(function(){
             for (var i = 0; i < ecount; i++) {
                 var name = generateName();
                 data.push({
-                    start : Ext.Date.add(Ext.Date.clearTime(s, true), Ext.Date.DAY, getRandomInt(0, 27)),
+                    start : eDate.add(eDate.clearTime(s, true), eDate.DAY, getRandomInt(0, 27)),
                     name : name,
                     email: name.toLowerCase().replace(' ', '.') + '@sencha-test.com',
                     active: getRandomInt(0, 1),
                     salary: Math.floor(getRandomInt(35000, 85000) / 1000) * 1000
                 });
             }
-            s = Ext.Date.add(s, Ext.Date.MONTH, 1);
+            s = eDate.add(s, eDate.MONTH, 1);
         }
 
         return data;
@@ -125,7 +103,7 @@ Ext.onReady(function(){
             xtype: 'datecolumn',
             header: 'Start Date',
             dataIndex: 'start',
-            width: 90,
+            width: 105,
             editor: {
                 xtype: 'datefield',
                 allowBlank: false,
@@ -171,7 +149,7 @@ Ext.onReady(function(){
                 var r = Ext.create('Employee', {
                     name: 'New Guy',
                     email: 'new@sencha-test.com',
-                    start: new Date(),
+                    start: Ext.Date.clearTime(new Date()),
                     salary: 50000,
                     active: true
                 });
@@ -201,4 +179,3 @@ Ext.onReady(function(){
         }
     });
 });
-
