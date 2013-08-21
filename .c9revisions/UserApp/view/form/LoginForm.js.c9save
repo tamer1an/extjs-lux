@@ -1,0 +1,2 @@
+{"ts":1377125254208,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1377125359503,"patch":[[{"diffs":[[1,"Ext.define('App.view.form.Radio',{\r\n    // alias:'widget.rdo',\r\n    xtype:'myRadio',\r\n\r\n    initComponent:function(){\r\n    \tconsole.log(' init view ');      \r\n    }\r\n});\r\n"]],"start1":0,"start2":0,"length1":0,"length2":171}]],"length":171,"saved":false}
