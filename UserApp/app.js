@@ -1,10 +1,12 @@
-Ext.require('Ext.container.Viewport');
+// Ext.require('Ext.container.Viewport');
 
 Ext.application({
     name:'UserApp',
-    appFolder:'UserApp',   
-    // autoCreateViewport : true,	
-    controllers:['UserApp.controller.ui.LoginForm'],
+    appFolder:'UserApp', 
+    // autoCreateViewport : true,    
+    
+    // models: ['User'],
+    controllers:['ui.LoginForm'],
 		
 	init: function(){ console.log(' init app '); },		
 	
