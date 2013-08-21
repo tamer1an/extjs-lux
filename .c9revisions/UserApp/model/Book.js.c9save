@@ -1,2 +1,0 @@
-{"ts":1377125167905,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1377125273587,"patch":[[{"diffs":[[1,"Ext.define('App.model.Book',{\r\n    extend: 'Ext.data.Model',\r\n    fields:['id','title','pages','numChapters','topic','publisher','isbn','isbn13']\r\n});\r\n"]],"start1":0,"start2":0,"length1":0,"length2":152}]],"length":152,"saved":false}

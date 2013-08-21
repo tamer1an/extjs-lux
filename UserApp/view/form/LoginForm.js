@@ -1,8 +1,8 @@
 Ext.define('UserApp.view.form.LoginForm',{
-    // alias:'widget.rdo',
-    xtype:'myRadio',
+
+    xtype:'ACELocalUserMGMTLoginForm',
 
     initComponent:function(){
-    	console.log(' init view ');      
+    	console.log(' init view ');
     }
 });
