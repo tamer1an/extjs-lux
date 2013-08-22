@@ -3,15 +3,42 @@
 Ext.application({
     name:'UserApp',
     appFolder:'UserApp', 
-    // autoCreateViewport : true,    
     
-    // models: ['User'],
-    controllers:['ui.LoginForm'],
-		
-	init: function(){ console.log(' init app '); },		
-	
-    launch: function(){
-		console.log(' launch ');
+    // autoCreateViewport : true,    
+   // models: ['User'],
+   
+                controllers:[
+                    'ui.LoginForm',
+                    'ui.ChangePassAfterUserLogin',
+                    'ui.AcePanelMain',
+                    'ui.UserMaintainceSwitch',
+                    'ui.AddNewBranch',
+                    'ui.BranchDetails',
+                    'ui.CreateNewUser',
+                    'ui.ChangePasswordConfirm',
+                    'ui.TemporaryPassword'
+                ],
+
+                launch: function(){
+                    console.log(' launch ');
+
+                    Ext.create('Ext.container.Viewport', {
+                        layout: 'border',
+                        renderTo: document.getElementById('User-App'),
+                        items: [
+                            {
+                                region: 'center',
+                                xtype: 'panel',
+                                title: 'ACE Menu - User Maintenance',
+                                layout: 'anchor',
+                                items:[
+                                    {
+                                      xtype: 'UserMGMTLoginForm' ,
+                                      anchor: '100% 100%'
+                                    }
+                                ]
+                            }]
+                    });
     }
 });
 
