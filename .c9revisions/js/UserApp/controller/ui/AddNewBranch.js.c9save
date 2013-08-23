@@ -1,0 +1,2 @@
+{"ts":1377187565085,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1377187630166,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.AddNewBranch',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.AddNewBranch'],\n\n    init: function() {\n        console.log(' init AddNewBranch  ctrl ');\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":202}]],"length":202,"saved":false}
