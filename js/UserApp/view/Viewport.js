@@ -19,7 +19,7 @@
                     ],
                     items:[
                         {
-                            xtype: 'UserMGMTAcePanelMain' ,
+                            xtype: 'widget.UserMGMT.PanelMain' ,
                             anchor: '100% 100%'  //anchor: '-150 100%'
                         }
                     ],
