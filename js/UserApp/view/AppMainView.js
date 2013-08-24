@@ -1,6 +1,9 @@
 Ext.define('UserApp.view.AppMainView',{
     extend: 'UserApp.core.PanelView',
     alias: 'widget.UserMGMT.AppMainView',
+    // requires: [
+        
+    // ],
     height: 1200,
     items:[{
         xtype:'panel',

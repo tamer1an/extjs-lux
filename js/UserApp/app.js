@@ -86,5 +86,4 @@ Ext.onReady(function() {
             });
         }
     });
-
 });
