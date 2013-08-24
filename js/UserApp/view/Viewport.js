@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 =======
 //Ext.require(
-//    'UserApp.controller.ui.AcePanelMain' ,
+//    'UserApp.controller.ui' ,
 //    function(e){
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
@@ -10,7 +10,7 @@
                 {
                     region: 'center',
                     xtype: 'panel',
-                    title: 'widget.UserMGMT.PanelMain',
+                    title: 'widget.PanelMain',
                     layout: 'anchor',
 >>>>>>> b21af2d39d8de3c37b39988e72b4659ab860b1b8
 

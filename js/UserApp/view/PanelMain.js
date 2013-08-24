@@ -1,10 +1,10 @@
 Ext.define('UserApp.view.PanelMain',{
     extend: 'Ext.panel.Panel',
-    alias: 'widget.UserMGMTPanelMain',
+    alias: 'widget.PanelMain',
     height: 1000,
     items:[{
         xtype:'panel',
-        title: 'Search Details Panel',
+        title: 'Panel',
         height: 180,
         layout: {
             type: 'vbox',
@@ -27,13 +27,13 @@ Ext.define('UserApp.view.PanelMain',{
                         xtype: 'combobox',
                         padding: '0 10px 0 10px',
                         width: 373,
-                        fieldLabel: 'UUName / Login ID'
+                        fieldLabel: 'Login'
                     },
                     '->','-',
                     {
                         xtype: 'button',
                         disabled: true,
-                        text: 'Add New User'
+                        text: 'Add'
                     }
                 ]
             }
@@ -57,7 +57,7 @@ Ext.define('UserApp.view.PanelMain',{
                         xtype: 'textfield',
                         disabled: true,
                         width: 370,
-                        fieldLabel: 'First Name',
+                        fieldLabel: ' Name',
                         labelWidth: 150,
                         padding:'0 0 0 15'
                     },
@@ -65,7 +65,7 @@ Ext.define('UserApp.view.PanelMain',{
                         xtype: 'textfield',
                         disabled: true,
                         width: 371,
-                        fieldLabel: 'Last Name',
+                        fieldLabel: 'Last ',
                         labelWidth: 150,
                         padding:'0 0 0 15'
                     },
@@ -73,7 +73,7 @@ Ext.define('UserApp.view.PanelMain',{
                         xtype: 'textfield',
                         disabled: true,
                         width: 371,
-                        fieldLabel: 'Status',
+                        fieldLabel: 'Sts',
                         labelWidth: 150,
                         padding:'0 0 0 15'
                     }
