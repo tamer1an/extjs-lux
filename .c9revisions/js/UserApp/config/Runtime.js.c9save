@@ -1,0 +1,2 @@
+{"ts":1377302094901,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1377302210574,"patch":[[{"diffs":[[1,"Ext.define(‘MyApp.config.Runtime’,{\r\n    singleton : true,\r\n    config : {\r\n        myLastCustomer : 0   // initialize to 0\r\n    },\r\n    constructor : function(config){\r\n        this.initConfig(config);\r\n    }\r\n});"]],"start1":0,"start2":0,"length1":0,"length2":214}]],"length":214,"saved":false}

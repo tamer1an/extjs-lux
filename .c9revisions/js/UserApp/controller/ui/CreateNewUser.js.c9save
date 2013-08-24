@@ -1,2 +1,0 @@
-{"ts":1377187811454,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1377187879059,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.CreateNewUser',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.CreateNewUser'],\n\n    init: function() {\n        console.log(' init CreateNewUser ctrl ');\n\n\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":206}]],"length":206,"saved":false}

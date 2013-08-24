@@ -1,0 +1,9 @@
+Ext.define('UserApp.controller.AppMainView',{
+    extend:'UserApp.core.Controller',
+
+    views: ['AppMainView'],
+
+    init: function() {
+        console.log(' init UserMGMTPanelMain  ctrl 1');
+    }
+});

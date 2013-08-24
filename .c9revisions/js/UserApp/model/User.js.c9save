@@ -1,0 +1,3 @@
+{"ts":1377298575213,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"Ext.define('UserApp.model.User',{\r\n    extend: 'Ext.data.Model',\r\n    fields:[\r\n        'UUName',\r\n        'FisrtName',\r\n        'LastName',\r\n        'Password'\r\n    ]\r\n});\r\n"]],"start1":0,"start2":0,"length1":0,"length2":174}]],"length":174}
+{"contributors":[],"silentsave":false,"ts":1377298770642,"patch":[[{"diffs":[[0,"d: '"],[-1,"Ext.data"],[1,"UserApp.core"],[0,".Mod"]],"start1":44,"start2":44,"length1":16,"length2":20}]],"length":178,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377299114017,"patch":[[{"diffs":[[0,"   '"],[-1,"UU"],[1,"Login"],[0,"Name"]],"start1":89,"start2":89,"length1":10,"length2":13}]],"length":181,"saved":false}

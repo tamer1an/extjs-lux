@@ -54,3 +54,133 @@ Ext.application({
 });
 
 // var app = UserApp.getApplication();
+
+/*
+//////////////////////////////////////////
+Ext.define('MyApp.view.MyGrid',{
+    extend : 'Ext.grid.Panel',
+    store : 'MyStore',
+    columns : [{...}],
+    initComponent : function(){
+        this.menu = this.buildMenu();
+        this.callParent(arguments);
+        this.on({
+            scope : this,
+            itemcontextmenu : this.onItemContextMenu
+        });
+    },
+ 
+    buildMenu : function(){
+        return Ext.create('Ext.menu.Menu',{
+            items : [{
+                text : 'Do Something'
+            }]
+        });
+    },
+ 
+    onDestroy : function(){
+        this.menu.destroy();
+        this.callParent(arguments);
+    },
+ 
+    onItemContextMenu : function(view,rec,item,index,event){
+        event.stopEvent();
+        this.menu.showAt(event.getXY());
+    }
+});
+Example 2C. BEST: When the grid is destroyed, the context menu is also destroyed.
+
+//////////////////////////////////////////
+    this.getController('SomeOtherController').runSomeFunction(myParm);
+    
+    MyApp.getApplication().fireEvent('myevent');
+    
+    MyApp.getApplication().on({
+        myevent : doSomething
+    });
+Example 3C. Another controller listens for the app-level event.
+
+//////////////////////////////////////////
+    var pictureSaveButton = Ext.ComponentQuery.query('#picturetoolbar > #savebutton')[0];
+    var orderSaveButton   = Ext.ComponentQuery.query('#ordertoolbar > #savebutton')[0]; 
+     
+    // assuming we have a reference to the “picturetoolbar” as picToolbar
+    picToolbar.down(‘#savebutton’);
+    
+    Example 6C. GOOD: Referencing components by ‘itemId’.
+    
+//////////////////////////////////////////     
+    var mySaveButton = myToolbar.items.getAt(2);    
+    var myWindow = myToolbar.ownerCt;
+    Example 7A. BAD: Avoid retrieving component references based on component positioning.
+
+    var mySaveButton = myToolbar.down(‘#savebutton’);    // searching against itemId    
+    var myWindow = myToolbar.up(‘window’);
+    Example 7B. GOOD: Use ComponentQuery to retrieve relative references.
+ 
+//////////////////////////////////////////   
+    9. Constraining a component to a parent component’s layout
+    
+    Ext.define('MyApp.view.MyGrid',{
+    extend : 'Ext.grid.Panel',
+    initComponent : function(){
+        Ext.apply(this,{
+            store : ‘MyStore’,
+            region : 'center',
+            ......
+        });
+        this.callParent(arguments);
+    }
+});
+Example 9A. BAD: The ‘center’ region should not be specified here.
+-----------------
+Ext.define('MyApp.view.MyGrid',{
+    extend : 'Ext.grid.Panel',
+    initComponent : function(){
+        Ext.apply(this,{
+            store : ‘MyStore’,
+            ......
+        });
+    }
+});
+ 
+// specify the region when the component is created...
+Ext.create('MyApp.view.MyGrid',{
+    region : 'center' 
+});
+Example 9B. GOOD: Specify the region when creating the component.
+-------------
+
+Ext.define('MyApp.view.MyGrid',{
+    extend : 'Ext.grid.Panel',
+    region : 'center', // default region
+    initComponent : function(){
+        Ext.apply(this,{
+            store : ‘MyStore’,
+            ......
+        });
+    }
+});
+ 
+Ext.create(‘MyApp.view.MyGrid’,{
+    region : ‘north’, // overridden region
+    height : 400
+});
+Example 9C. Also GOOD: Specify a default region and override if necessary.
+
+
+//////////////////////////////////////////   
+items : [{
+    fieldLabel : ‘User’,
+    name : ‘UserName’
+},{
+    fieldLabel : ‘Email’,
+    name : ‘Email’
+},{
+    fieldLabel : ‘Home Address’,
+    name : ‘Address’
+}];
+ 
+myForm.loadRecord(record);
+Example 10B. GOOD: Use loadRecord to load all form fields with one line of code.
+*/

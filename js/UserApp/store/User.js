@@ -1,14 +1,19 @@
 Ext.define('UserApp.store.User',{
     
     autoLoad: true,
-    extend:'Ext.data.Store',
+    extend:'UserApp.core.Store',
     model:'User',
+    alias: 'store.staff',
+    // requires: [
+    //     'UserApp.model.User'
+    // ],
     
+    storeId: 'Staff',
+    restPath: '/api/staff',
+     
     proxy: {
-        
         type: 'ajax',
         url:'data.json',
-        
         reader:{
             type:'json',
             successProperty:'success'
@@ -18,8 +23,8 @@ Ext.define('UserApp.store.User',{
             writeAllFields:true,
             encode: false
         },
-        autoSync:true
-
+        autoSync:true,
     }
-
 });
+
+

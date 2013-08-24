@@ -6,11 +6,15 @@ Ext.onReady(function() {
     Ext.application({
         name:'UserApp',
         appFolder:'../js/UserApp',
-//      autoCreateViewport : true,
+        
+        // Example 5C. Sample Runtime.js file to hold global properties for an app.
+        // requires : ['UserApp.config.Runtime'], UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue();
+        
+        // autoCreateViewport : true,    // Ext.create( "UserApp.view.Viewport",this); 
 
         // models: ['User'],
         controllers:[
-            'ui.PanelMain'
+            'AppMainView'
 //            'ui.LoginForm',
 //            'ui.ChangePassAfterUserLogin',
 //            'ui.UserMaintainceSwitch',
@@ -20,11 +24,12 @@ Ext.onReady(function() {
 //            'ui.ChangePasswordConfirm',
 //            'ui.TemporaryPassword'
         ],
-        launch: function(){  //            Ext.create( "UserApp.view.Viewport",this);
+        launch: function(){           
             console.log(' launch ');  //TODO: TrybynenkoA: AJAX AUTH CALL // this.auth  // additinal object info structure
 
             Ext.create('Ext.container.Viewport', {
-                layout: 'border',
+                // layout: 'border',
+                layout: 'fit',
                 renderTo: document.getElementById('User-App'),
                 items: [
                     {
@@ -40,7 +45,7 @@ Ext.onReady(function() {
                         ],
                         items:[
                             {
-                                xtype: 'UserMGMTPanelMain' ,
+                                xtype: 'UserMGMT.AppMainView' ,
                                 anchor: '100% 100%'  //anchor: '-150 100%'
                             }
                         ],
