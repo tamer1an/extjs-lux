@@ -10,6 +10,21 @@ Ext.onReady(function() {
         // Example 5C. Sample Runtime.js file to hold global properties for an app.
         // requires : ['UserApp.config.Runtime'], UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue();
         
+        /* ============ History =================
+            requires: [
+                'Ext.util.History'
+            ],
+            Ext.util.History.init(function(){
+                var hash = document.location.hash;
+                me.getAppController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+            })
+            // add change handler for Ext.util.History; when a change in the token
+            // occurs, this will fire our controller's event to load the appropriate content
+            Ext.util.History.on( 'change', function( token ){
+                me.getAppController().fireEvent( 'tokenchange', token );
+            });
+        */
+        
         // autoCreateViewport : true,    // Ext.create( "UserApp.view.Viewport",this); 
 
         // models: ['User'],
@@ -26,6 +41,31 @@ Ext.onReady(function() {
         ],
         launch: function(){           
             console.log(' launch ');  //TODO: TrybynenkoA: AJAX AUTH CALL // this.auth  // additinal object info structure
+            
+            /*
+                //  this.listen({
+                //     controller: {},
+                //     component: {},
+                //     global: {},
+                //     store: {}  
+                // });
+                
+                this.listen({
+                    controller: {
+                        '#App': {
+                            tokenchange: this.dispatch
+                        }
+                    },
+                    component: {
+                        'menu[xtype=layout.menu] menuitem': {
+                            click: this.addHistory
+                        } 
+                    },
+                    global: {},
+                    store: {}  
+                });
+            */
+
 
             Ext.create('Ext.container.Viewport', {
                 // layout: 'border',
@@ -87,3 +127,70 @@ Ext.onReady(function() {
         }
     });
 });
+
+
+// /** History logic
+//      * Add history token to Ext.util.History
+//      * @param {Ext.menu.Item} item
+//      * @param {Object} e
+//      * @params {Object} opts
+//      */
+//     addHistory: function( item, e, opts ) {
+//         var me = this,
+//             token = item.itemId;
+//         Ext.util.History.add( token );
+//         me.fireEvent( 'tokenchange', token )
+//     },
+//     /**
+//      * Handles token change and directs creation of content in center region
+//      * @param {String} token
+//      */
+//     dispatch: function( token ) {
+//         var me = this,
+//             config;
+//         // switch on token to determine which content to create
+//         switch( token ) {
+//             case 'staff':
+//                 config = {
+//                     xtype: 'panel',
+//                     title: 'Staff',
+//                     html: 'Some staff content'
+//                 };
+//                 break;
+//             case 'options':
+//                 config = {
+//                     xtype: 'panel',
+//                     title: 'Options',
+//                     html: 'Some options content'
+//                 };
+//                 break;
+//             case 'inventory':
+//                 config = {
+//                     xtype: 'panel',
+//                     title: 'Inventory',
+//                     html: 'Some inventory content' 
+//                 };
+//                 break;
+//             default: 
+//                 config = {
+//                     xtype: 'layout.landing'
+//                 };
+//                 break;
+//         }
+//         me.updateCenterRegion( config );
+//     },
+//     /**
+//      * Updates center region of app with passed configuration
+//      * @param {Object} config
+//      */
+//     updateCenterRegion: function( config ) {
+//         var me = this,
+//             center = me.getCenterRegion();
+
+//         // remove all existing content
+//         center.removeAll( true );
+//         // add new content
+//         center.add( config );
+//     }
+//     ...
+// });
