@@ -1,7 +1,7 @@
 Ext.define('UserApp.model.User',{
     extend: 'Ext.data.Model',
     fields:[
-        'UUName',
+        'Login',
         'FisrtName',
         'LastName',
         'Password'

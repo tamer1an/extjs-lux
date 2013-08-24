@@ -1,2 +1,0 @@
-{"ts":1377187603176,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1377187670742,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.BranchDetails',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.BranchDetails'],\n\n    init: function() {\n        console.log(' init BranchDetails ctrl ');\n\n\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":206}]],"length":206,"saved":false}

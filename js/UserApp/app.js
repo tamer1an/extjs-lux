@@ -1,27 +1,16 @@
 //Ext.Loader.setConfig({ enabled: true });
 
 Ext.onReady(function() {
-    // Ext.QuickTips.init();
 
     Ext.application({
         name:'UserApp',
         appFolder:'../js/UserApp',
-//      autoCreateViewport : true,
 
-        // models: ['User'],
         controllers:[
             'ui.PanelMain'
-//            'ui.LoginForm',
-//            'ui.ChangePassAfterUserLogin',
-//            'ui.UserMaintainceSwitch',
-//            'ui.AddNewBranch',
-//            'ui.BranchDetails',
-//            'ui.CreateNewUser',
-//            'ui.ChangePasswordConfirm',
-//            'ui.TemporaryPassword'
         ],
         launch: function(){  //            Ext.create( "UserApp.view.Viewport",this);
-            console.log(' launch ');  //TODO: TrybynenkoA: AJAX AUTH CALL // this.auth  // additinal object info structure
+            console.log(' launch ');  
 
             Ext.create('Ext.container.Viewport', {
                 layout: 'border',
