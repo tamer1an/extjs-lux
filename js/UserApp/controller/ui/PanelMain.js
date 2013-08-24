@@ -4,6 +4,6 @@ Ext.define('UserApp.controller.ui.PanelMain',{
     views: ['PanelMain'],
 
     init: function() {
-        console.log(' init UserMGMTPanelMain  ctrl ');
+        console.log(' init  ctrl ');
     }
 });

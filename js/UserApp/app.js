@@ -41,27 +41,27 @@ Ext.onReady(function() {
                                     {
                                         xtype: 'button',
                                         disabled: true,
-                                        text: 'Save Changes'
+                                        text: 'Save '
                                     },'-',
                                     {
                                         xtype: 'button',
                                         disabled: true,
-                                        text: 'Reset Changes'
+                                        text: 'Reset '
                                     },'-',
                                     {
                                         xtype: 'button',
                                         disabled: true,
-                                        text: 'Reset Password'
+                                        text: 'Reset '
                                     },'-',
                                     {
                                         xtype: 'button',
                                         disabled: true,
-                                        text: 'Disable User'
+                                        text: 'Disable '
                                     },'-',
                                     {
                                         xtype: 'button',
                                         disabled: true,
-                                        text: 'Delete User'
+                                        text: 'Delete '
                                     }
                                 ]
                             }

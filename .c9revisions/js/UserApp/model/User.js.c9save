@@ -1,0 +1,1 @@
+{"ts":1377304327671,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"Ext.define('UserApp.model.User',{\r\n    extend: 'Ext.data.Model',\r\n    fields:[\r\n        'Login',\r\n        'FisrtName',\r\n        'LastName',\r\n        'Password'\r\n    ]\r\n});\r\n"]],"start1":0,"start2":0,"length1":0,"length2":173}]],"length":173}
