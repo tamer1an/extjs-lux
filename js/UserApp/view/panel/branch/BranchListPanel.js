@@ -19,10 +19,10 @@ Ext.define('UserApp.view.panel.branch.BranchListPanel',{
             {
                 xtype: 'button',
                 text:  'Add +',
-                disabled: true
+                disabled: false
         }]
     }],
-        
+    
     initComponent:function(){
         console.log(' Init branchpanel view ');
         this.callParent(arguments);

@@ -13,7 +13,7 @@ Ext.define('UserApp.view.grid.user.UserGrid',{
         { header: 'User Id',  dataIndex: 'UserID' },
         { header: 'TITLE1 Name', dataIndex: 'Login' },
         { header: 'TITLE1 Name', dataIndex: 'FisrtName' },
-        { header: 'TITLE1 Name', dataIndex: 'LastName' }
+        { header: 'TITLE1 Name', dataIndex: 'LastName', /*width:"100%"*/ }
     ],
         
     initComponent:function(){

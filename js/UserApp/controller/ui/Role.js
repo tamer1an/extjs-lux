@@ -4,6 +4,6 @@ Ext.define('UserApp.controller.ui.Role',{
     views: ['panel.role.RoleListPanel','grid.role.RoleGrid' /*'form.user.CreateUser','form.user.UserMaintainceSwitch','form.user.ChangePasswordConfirm'*/],
 
     init: function() {
-        console.log(' init User ctrl ');
+        console.log(' init Role ctrl ');
     }
 });

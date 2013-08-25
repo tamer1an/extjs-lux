@@ -3,7 +3,11 @@ Ext.define('UserApp.view.AppMainView',{
     alias: 'widget.UserMGMT.AppMainView',
     // requires: [ // ],
     height: 1200,
-      
+    
+    // viewConfig: {
+    //     loadingText: true
+    // },
+    
     // config: {
     //     search: 
     // },
@@ -82,7 +86,7 @@ Ext.define('UserApp.view.AppMainView',{
                         labelWidth: 150,
                         padding:'0 0 0 15'
                     }
-                ]
+                ] 
             }
         ]
         
@@ -97,7 +101,7 @@ Ext.define('UserApp.view.AppMainView',{
     // scope:this,
     initComponent:function(){
         
-        console.log(' init view ',this.getSearchForm());
+        console.log(' init view ',this.getSearchForm(),this.loadingText);
         this.callParent(arguments);
     },
     getSearchForm: function() {

@@ -9,8 +9,8 @@ Ext.application({
     name:'UserApp',
     appFolder:'../js/UserApp',   
 
-    models: ['branch.Branch','user.User'],
-    stores: ['branch.Branch','user.User'],
+    // models: ['branch.Branch'],//,'user.User'],
+    // stores: ['branch.Branch'],//,'user.User'],
     
     controllers:[
         'AppMainView'
@@ -40,34 +40,36 @@ Ext.application({
         });
     },
     
-    getAppDocked : function() {        
+    getAppDocked : function() {       
+        var auth = false;
+        
          return [{
             xtype: 'toolbar',
             dock: 'bottom',
             items: [
                 {
                     xtype: 'button',
-                    disabled: true,
+                    disabled: auth,
                     text: 'Save'
                 },'-',
                 {
                     xtype: 'button',
-                    disabled: true,
+                    disabled: auth,
                     text: 'Reset'
                 },'-',
                 {
                     xtype: 'button',
-                    disabled: true,
+                    disabled: auth,
                     text: 'Reset'
                 },'-',
                 {
                     xtype: 'button',
-                    disabled: true,
+                    disabled: auth,
                     text: 'Disable'
                 },'-',
                 {
                     xtype: 'button',
-                    disabled: true,
+                    disabled: false,
                     text: 'Delete'
                 }
             ]
