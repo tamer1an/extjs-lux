@@ -83,28 +83,7 @@ Ext.define('UserApp.view.AppMainView',{
             }
         ]
     },{
-        xtype: 'panel',
-        bodyPadding: 10,
-        title: 'TITLE1',
-        layout: 'anchor',
-        tools: [
-            {
-                xtype: 'tool',
-                type: 'down'
-            }
-        ],
-        items: [
-            {
-                xtype: 'gridpanel',
-                title: '',
-                height:300,
-                columns: [
-                    { header: 'TITLE1 Id',  dataIndex: 'TITLE1Id' },
-                    { header: 'TITLE1 Name', dataIndex: 'TITLE1Name' }
-                ]
-
-            }
-        ]
+        xtype: 'UserMGMT.user.UserListPanel'
     },{
         xtype: 'UserMGMT.branch.BranchListPanel'
     }],

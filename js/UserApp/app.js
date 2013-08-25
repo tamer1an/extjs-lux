@@ -13,7 +13,7 @@ Ext.application({
     controllers:[
         'AppMainView'
        ,'ui.Branch'
-    //, 'ui.User'
+       ,'ui.User'
     //, 'ui.Role'
     ],
     
