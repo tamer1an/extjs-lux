@@ -17,9 +17,10 @@ Ext.define('UserApp.view.grid.user.UserGrid',{
     ],
         
     initComponent:function(){
-        var userStore = Ext.create('UserApp.store.user.User');
-        userStore.load(); 
-        this.store = userStore;
+        // var userStore = Ext.create('UserApp.store.user.User');
+        // userStore.load(); 
+        
+        this.store = Ext.create('UserApp.store.user.User').load();
         
         console.log(' init usergrid view ');
         this.callParent(arguments);

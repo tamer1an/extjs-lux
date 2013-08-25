@@ -22,7 +22,8 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
     ],
    
     initComponent:function(){         // var me = this;
-          
+        this.store = Ext.create('UserApp.store.branch.Branch').load();
+         
         console.log(' init branchgrid view ');
         this.callParent(arguments);
     }
