@@ -1,14 +1,15 @@
 /** 
  * Application domain model //Ext.Loader.setConfig({ enabled: true }); 
  * 
- * // Example 5C. Sample Runtime.js file to hold global properties
- * // for an app. UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue(); 
- * // requires : ['UserApp.config.Runtime'], 
+
+
  */
 Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
-
+    
+    requires : ['UserApp.config.Runtime'],  // Example 5C. Sample Runtime.js file to hold global properties // for an app. UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue();
+    
     // models: ['branch.Branch'],//,'user.User'],
     // stores: ['branch.Branch'],//,'user.User'],
     
@@ -41,7 +42,8 @@ Ext.application({
     },
     
     getAppDocked : function() {       
-        var auth = false;
+        
+        var auth = UserApp.config.Runtime.getSomeValue();
         
          return [{
             xtype: 'toolbar',
@@ -69,7 +71,6 @@ Ext.application({
                 },'-',
                 {
                     xtype: 'button',
-                    disabled: false,
                     text: 'Delete'
                 }
             ]

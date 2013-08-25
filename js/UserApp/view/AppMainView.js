@@ -41,7 +41,7 @@ Ext.define('UserApp.view.AppMainView',{
                     '->','-',
                     {
                         xtype: 'button',
-                        disabled: true,
+                        disabled: UserApp.config.Runtime.getSomeValue(),
                         text: 'Add +'
                     }
                 ]

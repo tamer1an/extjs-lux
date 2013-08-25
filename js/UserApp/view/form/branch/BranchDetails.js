@@ -9,7 +9,7 @@ Ext.define('UserApp.view.form.branch.BranchDetails',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Branch Details',
+    title: ' Details',
 
     tools: [
         {

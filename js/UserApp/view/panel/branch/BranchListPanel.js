@@ -19,7 +19,7 @@ Ext.define('UserApp.view.panel.branch.BranchListPanel',{
             {
                 xtype: 'button',
                 text:  'Add +',
-                disabled: false
+                disabled: UserApp.config.Runtime.getSomeValue()
         }]
     }],
     

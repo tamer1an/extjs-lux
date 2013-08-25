@@ -9,7 +9,7 @@ Ext.define('UserApp.view.form.branch.CreateBranch',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Add New Branch',
+    title: 'Add New ',
 
     tools: [
         {
@@ -27,7 +27,7 @@ Ext.define('UserApp.view.form.branch.CreateBranch',{
         {
             xtype: 'fieldset',
             height: 136,
-            title: 'Branch list',
+            title: ' list',
             items: [
                 {
                     xtype: 'checkboxgroup',
@@ -39,21 +39,21 @@ Ext.define('UserApp.view.form.branch.CreateBranch',{
                     items: [
                         {
                             xtype: 'checkboxfield',
-                            boxLabel: 'AX39 - This Branch is AX39',
+                            boxLabel: '- This ',
                             checked: true
                         },
                         {
                             xtype: 'checkboxfield',
-                            boxLabel: 'WEWA  - This Branch is WEWA'
+                            boxLabel: ' is '
                         },
                         {
                             xtype: 'checkboxfield',
-                            boxLabel: 'WEWN -  This Branch is WEWN',
+                            boxLabel: ' Branch is ',
                             checked: true
                         },
                         {
                             xtype: 'checkboxfield',
-                            boxLabel: 'PT55 -  This Branch is PT55',
+                            boxLabel: ' This Branch is ',
                             boxLabelAttrTpl: [
                                 'ewtwt'
                             ]
