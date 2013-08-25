@@ -1,6 +1,6 @@
-Ext.define('UserApp.view.grid.branch.BranchGrid',{
+Ext.define('UserApp.view.grid.branch.BranchListPanel',{
     extend: 'UserApp.core.PanelView',
-    alias: 'widget.UserMGMT.branch.BranchGrid',
+    alias: 'widget.UserMGMT.branch.BranchListPanel',
    
     // requires: [
     //     'Ext.grid.plugin.RowEditing',

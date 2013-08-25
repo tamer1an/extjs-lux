@@ -106,7 +106,7 @@ Ext.define('UserApp.view.AppMainView',{
             }
         ]
     },{
-        xtype: 'UserMGMT.branch.BranchGrid'
+        xtype: 'UserMGMT.branch.BranchListPanel'
     }],
     initComponent:function(){
         console.log(' init view ');
