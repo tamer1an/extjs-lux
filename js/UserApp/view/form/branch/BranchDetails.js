@@ -1,6 +1,6 @@
-Ext.define('UserApp.view.form.BranchDetails',{
+Ext.define('UserApp.view.form.branch.BranchDetails',{
     extend: 'Ext.panel.Panel',
-    alias: 'widget.UserMGMTBranchDetails',
+    alias: 'widget.UserMGMT.BranchDetails',
 
     height: 220,
     margin: '0  0 0 10px',

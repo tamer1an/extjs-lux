@@ -1,0 +1,23 @@
+[
+    {
+        "UserID":1,
+        "Login": 'Learni',
+        "FisrtName": 'Learning Ext JS 3.2',
+        "LastName":  'Learni',
+        "Password": 'Learni',
+    },
+    {
+        "UserID":2,
+        "Login": 'Learni',
+        "FisrtName": 'Learning Ext JS 3.2',
+        "LastName": 'Learni',
+        "Password": 'Learni',
+    },
+    {
+        "UserID":3,
+        "Login": 'Learni',
+        "FisrtName": 'Learning Ext JS 3.2',
+        "LastName": 'Learni',
+        "Password": 'Learni',
+    }
+]

@@ -1,3 +1,0 @@
-{"ts":1377187811454,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1377187879059,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.CreateNewUser',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.CreateNewUser'],\n\n    init: function() {\n        console.log(' init CreateNewUser ctrl ');\n\n\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":206}]],"length":206,"saved":false}
-{"contributors":[],"silentsave":false,"ts":1377298633844,"patch":[[{"diffs":[[0,"nd:'"],[-1,"Ext.app"],[1,"UserApp.core"],[0,".Con"]],"start1":59,"start2":59,"length1":15,"length2":20}]],"length":211,"saved":false}

@@ -30,14 +30,14 @@ Ext.define('UserApp.config.Runtime',{
         }, 17);
                 
         window.requestAnimationFrame = (function(){
-        return  window.requestAnimationFrame       || 
-              window.webkitRequestAnimationFrame || 
-              window.mozRequestAnimationFrame    || 
-              window.oRequestAnimationFrame      || 
-              window.msRequestAnimationFrame     || 
-              function( callback ){
-                window.setTimeout(callback, 1000 / 60);
-              };
+            return    window.requestAnimationFrame       || 
+                      window.webkitRequestAnimationFrame || 
+                      window.mozRequestAnimationFrame    || 
+                      window.oRequestAnimationFrame      || 
+                      window.msRequestAnimationFrame     || 
+                      function( callback ){
+                        window.setTimeout(callback, 1000 / 60);
+                      };
         })();
         
         var stop = false;
@@ -65,6 +65,9 @@ Ext.define('UserApp.config.Runtime',{
         // http://www.html5rocks.com/en/tutorials/cors/
     },
     geolocate: function(callback, maxAge, highAccuracy, continuous) {
+         var  geolocateCallbackFunction = callback;
+         var continuousReference = null;
+        
         function isSupported() {
             if(window.navigator.geolocation) {
               return true;
@@ -93,9 +96,7 @@ Ext.define('UserApp.config.Runtime',{
             else {
               // Request for location timed out.
             }
-            
-          var  geolocateCallbackFunction = callback;
-           var continuousReference = null;
+
         
             if (maxAge === undefined) {
               maxAge = 3600000;

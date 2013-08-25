@@ -1,132 +1,134 @@
-//Ext.Loader.setConfig({ enabled: true });
+/** 
+ * Application domain model //Ext.Loader.setConfig({ enabled: true });
+ */
+Ext.application({  
+    name:'UserApp',
+    appFolder:'../js/UserApp',   
+    // Example 5C. Sample Runtime.js file to hold global properties for an app.
+    // requires : ['UserApp.config.Runtime'], UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue(); 
+    // models: ['User'],
+    
+    controllers:[
+        'AppMainView'
+    //  'ui.Branch',
+    //  'ui.User',
+    //  'ui.Role',
+    ],
+    
+    launch: function(){           
+        console.log(' launch ');
 
-Ext.onReady(function() {
-    // Ext.QuickTips.init();
-
-    Ext.application({
-        name:'UserApp',
-        appFolder:'../js/UserApp',
-        
-        // Example 5C. Sample Runtime.js file to hold global properties for an app.
-        // requires : ['UserApp.config.Runtime'], UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue();
-        
-        /* ============ History =================
-            requires: [
-                'Ext.util.History'
-            ],
-            Ext.util.History.init(function(){
-                var hash = document.location.hash;
-                me.getAppController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
-            })
-            // add change handler for Ext.util.History; when a change in the token
-            // occurs, this will fire our controller's event to load the appropriate content
-            Ext.util.History.on( 'change', function( token ){
-                me.getAppController().fireEvent( 'tokenchange', token );
-            });
-        */
-        
-        // autoCreateViewport : true,    // Ext.create( "UserApp.view.Viewport",this); 
-
-        // models: ['User'],
-        controllers:[
-            'AppMainView'
-//            'ui.LoginForm',
-//            'ui.ChangePassAfterUserLogin',
-//            'ui.UserMaintainceSwitch',
-//            'ui.AddNewBranch',
-//            'ui.BranchDetails',
-//            'ui.CreateNewUser',
-//            'ui.ChangePasswordConfirm',
-//            'ui.TemporaryPassword'
-        ],
-        launch: function(){           
-            console.log(' launch ');  //TODO: TrybynenkoA: AJAX AUTH CALL // this.auth  // additinal object info structure
-            
-            /*
-                //  this.listen({
-                //     controller: {},
-                //     component: {},
-                //     global: {},
-                //     store: {}  
-                // });
-                
-                this.listen({
-                    controller: {
-                        '#App': {
-                            tokenchange: this.dispatch
+        Ext.create('Ext.container.Viewport', {               
+            layout: 'fit',
+            renderTo: document.getElementById('User-App'),
+            items: [
+                {
+                    region: 'center',
+                    xtype: 'panel',
+                    title: 'User+',
+                    layout: 'anchor',
+                    tools: [
+                        {
+                            xtype: 'tool',
+                            type: 'gear'
                         }
-                    },
-                    component: {
-                        'menu[xtype=layout.menu] menuitem': {
-                            click: this.addHistory
-                        } 
-                    },
-                    global: {},
-                    store: {}  
-                });
-            */
-
-
-            Ext.create('Ext.container.Viewport', {
-                // layout: 'border',
-                layout: 'fit',
-                renderTo: document.getElementById('User-App'),
+                    ],
+                    items:[
+                        {
+                            xtype: 'UserMGMT.AppMainView' ,
+                            anchor: '100% 100%'  //anchor: '-150 100%'
+                        }
+                    ],
+                    dockedItems: this.getAppDocked()
+                }]
+        });
+    },
+    
+    getAppDocked : function() {
+     return [{
+                xtype: 'toolbar',
+                dock: 'bottom',
                 items: [
                     {
-                        region: 'center',
-                        xtype: 'panel',
-                        title: 'User+',
-                        layout: 'anchor',
-                        tools: [
-                            {
-                                xtype: 'tool',
-                                type: 'gear'
-                            }
-                        ],
-                        items:[
-                            {
-                                xtype: 'UserMGMT.AppMainView' ,
-                                anchor: '100% 100%'  //anchor: '-150 100%'
-                            }
-                        ],
-                        dockedItems: [
-                            {
-                                xtype: 'toolbar',
-                                dock: 'bottom',
-                                items: [
-                                    {
-                                        xtype: 'button',
-                                        disabled: true,
-                                        text: 'Save Changes'
-                                    },'-',
-                                    {
-                                        xtype: 'button',
-                                        disabled: true,
-                                        text: 'Reset Changes'
-                                    },'-',
-                                    {
-                                        xtype: 'button',
-                                        disabled: true,
-                                        text: 'Reset Password'
-                                    },'-',
-                                    {
-                                        xtype: 'button',
-                                        disabled: true,
-                                        text: 'Disable User'
-                                    },'-',
-                                    {
-                                        xtype: 'button',
-                                        disabled: true,
-                                        text: 'Delete User'
-                                    }
-                                ]
-                            }
-                        ]
-                    }]
-            });
-        }
-    });
+                        xtype: 'button',
+                        disabled: true,
+                        text: 'Save'
+                    },'-',
+                    {
+                        xtype: 'button',
+                        disabled: true,
+                        text: 'Reset'
+                    },'-',
+                    {
+                        xtype: 'button',
+                        disabled: true,
+                        text: 'Reset'
+                    },'-',
+                    {
+                        xtype: 'button',
+                        disabled: true,
+                        text: 'Disable'
+                    },'-',
+                    {
+                        xtype: 'button',
+                        disabled: true,
+                        text: 'Delete'
+                    }
+                ]
+            }];
+    }
 });
+
+
+
+ /*   
+ 
+ 
+ /// Store
+    var userStore = Ext.create('UserApp.store.user.User')
+    userStore.load(); 
+    
+    console.log (':',userStore, userStore.getCount());
+ 
+ 
+ ////Domain model EXT 4.2
+       //  this.listen({
+       //     controller: {},
+       //     component: {},
+       //     global: {},
+       //     store: {}  
+       // });
+       
+       this.listen({
+           controller: {
+               '#App': {
+                   tokenchange: this.dispatch
+               }
+           },
+           component: {
+               'menu[xtype=layout.menu] menuitem': {
+                   click: this.addHistory
+               } 
+           },
+           global: {},
+           store: {}  
+       });
+*/
+
+/* ============ History =================
+    requires: [
+        'Ext.util.History'
+    ],
+    Ext.util.History.init(function(){
+        var hash = document.location.hash;
+        me.getAppController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+    })
+    // add change handler for Ext.util.History; when a change in the token
+    // occurs, this will fire our controller's event to load the appropriate content
+    Ext.util.History.on( 'change', function( token ){
+        me.getAppController().fireEvent( 'tokenchange', token );
+    });
+*/
 
 
 // /** History logic
@@ -186,7 +188,6 @@ Ext.onReady(function() {
 //     updateCenterRegion: function( config ) {
 //         var me = this,
 //             center = me.getCenterRegion();
-
 //         // remove all existing content
 //         center.removeAll( true );
 //         // add new content

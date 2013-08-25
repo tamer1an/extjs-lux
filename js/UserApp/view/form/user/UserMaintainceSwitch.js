@@ -1,6 +1,6 @@
-Ext.define('UserApp.view.form.UserMaintainceSwitch',{
+Ext.define('UserApp.view.form.user.UserMaintainceSwitch',{
     extend: 'Ext.panel.Panel',
-    alias: 'widget.UserMGMTUserMaintainceSwitch',
+    alias: 'widget.UserMGMT.UserMaintainceSwitch',
 
     height: 140,
     margin: '0  0 0 10px',

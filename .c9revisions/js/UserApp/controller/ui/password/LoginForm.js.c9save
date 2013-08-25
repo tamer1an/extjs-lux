@@ -1,2 +1,0 @@
-{"ts":1377298529218,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.LoginForm',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.LoginForm'],\n\n    init: function() {\n        console.log(' init LoginForm ctrl ');\n\n\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":194}]],"length":194}
-{"contributors":[],"silentsave":false,"ts":1377298641217,"patch":[[{"diffs":[[0,"nd:'"],[-1,"Ext.app"],[1,"UserApp.core"],[0,".Con"]],"start1":55,"start2":55,"length1":15,"length2":20}]],"length":199,"saved":false}

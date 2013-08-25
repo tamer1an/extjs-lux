@@ -1,3 +1,0 @@
-{"ts":1377187912301,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
-{"contributors":[],"silentsave":false,"ts":1377187983451,"patch":[[{"diffs":[[1,"Ext.define('UserApp.controller.ui.UserMaintainceSwitch',{\n    extend:'Ext.app.Controller',\n\n    views: ['form.UserMaintainceSwitch'],\n\n    init: function() {\n        console.log(' init UserMaintainceSwitch ctrl ');\n\n\n    }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":227}]],"length":227,"saved":false}
-{"contributors":[],"silentsave":false,"ts":1377298662908,"patch":[[{"diffs":[[0,"nd:'"],[-1,"Ext.app"],[1,"UserApp.core"],[0,".Con"]],"start1":66,"start2":66,"length1":15,"length2":20}]],"length":232,"saved":false}
