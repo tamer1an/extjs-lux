@@ -9,8 +9,8 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
         // 'Ext.grid.column.Boolean',
         // 'Ext.grid.column.Date'
     // ],
-    // store: 'store.branch',
-    
+    // store: 'store.branch.Branch', // 'store.branch',
+    // autoCreate: true,
     iconCls: 'icon_user',
     height: 250,
     title: '',
@@ -21,10 +21,15 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
         { header: 'Active',      dataIndex: 'LongName' },
     ],
    
-    initComponent:function(){         // var me = this;
-        this.store = Ext.create('UserApp.store.branch.Branch').load();
-         
-        console.log(' init branchgrid view ');
+  // viewConfig: {
+  //       emptyText: 'Click a button to show a dataset',
+  //       deferEmptyText: false
+  //   }
+    
+    initComponent:function(){         // var me = this; me.xtypesMap
+                console.log(' init branchgrid view ');
+                
+        this.store = Ext.create('UserApp.store.branch.Branch').load(); 
         this.callParent(arguments);
     }
 });

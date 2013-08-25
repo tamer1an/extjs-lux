@@ -1,17 +1,19 @@
 /** 
  * Application domain model //Ext.Loader.setConfig({ enabled: true }); 
- * 
-
-
  */
 Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
     
-    requires : ['UserApp.config.Runtime'],  // Example 5C. Sample Runtime.js file to hold global properties // for an app. UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue();
-    
+    requires : ['UserApp.config.Runtime'],   // UserApp.config.Runtime.getSomeValue()
+        
     // models: ['branch.Branch'],//,'user.User'],
     // stores: ['branch.Branch'],//,'user.User'],
+    
+    // All the paths for custom classes
+    // paths: {
+    //     'Ext.ux': '../../../examples/ux/'
+    // },
     
     controllers:[
         'AppMainView'
@@ -19,6 +21,8 @@ Ext.application({
        ,'ui.Role'
        ,'ui.User'
     ],
+    
+    // setupApplication: function(){ // },
     
     launch: function(){                                     console.log(' launch ');       
         Ext.create('Ext.container.Viewport', {               
@@ -87,11 +91,7 @@ Ext.application({
     }
 });
 
-
-
  /*   
- 
- 
  /// Store
     var userStore = Ext.create('UserApp.store.user.User')
     userStore.load(); 
