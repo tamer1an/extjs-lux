@@ -1,13 +1,16 @@
 Ext.define('UserApp.view.AppMainView',{
     extend: 'UserApp.core.PanelView',
     alias: 'widget.UserMGMT.AppMainView',
-    // requires: [
-        
-    // ],
+    // requires: [ // ],
     height: 1200,
+      
+    // config: {
+    //     search: 
+    // },
+    
     items:[{
         xtype:'panel',
-        title: 'Search Details Panel',
+        title: 'Search Panel',
         height: 180,
         layout: {
             type: 'vbox',
@@ -82,13 +85,62 @@ Ext.define('UserApp.view.AppMainView',{
                 ]
             }
         ]
+        
     },{
         xtype: 'UserMGMT.role.RoleListPanel'
     },{
         xtype: 'UserMGMT.branch.BranchListPanel'
     }],
+    // constructor: function(cfg) {
+    //      this.initConfig(cfg);
+    // },
+    // scope:this,
     initComponent:function(){
-        console.log(' init view ');
+        
+        console.log(' init view ',this.getSearchForm());
         this.callParent(arguments);
+    },
+    getSearchForm: function() {
+       return [{
+                xtype: 'fieldcontainer',
+                height: 84,
+                width: 507,
+                fieldLabel: '',
+                items: [
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        width: 370,
+                        fieldLabel: 'ID',
+                        labelWidth: 150,
+                        padding:'10 0 0 15'
+                    },
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        width: 370,
+                        fieldLabel: 'First Name',
+                        labelWidth: 150,
+                        padding:'0 0 0 15'
+                    },
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        width: 371,
+                        fieldLabel: 'Last Name',
+                        labelWidth: 150,
+                        padding:'0 0 0 15'
+                    },
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        width: 371,
+                        fieldLabel: 'Status',
+                        labelWidth: 150,
+                        padding:'0 0 0 15'
+                    }
+                ]
+            }
+        ]
     }
 });
