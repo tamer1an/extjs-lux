@@ -1,5 +1,6 @@
 /** 
  * Application domain model //Ext.Loader.setConfig({ enabled: true }); 
+ * 
  * // Example 5C. Sample Runtime.js file to hold global properties
  * // for an app. UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue(); 
  * // requires : ['UserApp.config.Runtime'], 
@@ -13,33 +14,27 @@ Ext.application({
     controllers:[
         'AppMainView'
        ,'ui.Branch'
-       ,'ui.User'
-    //, 'ui.Role'
+       ,'ui.Role'
+    // ,'ui.User'
     ],
     
-    launch: function(){ console.log(' launch ');       
-      
+    launch: function(){                                     console.log(' launch ');       
         Ext.create('Ext.container.Viewport', {               
             layout: 'fit',
             renderTo: document.getElementById('User-App'),
             items: [{
-                xtype: 'panel',
-                title: 'User+',
+                xtype:  'panel',
                 layout: 'anchor',
-                
                 region: 'center',
-
-                tools: [{
-                    xtype: 'tool',
-                    type: 'gear'
-                }],
+                
+                title:       this.getAppTitle(),
+                tools:       this.getAppTools(),
+                dockedItems: this.getAppDocked(),
                 
                 items:[{
-                    xtype: 'UserMGMT.AppMainView' ,
-                    anchor: '100% 100%'  //anchor: '-150 100%'
-                }],
-                
-                dockedItems: this.getAppDocked()
+                    xtype:  'UserMGMT.AppMainView' ,
+                    anchor: '100% 100%'
+                }]
             }]
         });
     },
@@ -76,6 +71,15 @@ Ext.application({
                 }
             ]
         }];
+    },
+    getAppTools : function() {      
+         return [{
+                    xtype: 'tool',
+                    type: 'gear'
+               }];
+    },
+    getAppTitle : function() { 
+        return 'User+';
     }
 });
 
