@@ -6,3 +6,8 @@
 {"ts":1377388485250,"patch":[[{"diffs":[[0,"ller.ui."],[1,"branch."],[0,"Branch',"]],"start1":26,"start2":26,"length1":16,"length2":23}]],"length":263,"saved":false}
 {"ts":1377388518246,"patch":[[{"diffs":[[0,"ller.ui."],[-1,"branch."],[0,"Branch',"]],"start1":26,"start2":26,"length1":23,"length2":16}]],"length":256,"saved":false}
 {"contributors":[],"silentsave":false,"ts":1377388565403,"patch":[[{"diffs":[[0," Branch "],[-1," "],[0,"ctrl ');"]],"start1":227,"start2":227,"length1":17,"length2":16}]],"length":255,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377391011434,"patch":[[{"diffs":[[0,"anch"],[-1,"List"],[1,"Grid"],[0,"'],\n"]],"start1":165,"start2":165,"length1":12,"length2":12}]],"length":255,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377391466127,"patch":[[{"diffs":[[0,"UserApp."],[1,"controller."],[0,"core.Con"]],"start1":56,"start2":56,"length1":16,"length2":27}]],"length":266,"saved":false}
+{"ts":1377391513410,"patch":[[{"diffs":[[0,"UserApp."],[-1,"controller."],[0,"core.Con"]],"start1":56,"start2":56,"length1":27,"length2":16}]],"length":255,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377391666153,"patch":[[{"diffs":[[0,"iews: ['"],[1,"grid.branch.BranchGrid'  /*'"],[0,"form.bra"]],"start1":88,"start2":88,"length1":16,"length2":44},{"diffs":[[0,"ls',"],[-1,"'grid.branch.BranchGrid'"],[1,"*/"],[0,"],\n\n"]],"start1":174,"start2":174,"length1":32,"length2":10}]],"length":261,"saved":false}
+{"ts":1377391677802,"patch":[[{"diffs":[[0,"rid'  /*"],[1,","],[0,"'form.br"]],"start1":115,"start2":115,"length1":16,"length2":17},{"diffs":[[0,"Details'"],[-1,","],[0,"*/],\n\n  "]],"start1":170,"start2":170,"length1":17,"length2":16}]],"length":261,"saved":false}

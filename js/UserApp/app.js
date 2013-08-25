@@ -1,81 +1,81 @@
 /** 
- * Application domain model //Ext.Loader.setConfig({ enabled: true });
+ * Application domain model //Ext.Loader.setConfig({ enabled: true }); 
+ * // Example 5C. Sample Runtime.js file to hold global properties
+ * // for an app. UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue(); 
+ * // requires : ['UserApp.config.Runtime'], 
  */
-Ext.application({  
+Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
-    // Example 5C. Sample Runtime.js file to hold global properties for an app.
-    // requires : ['UserApp.config.Runtime'], UserApp.config.setSomeValue(12345); MyApp.config.getSomeValue(); 
+
     // models: ['User'],
     
     controllers:[
         'AppMainView'
-    //  'ui.Branch',
-    //  'ui.User',
-    //  'ui.Role',
+       ,'ui.Branch'
+    //, 'ui.User'
+    //, 'ui.Role'
     ],
     
-    launch: function(){           
-        console.log(' launch ');
-
+    launch: function(){ console.log(' launch ');       
+      
         Ext.create('Ext.container.Viewport', {               
             layout: 'fit',
             renderTo: document.getElementById('User-App'),
-            items: [
-                {
-                    region: 'center',
-                    xtype: 'panel',
-                    title: 'User+',
-                    layout: 'anchor',
-                    tools: [
-                        {
-                            xtype: 'tool',
-                            type: 'gear'
-                        }
-                    ],
-                    items:[
-                        {
-                            xtype: 'UserMGMT.AppMainView' ,
-                            anchor: '100% 100%'  //anchor: '-150 100%'
-                        }
-                    ],
-                    dockedItems: this.getAppDocked()
-                }]
+            items: [{
+                xtype: 'panel',
+                title: 'User+',
+                layout: 'anchor',
+                
+                region: 'center',
+
+                tools: [{
+                    xtype: 'tool',
+                    type: 'gear'
+                }],
+                
+                items:[{
+                    xtype: 'UserMGMT.AppMainView' ,
+                    anchor: '100% 100%'  //anchor: '-150 100%'
+                }],
+                
+                dockedItems: this.getAppDocked()
+            }]
         });
     },
     
-    getAppDocked : function() {
-     return [{
-                xtype: 'toolbar',
-                dock: 'bottom',
-                items: [
-                    {
-                        xtype: 'button',
-                        disabled: true,
-                        text: 'Save'
-                    },'-',
-                    {
-                        xtype: 'button',
-                        disabled: true,
-                        text: 'Reset'
-                    },'-',
-                    {
-                        xtype: 'button',
-                        disabled: true,
-                        text: 'Reset'
-                    },'-',
-                    {
-                        xtype: 'button',
-                        disabled: true,
-                        text: 'Disable'
-                    },'-',
-                    {
-                        xtype: 'button',
-                        disabled: true,
-                        text: 'Delete'
-                    }
-                ]
-            }];
+    getAppDocked : function() {        
+         return [{
+            xtype: 'toolbar',
+            dock: 'bottom',
+            items: [
+                {
+                    xtype: 'button',
+                    disabled: true,
+                    text: 'Save'
+                },'-',
+                {
+                    xtype: 'button',
+                    disabled: true,
+                    text: 'Reset'
+                },'-',
+                {
+                    xtype: 'button',
+                    disabled: true,
+                    text: 'Reset'
+                },'-',
+                {
+                    xtype: 'button',
+                    disabled: true,
+                    text: 'Disable'
+                },'-',
+                {
+                    xtype: 'button',
+                    disabled: true,
+                    text: 'Delete'
+                }
+            ]
+        }];
     }
 });
 

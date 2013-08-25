@@ -1,6 +1,6 @@
-Ext.define('UserApp.view.form.ChangePasswordConfirm',{
+Ext.define('UserApp.view.form.user.ChangePasswordConfirm',{
     extend: 'Ext.panel.Panel',
-    alias: 'widget.UserMGMTChangePasswordConfirm',
+    alias: 'widget.UserMGMT.ChangePasswordConfirm',
 
     height: 153,
     margin: '0  0 0 10px',

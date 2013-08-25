@@ -2,11 +2,12 @@ Ext.define('UserApp.controller.AppMainView',{
     extend:'UserApp.core.Controller',
 
     views: ['AppMainView'],
+    
     // requires: [
         
     // ],
     
-    /*
+    /* REFS
         views: [
             'layout.Menu',
             'layout.Center',

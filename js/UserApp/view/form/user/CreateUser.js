@@ -19,7 +19,7 @@ Ext.define('UserApp.view.form.user.CreateUser',{
     items: [
         {
             xtype: 'textfield',
-            fieldLabel: 'UUName'
+            fieldLabel: 'Login'
         },
         {
             xtype: 'textfield',

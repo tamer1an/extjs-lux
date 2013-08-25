@@ -29,13 +29,13 @@ Ext.define('UserApp.view.AppMainView',{
                         xtype: 'combobox',
                         padding: '0 10px 0 10px',
                         width: 373,
-                        fieldLabel: 'UUName / Login ID'
+                        fieldLabel: 'Login'
                     },
                     '->','-',
                     {
                         xtype: 'button',
                         disabled: true,
-                        text: 'Add New User'
+                        text: 'Add +'
                     }
                 ]
             }
@@ -106,40 +106,7 @@ Ext.define('UserApp.view.AppMainView',{
             }
         ]
     },{
-        xtype: 'panel',
-        bodyPadding: 10,
-        title: 'TITLE2',
-        tools: [
-            {
-                xtype: 'tool',
-                type: 'down'
-            }
-        ],
-        items: [
-            {
-                xtype: 'gridpanel',
-                height: 250,
-                title: '',
-                columns: [
-                    { header: 'TITLE2',  dataIndex: 'title' },
-                    { header: 'Description', dataIndex: 'description' }
-                ]
-            }
-        ],
-        dockedItems: [
-            {
-                xtype: 'toolbar',
-                dock: 'top',
-                items: [
-                    '->', '-',
-                    {
-                        xtype: 'button',
-                        text: 'Add +',
-                        disabled: true
-                    }
-                ]
-            }
-        ]
+        xtype: 'UserMGMT.branch.BranchGrid'
     }],
     initComponent:function(){
         console.log(' init view ');

@@ -1,7 +1,7 @@
 Ext.define('UserApp.controller.ui.Branch',{
     extend:'UserApp.core.Controller',
 
-    views: ['form.branch.CreateBranch','form.branch.BranchDetails','grid.branch.BranchList'],
+    views: ['grid.branch.BranchGrid'  /*,'form.branch.CreateBranch','form.branch.BranchDetails'*/],
 
     init: function() {
         console.log(' init Branch ctrl ');
