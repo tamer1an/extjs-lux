@@ -1,10 +1,10 @@
-Ext.define('UserApp.store.user.User',{
-    
+Ext.define('UserApp.store.user.User',{  
     extend:'UserApp.core.Store',
     model:'UserApp.model.user.User',
     alias: 'store.user',
     storeId: 'Users',
     autoLoad: true,
+    
     
     requires: [
         'UserApp.model.user.User'

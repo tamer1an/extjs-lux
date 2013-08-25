@@ -9,13 +9,14 @@ Ext.application({
     name:'UserApp',
     appFolder:'../js/UserApp',   
 
-    // models: ['User'],
+    models: ['branch.Branch','user.User'],
+    stores: ['branch.Branch','user.User'],
     
     controllers:[
         'AppMainView'
        ,'ui.Branch'
        ,'ui.Role'
-    // ,'ui.User'
+       ,'ui.User'
     ],
     
     launch: function(){                                     console.log(' launch ');       

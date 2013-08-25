@@ -75,3 +75,17 @@
 {"ts":1377431825413,"patch":[[{"diffs":[[0,"   },\n    getApp"],[-1,"Docked"],[1,"Tools"],[0," : function() { "]],"start1":2120,"start2":2120,"length1":38,"length2":37}]],"length":5663,"saved":false}
 {"ts":1377431925593,"patch":[[{"diffs":[[0,"    "],[-1,"   ,'ui.User"],[1,", 'ui.Role"],[0,"'\n    //"],[-1,","],[0," "],[1,","],[0,"'ui."],[-1,"Role"],[1,"User"],[0,"'\n  "]],"start1":449,"start2":449,"length1":38,"length2":36}]],"length":5661,"saved":false}
 {"ts":1377431929336,"patch":[[{"diffs":[[0,"ch'\n    "],[-1,","],[0," "],[1,"  ,"],[0,"'ui.Role"]],"start1":445,"start2":445,"length1":18,"length2":20}]],"length":5663,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377451718370,"patch":[[{"diffs":[[0,"   \n\n   "],[-1," //"],[0," models:"]],"start1":354,"start2":354,"length1":19,"length2":16},{"diffs":[[0,"dels: ['"],[-1,"User"],[1,"branch.Branch'],\n    stores: ['UserApp.store.branch.Branch"],[0,"'],\n    "]],"start1":365,"start2":365,"length1":20,"length2":74}]],"length":5714,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377452627282,"patch":[[{"diffs":[[0,"le'\n    "],[-1,"//"],[1,"  "],[0," ,'ui.Us"]],"start1":514,"start2":514,"length1":18,"length2":18}]],"length":5714,"saved":false}
+{"ts":1377453149782,"patch":[[{"diffs":[[0,"anch.Branch'"],[1,",'user.User'"],[0,"],\n    store"]],"start1":375,"start2":375,"length1":24,"length2":36}]],"length":5726,"saved":false}
+{"ts":1377453195451,"patch":[[{"diffs":[[0,".Branch'"],[1,",'branch.Branch','UserApp.store.user.User','user.User',"],[0,"],\n    \n"]],"start1":436,"start2":436,"length1":16,"length2":71}]],"length":5781,"saved":false}
+{"ts":1377453259487,"patch":[[{"diffs":[[0," 'panel'"],[1," "],[0,",\n      "]],"start1":900,"start2":900,"length1":16,"length2":17}]],"length":5782,"saved":false}
+{"ts":1377453272514,"patch":[[{"diffs":[[0," 'panel'"],[-1," "],[0,",\n      "]],"start1":900,"start2":900,"length1":17,"length2":16}]],"length":5781,"saved":false}
+{"ts":1377453307988,"patch":[[{"diffs":[[0,"r.User',"],[1,"'user.user'"],[0,"],\n    \n"]],"start1":491,"start2":491,"length1":16,"length2":27}]],"length":5792,"saved":false}
+{"ts":1377453360108,"patch":[[{"diffs":[[0,",'user.User'"],[1,"/*"],[0,",'user.user'"]],"start1":486,"start2":486,"length1":24,"length2":26},{"diffs":[[0,",'user.user'"],[1,"*/"],[0,"],\n    \n    "]],"start1":500,"start2":500,"length1":24,"length2":26}]],"length":5796,"saved":false}
+{"ts":1377453426538,"patch":[[{"diffs":[[0,"ser'"],[-1,"/*,'user.user'*/"],[0,"],\n "]],"start1":494,"start2":494,"length1":24,"length2":8}]],"length":5780,"saved":false}
+{"ts":1377453427983,"patch":[[{"diffs":[[0,"r.User','user.Us"],[1,"1"],[0,"er'],\n    \n    c"]],"start1":479,"start2":479,"length1":32,"length2":33}]],"length":5781,"saved":false}
+{"ts":1377453492283,"patch":[[{"diffs":[[0,": ['"],[-1,"UserApp.store.branch.Branch','branch.Branch','UserApp.store.user.User"],[1,"branch.Branch"],[0,"','u"]],"start1":412,"start2":412,"length1":77,"length2":21}]],"length":5725,"saved":false}
+{"ts":1377453503449,"patch":[[{"diffs":[[0,"'user.Us"],[-1,"1"],[0,"er'],\n  "]],"start1":431,"start2":431,"length1":17,"length2":16}]],"length":5724,"saved":false}
+{"ts":1377454097824,"patch":[[{"diffs":[[0,"r'],\n   "],[1," //"],[0," stores:"]],"start1":397,"start2":397,"length1":16,"length2":19}]],"length":5727,"saved":false}
+{"ts":1377454100484,"patch":[[{"diffs":[[0,"r'],\n   "],[-1," //"],[0," stores:"]],"start1":397,"start2":397,"length1":19,"length2":16}]],"length":5724,"saved":false}

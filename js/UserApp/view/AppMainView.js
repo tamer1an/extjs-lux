@@ -89,7 +89,7 @@ Ext.define('UserApp.view.AppMainView',{
     },{
         xtype: 'UserMGMT.role.RoleListPanel'
     },{
-        xtype: 'UserMGMT.branch.BranchListPanel'
+        xtype:  'UserMGMT.user.UserListPanel' // 'UserMGMT.branch.BranchListPanel'
     }],
     // constructor: function(cfg) {
     //      this.initConfig(cfg);
