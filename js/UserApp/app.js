@@ -1,11 +1,21 @@
 /** 
- * Application domain model //Ext.Loader.setConfig({ enabled: true }); 
+ * Application domain model 
+ * 
+ *   Ext.Loader.setConfig({
+ *      enabled: true,
+ *       disableCaching: false,
+ *       paths: {UsersApp: 'app', Ext: 'ext-4.0.7-gpl/src'}
+ *   });
+ * 
+ *  @param UserApp.config.Runtime.getSomeValue()
+ *  @optional setupApplication: function(){ // }, to add extra control or use Runtime
+ *  @return ...
  */
 Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
     
-    requires : ['UserApp.config.Runtime'],   // UserApp.config.Runtime.getSomeValue()
+    requires : ['UserApp.config.Runtime'],   
         
     // models: ['branch.Branch'],//,'user.User'],
     // stores: ['branch.Branch'],//,'user.User'],
@@ -21,8 +31,6 @@ Ext.application({
        ,'ui.Role'
        ,'ui.User'
     ],
-    
-    // setupApplication: function(){ // },
     
     launch: function(){                                     console.log(' launch ');       
         Ext.create('Ext.container.Viewport', {               

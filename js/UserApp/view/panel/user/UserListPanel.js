@@ -4,7 +4,7 @@ Ext.define('UserApp.view.panel.user.UserListPanel',{
       
     bodyPadding: 10,
     title: 'TITLE1',
-    layout: 'anchor',
+    // layout: 'fit',
     tools: [{
         xtype: 'tool',
         type: 'down'

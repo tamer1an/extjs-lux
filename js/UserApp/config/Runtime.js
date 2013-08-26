@@ -4,9 +4,84 @@ Ext.define('UserApp.config.Runtime',{
         someValue : false   // initialize to 0
     }
 });
+  
+  
+  //////////// file
+//    Ext.apply(Ext.form.field.VTypes, {
+//     file: function(val, field) {
+//         var types = ['rtf', 'pdf', 'doc'],
+//             ext = val.substring(val.lastIndexOf('.') + 1);
+//         if(Ext.Array.indexOf(types, ext) === -1) {
+//             return false;
+//         }
+//         return true;
+//     }
+//     ,fileText: 'Invalid file'
+// });
+   // var input = Ext.get(field.id+'-fileInputEl'); var input = document.getElementById(field.id+'-fileInputEl');
+   
+   // Ext.define('fileupload',{
+   //      extend: 'Ext.form.field.Text'
+   //      ,alias: 'widget.fileupload' // теперь мы можем написать xtype: 'fileupload'
+   //      ,inputType: 'file'
+   //      ,listeners: {
+   //          render: function (me, eOpts) {
+   //              var el = Ext.get(me.id+'-inputEl');
+   //              el.set({
+   //                  size: me.inputSize || 1
+   //              });
+   //              if(me.multiple) {
+   //                  el.set({
+   //                      multiple: 'multiple'
+   //                  });
+   //              }
+   //          }
+   //      }
+   //  });
+   
+   // Ext.apply(Ext.form.field.VTypes, {
+   //      file: function(val, field) {
+   //          var input, files, file
+   //          ,acceptSize = field.acceptSize || 4096 //  Максимальный вес файлов
+   //          ,acceptMimes = field.acceptMimes || ['rtf', 'pdf', 'doc', 'xls', 'xlsx', 'zip', 'rar']; // Разрешенные типы
+
+   //          input = Ext.get(field.id+'-inputEl');
+   //          files = input.getAttribute('files');
+   //          if ( ! files || ! window.FileReader) {
+   //              return true; // Мы имеем дело с неправильным браузером. Из вредности можно вернуть и false
+   //          }
+    
+   //          for(var i = 0, l = files.length; i < l; i++) { // смотрим размеры файлов
+   //              file = files[i];
+   //              if(file.size > acceptSize * 1024) {
+   //                  this.fileText = (file.size / 1048576).toFixed(1) + ' MB: invalid file size ('+(acceptSize / 1024).toFixed(1)+' MB max)';
+   //                  return false;
+   //              }
+
+   //              var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
+   //              if(Ext.Array.indexOf(acceptMimes, ext) === -1) { // смотрим расширения файлов
+   //                  this.fileText = 'Invalid file type ('+ext+')';
+   //                  return false;
+   //              }
+   //          }
+   //          return true;
+   //      }
+   //  });
+   
+    // {
+    //         xtype: 'fileupload'
+    //         ,vtype: 'file'
+    //         ,multiple: true // разрешаем выбрать несколько файлов
+    //         ,acceptMimes: ['doc', 'xls', 'xlsx', 'pdf', 'zip', 'rar'] // Устанавливаем разрешенные типы
+    //         ,acceptSize: 2048 // Максимальный размер
+    //         ,inputSize: 76 // Атрибут size
+    //         ,fieldLabel: 'File <span class="gray">(doc, xls, xlsx, pdf, zip, rar; 2 MB max)</span>'
+    //         ,msgTarget: 'under'
+    //         ,name: 'filesToUpload[]'
+    //     }
    
    
-   
+   /////////////////////////////////////////////
    // constructor : function(config){
    //      this.initConfig(config);
    //  },

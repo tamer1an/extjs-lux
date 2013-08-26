@@ -1,7 +1,7 @@
 Ext.define('UserApp.view.grid.branch.BranchGrid',{
     extend: 'UserApp.core.GridView',
     alias: 'widget.UserMGMT.branch.BranchGrid',
-   
+    requires: ['Ext.grid.plugin.CellEditing', 'Ext.form.field.*'],
      // requires: [
     //   'Ext.grid.plugin.RowEditing',
     //   'Ext.toolbar.Paging'
@@ -11,9 +11,9 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
     // ],
     // store: 'store.branch.Branch', // 'store.branch',
     // autoCreate: true,
-    iconCls: 'icon_user',
+    // iconCls: 'icon_user',
     height: 250,
-    title: '',
+    title:'',
     columns: [
         { header: 'ID',          dataIndex: 'ColorID'},
         { header: 'TITLE2',      dataIndex: 'ShortName' },
@@ -30,6 +30,12 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
                 console.log(' init branchgrid view ');
                 
         this.store = Ext.create('UserApp.store.branch.Branch').load(); 
+        
+        // this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+        //     clicksToEdit: 2
+        // });
+        // this.plugins = this.cellEditing;
+        
         this.callParent(arguments);
     }
 });
