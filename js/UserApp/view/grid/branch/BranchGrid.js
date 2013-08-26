@@ -25,11 +25,20 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
   //       emptyText: 'Click a button to show a dataset',
   //       deferEmptyText: false
   //   }
+    // afterRender:function() {
+    //     console.log(' init after render view ');
+    //     // call parent
+    //     // Example.LinksPanel.superclass.afterRender.apply(this, arguments);
+ 
+    //     // create links
+    //     // this.tpl.overwrite(this.body, {links:this.links});
+        
+    // }, 
     
     initComponent:function(){         // var me = this; me.xtypesMap
                 console.log(' init branchgrid view ');
-                
-        this.store = Ext.create('UserApp.store.branch.Branch').load(); 
+              this.store = Ext.create('UserApp.store.branch.Branch').load();   
+       
         
         // this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
         //     clicksToEdit: 2

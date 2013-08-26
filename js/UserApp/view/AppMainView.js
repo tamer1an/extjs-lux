@@ -103,6 +103,19 @@ Ext.define('UserApp.view.AppMainView',{
     // scope:this,
     initComponent:function(){
         console.log(' init view ');
+        
+        //  this.linksPanel.on({
+        //      scope:this
+        //     ,render:function() {
+        //         this.linksPanel.body.on({
+        //              scope:this
+        //             ,click:this.onLinkClick
+        //             ,delegate:'a.examplelink'
+        //             ,stopEvent:true
+        //         });
+        //     }
+        // });
+        
         this.callParent(arguments);
     },
     getSearchForm: function() {

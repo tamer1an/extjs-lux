@@ -4,6 +4,43 @@ Ext.define('UserApp.config.Runtime',{
         someValue : false   // initialize to 0
     }
 });
+
+
+
+        //  
+        // Ext.define('UsersApp.store.storeLocal', {
+        //     extend: 'Ext.data.Store',
+        //     requires  : ['UsersApp.model.Names', 'Ext.data.proxy.LocalStorage'],
+        //     model: "UsersApp.model.Names",
+        
+        //     proxy: {
+        //         type: 'localstorage',
+        //         id  : 'Names'
+        //     }
+        // });
+        // requires: [
+        //     // утилита проверки наличия связи - "пингует" сервер
+        //     'UsersApp.Utils',
+        //     'UsersApp.store.storeLocal', 'UsersApp.store.store'
+        // ],
+        //  // метод getStore контроллера возвращает экземпляр хранилища,
+        // // если он уже создан - или создаёт его 
+        // var storeLocal = this.getStore("storeLocal");
+        // var store         = this.getStore("store");
+        // // вешаем обработчик на событие загрузки локального хранилища, он будет вызван
+        // // сразу _после_ успешной загрузки
+        // storeLocal.addListener('load', function(){
+        //     // локальное хранилище загружено - самое время
+        //     // проверить, есть ли связь с Интернет. UsersApp.Utils.ping принимает
+        //     // в качестве параметров callback функции
+        //     UsersApp.Utils.ping({
+        //         success: this._onPingSuccess, // Интернет есть
+        //         failure: this._onPingFailure     // Интернета нет
+        //     }, this);
+        // }, this);
+
+        // // инициируем загрузку локальное хранилище
+        // storeLocal.load();
   
   
   //////////// file
