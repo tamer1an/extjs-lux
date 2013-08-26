@@ -41,9 +41,12 @@ Ext.application({
                 layout: 'anchor',
                 region: 'center',
                 
-                title:       this.getAppTitle(),
-                tools:       this.getAppTools(),
-                dockedItems: this.getAppDocked(),
+                title:   this.getAppTitle(),
+                tools:   this.getAppTools(),
+                bbar:    this.getAppBBar(),
+                
+                // lbar: [{ xtype: 'button', text: 'Button 4' }],
+                // dockedItems: this.getAppDocked(),
                 
                 items:[{
                     xtype:  'UserMGMT.AppMainView' ,
@@ -52,42 +55,58 @@ Ext.application({
             }]
         });
     },
-    
-    getAppDocked : function() {       
+    getAppBBar : function() {
+       var auth = UserApp.config.Runtime.getSomeValue();
         
-        var auth = UserApp.config.Runtime.getSomeValue();
-        
-         return [{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            items: [
-                {
-                    xtype: 'button',
-                    disabled: auth,
-                    text: 'Save'
-                },'-',
-                {
-                    xtype: 'button',
-                    disabled: auth,
-                    text: 'Reset'
-                },'-',
-                {
-                    xtype: 'button',
-                    disabled: auth,
-                    text: 'Reset'
-                },'-',
-                {
-                    xtype: 'button',
-                    disabled: auth,
-                    text: 'Disable'
-                },'-',
-                {
-                    xtype: 'button',
-                    text: 'Delete'
-                }
-            ]
-        }];
+       return [{
+                xtype: 'button',
+                disabled: auth,
+                text: 'Save'
+            },'-', {
+                xtype: 'button',
+                disabled: auth,
+                text: 'Reset'
+            },'-', {
+                xtype: 'button',
+                disabled: auth,
+                text: 'Reset'
+            },'-', {
+                xtype: 'button',
+                disabled: auth,
+                text: 'Disable'
+            },'-', {
+                xtype: 'button',
+                text: 'Delete'
+            }]
     },
+    // getAppDocked : function() {             
+    //     var auth = UserApp.config.Runtime.getSomeValue();
+        
+    //      return [{
+    //         xtype: 'toolbar',
+    //         dock: 'bottom',
+    //         items: [{
+    //             xtype: 'button',
+    //             disabled: auth,
+    //             text: 'Save'
+    //         },'-', {
+    //             xtype: 'button',
+    //             disabled: auth,
+    //             text: 'Reset'
+    //         },'-', {
+    //             xtype: 'button',
+    //             disabled: auth,
+    //             text: 'Reset'
+    //         },'-', {
+    //             xtype: 'button',
+    //             disabled: auth,
+    //             text: 'Disable'
+    //         },'-', {
+    //             xtype: 'button',
+    //             text: 'Delete'
+    //         }]
+    //     }];
+    // },
     getAppTools : function() {      
          return [{
                     xtype: 'tool',

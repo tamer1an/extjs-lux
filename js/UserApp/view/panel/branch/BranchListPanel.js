@@ -34,25 +34,30 @@ Ext.define('UserApp.view.panel.branch.BranchListPanel',{
                 text:  'Add +',
                 disabled: UserApp.config.Runtime.getSomeValue(),
                 baseId: Ext.id() + '-Add-Br',
-                listeners: {
-                    scope: this,
-                    click: {
-                        element: 'el', //bind to the underlying el property on the panel
-                        fn: function(){ 
+                handler : function (){
+                     Ext.create('UserApp.view.window.user.AddUserWindow',{}).show();
+                },
+                
+                // listeners: {
+                //     scope: this,
+                //     click: {
+                //         element: 'el', //bind to the underlying el property on the panel
+                //         fn: function(){ 
                             
-                            Ext.create('UserApp.view.window.user.AddUserWindow',{
+                //             Ext.create('UserApp.view.window.user.AddUserWindow',{
                                 
                                 
-                            }).show();
+                //             }).show();
                             
-                            console.log('click el'); 
+                //             console.log('click el'); 
                             
-                        }
-                    }
-                    // afterrender: function() {
-                    //     alert(1);
-                    // }
-                }
+                //         }
+                //     }
+                    
+                //     // afterrender: function() {
+                //     //     alert(1);
+                //     // }
+                // }
         }],
     }],
     
