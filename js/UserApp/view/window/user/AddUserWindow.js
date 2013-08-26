@@ -37,6 +37,9 @@ Ext.define('UserApp.view.window.user.AddUserWindow', {
             //     ]
             // }]
         });
+        
+        // in.down( 'form' ).loadRecord( record );
+        
         me.callParent( arguments );
     }
 });

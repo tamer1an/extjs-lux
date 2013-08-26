@@ -4,14 +4,23 @@ Ext.define('UserApp.view.panel.branch.BranchListPanel',{
     border: false,
     layout:'fit',  
     bodyPadding: 10,
-    title: 'TITLE2',
-    tools: [{
-        xtype: 'tool',
-        type: 'down'
-    }],
+    title: 'TITLE2',  
+    // requires: [ 'UserApp.store.branch.Branch' ],
     items: [{
         xtype: 'UserMGMT.branch.BranchGrid',
-        title:''
+        // store: {
+        //     type: 'UserApp.store.branch.Branch'
+        // }
+        //  store: {
+        //     type: 'branch.Branch',
+        //     pageSize: 6,
+        //     sorters: [
+        //         {
+        //             property: 'CreatedDate',
+        //             direction: 'DESC'
+        //         }
+        //     ]
+        // }
         // border: false,
         // layout:'fit', 
     }],

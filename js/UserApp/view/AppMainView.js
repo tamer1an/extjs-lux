@@ -25,8 +25,10 @@ Ext.define('UserApp.view.AppMainView',{
     //     // scope: this
     // },
     
-    // collapsible: true,
     
+    defaults:{
+        collapsible: true,
+    },
     height: 1200,
     items:[{
         xtype:'panel',
@@ -37,10 +39,6 @@ Ext.define('UserApp.view.AppMainView',{
             align: 'left'
         },
         width: '100%',
-        tools: [{
-            xtype: 'tool',
-            type: 'down'
-        }],
         dockedItems: [{
             xtype: 'toolbar',
             dock: 'top',

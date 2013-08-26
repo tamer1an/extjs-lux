@@ -10,7 +10,7 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
         // 'Ext.grid.column.Date'
     // ],
     // store: 'store.branch.Branch', // 'store.branch',
-    // autoCreate: true,
+    autoCreate: true,
     // iconCls: 'icon_user',
     height: 250,
     title:'',

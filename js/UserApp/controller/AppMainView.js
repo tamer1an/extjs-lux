@@ -1,3 +1,13 @@
+/**
+ * Displays context menu 
+ * @param {Ext.view.View} view
+ * @param {Ext.data.Model} record 
+ * @param {HTMLElement} item
+ * @param {Number} index
+ * @param {Ext.EventObject} e
+ * @param {Object} eOpts
+ */
+
 Ext.define('UserApp.controller.AppMainView',{
     extend:'UserApp.core.Controller',
 
@@ -52,6 +62,38 @@ Ext.define('UserApp.controller.AppMainView',{
          // });
                 
         console.log(' init UserMGMTPanelMain  ctrl 1'/*,this.getAdd1(), this.getAdd2()*/ );
+        
+        // this.listen({
+        //     controller: {
+        //         '#Workflows': {
+        //             approve: this.approveWorkflow,
+        //             reject: this.rejectWorkflow,
+        //             restart: this.restartWorkflow
+        //         }
+        //     },
+        //     component: {},
+        //     global: {},
+        //     store: {},
+        //     proxy: { '#baserest': {
+                //     requestcomplete: this.handleRESTResponse
+                // }} 
+        // });
+        
+        // fire requestcomplete event
+        // me.fireEvent( 'requestcomplete', request, success );
+        
+        // this.listen({
+        //     controller: {
+        //         '#Workflows': {            
+        //             view: this.showHistory
+        //         }
+        //     },
+        //     component: {
+        //         'grid[xtype=workflow.list]': {
+        //             beforerender: this.loadWorkflowHistory
+        //         }
+        //     }
+        // });
     },
     update:function(){
           console.log(' init clicked  ctrl 1');
