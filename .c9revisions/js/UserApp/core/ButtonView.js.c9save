@@ -1,0 +1,2 @@
+{"ts":1377615705126,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1377615776818,"patch":[[{"diffs":[[1,"/**\n * Base {@link Ext.button.Button} from which all other buttons-views will extend\n */\nExt.define('UserApp.core.ButtonView',{\n    extend: 'Ext.button.Button',\n    alias: 'widget.UserMGMT.core.Button'\n    // ,initComponent:function(){\n    //      this.callParent(arguments);\n    //  }\n});\n"]],"start1":0,"start2":0,"length1":0,"length2":290}]],"length":290,"saved":false}

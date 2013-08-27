@@ -14,7 +14,7 @@ Ext.define('UserApp.view.form.branch.CreateBranch',{
     tools: [
         {
             xtype: 'tool',
-            tooltip: 'Additional place for long description if needed'
+            tooltip: 'Addi descr'
         }
     ],
     items: [

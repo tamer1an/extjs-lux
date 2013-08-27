@@ -1,7 +1,7 @@
 /**
  * Model representing a Color object
  */
-Ext.define('UserApp.model.user.User',{
+Ext.define('UserApp.model.role.Role',{
     extend: 'UserApp.core.Model',
     idProperty: 'UserID',
     

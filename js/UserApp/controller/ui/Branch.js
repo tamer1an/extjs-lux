@@ -1,10 +1,11 @@
 Ext.define('UserApp.controller.ui.Branch',{
     extend:'UserApp.core.Controller',
-    
-    views: ['panel.branch.BranchListPanel','grid.branch.BranchGrid'  /*,'form.branch.CreateBranch','form.branch.BranchDetails'*/],
+
+    /*,'form.branch.CreateBranch','form.branch.BranchDetails'*/
+    views: ['panel.branch.BranchListPanel','grid.branch.BranchGrid'],
 
     init: function() {
-        console.log(' init Branch ctrl ');
+        console.log(' init Bctrl ');
     }
 });
 

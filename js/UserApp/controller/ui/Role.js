@@ -1,9 +1,10 @@
 Ext.define('UserApp.controller.ui.Role',{
     extend:'UserApp.core.Controller',
 
-    views: ['panel.role.RoleListPanel','grid.role.RoleGrid' /*'form.user.CreateUser','form.user.UserMaintainceSwitch','form.user.ChangePasswordConfirm'*/],
+    /*'form.user.CreateUser','form.user.UserMaintainceSwitch','form.user.ChangePasswordConfirm'*/
+    views: ['panel.role.RoleListPanel','grid.role.RoleGrid'],
 
     init: function() {
-        console.log(' init Role ctrl ');
+        console.log(' init Rctrl ');
     }
 });

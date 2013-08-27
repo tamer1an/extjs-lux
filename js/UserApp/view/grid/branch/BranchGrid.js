@@ -36,7 +36,7 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
     // }, 
     
     initComponent:function(){         // var me = this; me.xtypesMap
-                console.log(' init branchgrid view ');
+                console.log(' init bgrid view ');
               this.store = Ext.create('UserApp.store.branch.Branch').load();   
        
         

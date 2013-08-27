@@ -16,6 +16,8 @@ Ext.define('UserApp.view.window.user.AddUserWindow', {
             items: [{
                 xtype: 'UserMGMT.CreateUser'
             }],
+        });
+        
             // dockedItems: [{
             //     xtype: 'toolbar',
             //     dock: 'bottom',
@@ -36,7 +38,7 @@ Ext.define('UserApp.view.window.user.AddUserWindow', {
             //         }
             //     ]
             // }]
-        });
+   
         
         // in.down( 'form' ).loadRecord( record );
         

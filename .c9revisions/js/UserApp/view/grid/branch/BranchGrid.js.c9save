@@ -51,3 +51,4 @@
 {"contributors":[],"silentsave":false,"ts":1377480773333,"patch":[[{"diffs":[[0,"ch',\n   "],[-1," //"],[0," autoCre"]],"start1":467,"start2":467,"length1":19,"length2":16}]],"length":1679,"saved":false}
 {"ts":1377480781099,"patch":[[{"diffs":[[0,"            "],[1," //"],[0," this.store "]],"start1":1364,"start2":1364,"length1":24,"length2":27}]],"length":1682,"saved":false}
 {"ts":1377480963199,"patch":[[{"diffs":[[0,"            "],[-1," //"],[0," this.store "]],"start1":1364,"start2":1364,"length1":27,"length2":24}]],"length":1679,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377631035962,"patch":[[{"diffs":[[0,"' init b"],[-1,"ranch"],[0,"grid vie"]],"start1":1336,"start2":1336,"length1":21,"length2":16}]],"length":1674,"saved":false}

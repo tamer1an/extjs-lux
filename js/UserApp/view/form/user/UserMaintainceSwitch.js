@@ -9,14 +9,14 @@ Ext.define('UserApp.view.form.user.UserMaintainceSwitch',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Local user maintenance',
+    title: 'Local ',
 
     items: [
         {
             xtype: 'checkboxfield',
             margin: '10 0 0 47px',
             fieldLabel: '',
-            boxLabel: 'Allow local user maintaince'
+            boxLabel: 'Allow'
         },
         {
             xtype: 'button',

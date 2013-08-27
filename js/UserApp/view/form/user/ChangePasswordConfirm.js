@@ -9,7 +9,7 @@ Ext.define('UserApp.view.form.user.ChangePasswordConfirm',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Change Password',
+    title: 'Change',
 
     tools: [
         {
@@ -22,7 +22,7 @@ Ext.define('UserApp.view.form.user.ChangePasswordConfirm',{
             margin: '0 0 0 100',
             width: 242,
             fieldLabel: '',
-            value: 'Are you sure you want to reset the password for the selected user ?'
+            value: 'Are you sure ?'
         },
         {
             xtype: 'button',

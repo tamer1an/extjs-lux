@@ -1,10 +1,14 @@
-Ext.define('UserApp.store.user.User',{  
+Ext.define('UserApp.store.role.Role',{
     extend:'UserApp.core.Store',
-    model:'UserApp.model.user.User',
-    alias: 'store.user',
-    storeId: 'Users',
+    model:'UserApp.model.role.Role',
+    alias: 'store.role',
+    storeId: 'Role',
     autoLoad: true,
 
+    requires: [
+        'UserApp.model.role.Role'
+    ],
+            
     proxy: {
         type: 'ajax',
         url:'users.json',
@@ -16,7 +20,7 @@ Ext.define('UserApp.store.user.User',{
             type:'json',
             writeAllFields:true,
             encode: false
-        }//,  autoSync:true,
+        }
     }
 });
 

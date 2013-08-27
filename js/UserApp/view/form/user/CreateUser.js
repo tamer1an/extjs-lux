@@ -9,7 +9,7 @@ Ext.define('UserApp.view.form.user.CreateUser',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Create New User',
+    title: 'Create New',
 
     // tools: [{
     //     xtype: 'tool'
@@ -20,11 +20,11 @@ Ext.define('UserApp.view.form.user.CreateUser',{
     },{
         xtype: 'textfield',
         margin: '5px 0 0 0',
-        fieldLabel: 'First Name'
+        fieldLabel: 'First '
     },{
         xtype: 'textfield',
         margin: '5px 0 0 0',
-        fieldLabel: 'Last Name'
+        fieldLabel: 'Last '
     },{
         xtype: 'button',
         margin: '40px 10px 10px 130px',

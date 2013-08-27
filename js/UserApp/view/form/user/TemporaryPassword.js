@@ -9,7 +9,7 @@ Ext.define('UserApp.view.form.TemporaryPassword',{
         type: 'auto'
     },
     bodyPadding: 10,
-    title: 'Temporary Password',
+    title: 'Temporary ',
     tools: [
         {
             xtype: 'tool'
@@ -19,7 +19,7 @@ Ext.define('UserApp.view.form.TemporaryPassword',{
         {
             xtype: 'displayfield',
             fieldLabel: '',
-            value: 'Temporary password is: XXXXXX'
+            value: 'Temporary is: ....'
         },
         {
             xtype: 'button',

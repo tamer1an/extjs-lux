@@ -1,64 +1,17 @@
 Ext.define('UserApp.controller.ui.User',{
     extend:'UserApp.core.Controller',
-    stores: ['UserApp.store.user.User'],
-    models: ['UserApp.model.user.User'],
-     
-    views: ['panel.user.UserListPanel', 'grid.user.UserGrid', 'window.user.AddUserWindow' /* 'form.user.UserMaintainceSwitch','form.user.ChangePasswordConfirm' */],
+    // stores: ['user.User'],
+    // models: ['user.User'],
 
+    /* 'form.user.UserMaintainceSwitch','form.user.ChangePasswordConfirm' */
+    views: ['panel.user.UserListPanel', 'grid.user.UserGrid', 'window.user.AddUserWindow'],
 
-      // refs: [
-      //       {
-      //           ref: 'CarList',
-      //           selector: '[xtype=car.list]'
-      //       },
-      //       {
-      //           ref: 'CarEditWindow',
-      //           selector: '[xtype=car.edit.window]'
-      //       },
-      //       {
-      //           ref: 'CarEditForm',
-      //           selector: '[xtype=car.edit.form]'
-      //       },
-      //       {
-      //           ref: 'CarSearchWindow',
-      //           selector: '[xtype=car.search.window]'
-      //       },
-      //       {
-      //           ref: 'CarSearchForm',
-      //           selector: '[xtype=car.search.form]'
-      //       }
-      //   ],
-        
+    // refs: [{
+    //    ref: 'AddUser',
+    //    selector: '[xtype=userMGMT.user.form.User]'
+    // }],
+
     init: function() {
-        console.log(' init User ctrl ');
-        
-        // this.listen({
-        //     controller: {},
-        //     component: {
-        //        'grid[xtype=car.list] button#search': {
-            //         click: this.showSearch
-            //     },
-            //     'grid[xtype=car.list] button#clear': {
-            //         click: this.clearSearch
-            //     },
-            //     'window[xtype=car.search.window] button#search': {
-            //         click: this.search
-            //     },
-            //     'window[xtype=car.search.window] button#cancel': {
-            //         click: this.close
-            //     }
-            // 'form[xtype=car.edit.form] combobox[name=Make]': {
-            //     change: this.filterModel
-            // },
-            // 'form[xtype=car.edit.form] combobox[name=Model]': {
-            //     beforequery: this.checkMake
-            // }
-        //     },
-        //     global: {},
-        //     store: {},
-        //     proxy: {} 
-        // });
-        
-        
+        console.log(' init uctrl ');
     }
 });
