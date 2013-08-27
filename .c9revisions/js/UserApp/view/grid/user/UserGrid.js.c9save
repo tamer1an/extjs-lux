@@ -17,3 +17,5 @@
 {"ts":1377455773369,"patch":[[{"diffs":[[0,"astName'"],[1,",width:\"100%\""],[0," }\n    ]"]],"start1":546,"start2":546,"length1":16,"length2":29}]],"length":887,"saved":false}
 {"ts":1377455798104,"patch":[[{"diffs":[[0,"stName',"],[1," "],[0,"width:\"1"]],"start1":547,"start2":547,"length1":16,"length2":17}]],"length":888,"saved":false}
 {"ts":1377455814013,"patch":[[{"diffs":[[0,"tName', "],[1,"/*"],[0,"width:\"1"]],"start1":548,"start2":548,"length1":16,"length2":18},{"diffs":[[0,"h:\"100%\""],[1,"*/"],[0," }\n    ]"]],"start1":562,"start2":562,"length1":16,"length2":18}]],"length":892,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1377599951535,"patch":[[{"diffs":[[0,"\n   "],[-1," //"],[0," store: "],[1,"'UserApp.store.user.User',//"],[0,"Ext."]],"start1":233,"start2":233,"length1":19,"length2":44}]],"length":917,"saved":false}
+{"ts":1377599957842,"patch":[[{"diffs":[[0,"    \n       "],[1," //"],[0," this.store "]],"start1":746,"start2":746,"length1":24,"length2":27}]],"length":920,"saved":false}

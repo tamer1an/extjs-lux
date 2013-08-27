@@ -6,9 +6,9 @@ Ext.define('UserApp.store.user.User',{
     autoLoad: true,
     
     
-    requires: [
-        'UserApp.model.user.User'
-    ],
+    // requires: [
+    //     'UserApp.model.user.User'
+    // ],
             
     proxy: {
         type: 'ajax',
@@ -21,8 +21,8 @@ Ext.define('UserApp.store.user.User',{
             type:'json',
             writeAllFields:true,
             encode: false
-        },
-        autoSync:true,
+        }
+        // ,  autoSync:true,
     }
 });
 

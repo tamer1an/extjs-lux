@@ -6,7 +6,7 @@ Ext.define('UserApp.view.grid.user.UserGrid',{
     //     'Ext.grid.plugin.RowEditing',
     //     'Ext.toolbar.Paging'
     // ],
-    // store: Ext.create('UserApp.store.user.User'),
+    store: 'UserApp.store.user.User',//Ext.create('UserApp.store.user.User'),
     title: '',
     height:300,
     columns: [
@@ -20,7 +20,7 @@ Ext.define('UserApp.view.grid.user.UserGrid',{
         // var userStore = Ext.create('UserApp.store.user.User');
         // userStore.load(); 
         
-        this.store = Ext.create('UserApp.store.user.User').load();
+        // this.store = Ext.create('UserApp.store.user.User').load();
         
         console.log(' init usergrid view ');
         this.callParent(arguments);

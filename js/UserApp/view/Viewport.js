@@ -3,6 +3,7 @@
 //    function(e){
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
+            // extend: 
             renderTo: document.getElementById('User-App'),
             items: [
                 {
@@ -19,7 +20,7 @@
                     ],
                     items:[
                         {
-                            xtype: 'widget.UserMGMT.PanelMain' ,
+                            xtype: 'panel' ,
                             anchor: '100% 100%'  //anchor: '-150 100%'
                         }
                     ],

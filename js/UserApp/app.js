@@ -14,7 +14,7 @@
 Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
-    
+    // autoCreateViewport : true,
     requires : ['UserApp.config.Runtime'],   
         
     // models: ['branch.Branch'],//,'user.User'],

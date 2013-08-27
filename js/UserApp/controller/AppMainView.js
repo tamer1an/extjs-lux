@@ -15,7 +15,8 @@ Ext.define('UserApp.controller.AppMainView',{
     
     refs: [{
         ref: 'BranchListPanel',
-        selector: '[xtype=UserMGMT.branch.BranchListPanel]'
+        // selector: '[xtype=UserMGMT.branch.BranchListPanel]'
+        selector: 'UserMGMT.branch.BranchListPanel'
     },{
         ref: 'AppMainView',
         selector: '[xtype=UserMGMT.AppMainView]'
@@ -37,19 +38,7 @@ Ext.define('UserApp.controller.AppMainView',{
     //     bodyPadding: 10
     // },
     
-    // listeners: {
-    //     click: {
-    //         element: 'el', //bind to the underlying el property on the panel
-    //         fn: function(){ console.log('click el'); }
-    //     },
-    //     dblclick: {
-    //         element: 'body', //bind to the underlying body property on the panel
-    //         fn: function(){ console.log('dblclick body'); }
-    //     },
-    //     change: alert
-        
-    //     // scope: this
-    // },
+  
 
     init: function() {        
         // this.getController('AppMainView').getAdd1()
@@ -63,6 +52,7 @@ Ext.define('UserApp.controller.AppMainView',{
                 
         console.log(' init UserMGMTPanelMain  ctrl 1'/*,this.getAdd1(), this.getAdd2()*/ );
         
+        // EXT 4.2
         // this.listen({
         //     controller: {
         //         '#Workflows': {
