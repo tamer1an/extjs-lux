@@ -79,13 +79,14 @@ Ext.application({
             text: 'Delete'
         }];
     },
-    getAppTools : function() {      
+    getAppTools : function() {
          return [{
-            xtype: 'tool',
-            type: 'gear'
+            xtype: 'button',
+            type: 'gear',
+            text: '<b>OFF</b>'
          }];
     },
-    getAppTitle : function() { 
+    getAppTitle : function() {
         return 'Main Menu';
     }
 });

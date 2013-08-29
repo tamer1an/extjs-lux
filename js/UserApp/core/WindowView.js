@@ -3,6 +3,7 @@
  */
 Ext.define('UserApp.core.WindowView', {
     extend: 'Ext.window.Window',
+    alias:'widget.w1',
     // alias: 'widget.staff.edit.window',
     // requires: [
     //     'CarTracker.view.staff.edit.Form'

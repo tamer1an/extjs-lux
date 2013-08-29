@@ -22,7 +22,6 @@ Ext.define('UserApp.view.AppMainView',{    // requires: [ // ],
         },{
             xtype: 'UserMGMT.branch.BranchListPanel'
         }];
-
         this.callParent(arguments);
     },
     getAppTitle: function() {
@@ -38,9 +37,7 @@ Ext.define('UserApp.view.AppMainView',{    // requires: [ // ],
            xtype: 'UserMGMT.core.Button',
            disabled: UserApp.config.Runtime.getUserAuth(),
            text: 'New +',
-           handler : function (){   //TODO: refine it to refs with property autoCreate
-               Ext.create('UserApp.view.window.user.AddUserWindow',{}).show();
-           }
+           action: 'adduser'
        }];
     },
     getSearchForm: function() {

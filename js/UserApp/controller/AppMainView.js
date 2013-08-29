@@ -14,21 +14,94 @@ Ext.define('UserApp.controller.AppMainView',{
     },{
         ref: 'AppMainView',
         selector: 'UserMGMT.AppMainView'
+    },{
+        ref: 'Win1',
+        selector: 'w1',
+        autoCreate:true,
+        xtype:'UserMGMT.AddUserWindow',
+        listeners: {
+            click: {
+                element: 'body >', //bind to the underlying el property on the panel
+                fn: function(){ console.log('click el'); }
+            },
+            dblclick: {
+                element: 'items', //bind to the underlying body property on the panel
+                fn: function(){ console.log('dblclick body'); }
+            },
+             activatez: function() {
+             console.log('activate body');
+            }
+        }
     }],
 
     init: function() {                       console.log(' init ctrl 1'/*,this.getAdd1(), this.getAdd2()*/ );
-
+        
+        window.test = this;
+        
+        this.control('button[action=adduser]', {
+             click: this.updateUser,
+             
+         });
+    },
+    updateUser : function(p) {
+        console.log(p);
+        console.log(this.getWin1().show());
     }
 });
 
 
+// listeners: {
+//     afterrender: {
+//           fn: function (cmp) {
+//             cmp.update(Ext.String.format(_localise('Last.Saved'), '6:54 pm'));
+//           }
+//     }
+//   }
 
+// me.addEvents(
+//         'beforedestroy',
+//         'destroy',
+//         'render',
+//         'mousedown',
+//         'mouseup',
+//         'mouseover',
+//         'mouseout',
+//         'mousemove',
+//         'click'
+//     );
 
+// listeners: {
+//   load: {
+//       fn: function() {
+//          ...
+//       },
+//       scope: yourScope//for example "this"
+//   }
+// }
 
+// listeners: {
+//     el: {
+//         click: function() {
+//             ...
+//         }
+//     }
+// }
 
+// listeners: {
+//     itemmousedown: function (obj) {
+//         alert(obj.storeItem.data['source'] + ' &' + obj.storeItem.data['count']);
+//     }
+// },
 
-
-
+// init: function () {
+//     this.control({
+//         'barColumnChart': { 
+//           click: function () {
+//             var viewCmp = Ext.getCmp('barColumnChart');
+//             viewCmp.fireEvent('itemmousedown');ss
+//           }
+//         }
+//     });},
 
 /*
  // - ref - name of the reference.
