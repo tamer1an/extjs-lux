@@ -3,6 +3,7 @@ Ext.define('UserApp.config.Runtime',{
     config : {
         userAuth : false   // initialize to false
     },
+    sm: Ext.create('Ext.selection.CheckboxModel'),
     constructor: function(){
         console.log('init runtime');
     }

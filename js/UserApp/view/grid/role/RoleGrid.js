@@ -8,11 +8,23 @@ Ext.define('UserApp.view.grid.role.RoleGrid',{
     // ],
     // store: Ext.create('UserApp.store.user.User'),
     height:300,
-
+    // selModel: new Ext.grid.CheckboxSelectionModel({
+    //             singleSelect: true,
+    //         }),
+            
     config:{
         title: '',
 
         columns: [
+            {
+             xtype: 'checkcolumn',
+             header: 'title',
+             dataIndex: 'CapitalCity',
+             editor: {
+                  xtype: 'checkbox',
+                  cls: 'x-grid-checkheader-editor'
+              }
+            },
             { header: 'User Id',  dataIndex: 'UserID' },
             { header: 'TITLE1 Name', dataIndex: 'Login' },
             { header: 'TITLE1 Name', dataIndex: 'FisrtName' },

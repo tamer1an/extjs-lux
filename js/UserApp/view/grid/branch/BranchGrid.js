@@ -1,7 +1,14 @@
 Ext.define('UserApp.view.grid.branch.BranchGrid',{
     extend: 'UserApp.core.GridView',
     alias: 'widget.UserMGMT.branch.BranchGrid',
-    requires: ['Ext.grid.plugin.CellEditing', 'Ext.form.field.*'],
+    requires: [
+        // 'Ext.grid.plugin.CellEditing', 
+        // 'Ext.form.field.*',
+    //  'Ext.grid.*',
+    // 'Ext.data.*',
+    // 'Ext.ux.RowExpander',
+    // 'Ext.selection.CheckboxModel'
+    ],
      // requires: [
     //   'Ext.grid.plugin.RowEditing',
     //   'Ext.toolbar.Paging'
@@ -11,10 +18,18 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
     // ],
     // store: 'store.branch.Branch', // 'store.branch',
     autoCreate: true,
+    enableLocking: true,
+    columnLines: true,
     // iconCls: 'icon_user',
     height: 250,
     title:'',
+    // selType: 'rowmodel',
+    // selModel: {
+    //     mode: 'MULTI'
+    // },
+    selModel: UserApp.config.Runtime.sm,
     columns: [
+        // {header: ' ', width: 55, xtype: 'checkcolumn'},
         { header: 'ID',          dataIndex: 'ColorID'},
         { header: 'TITLE2',      dataIndex: 'ShortName' },
         { header: 'Description', dataIndex: 'LongName' },
