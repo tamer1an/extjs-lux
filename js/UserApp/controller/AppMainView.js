@@ -12,6 +12,9 @@ Ext.define('UserApp.controller.AppMainView',{
         ref: 'BranchListPanel',
         selector: 'UserMGMT.branch.BranchListPanel'
     },{
+        ref: 'BranchListPanel',
+        selector: 'UserMGMT.branch.BranchListPanel'
+    },{
         ref: 'AppMainView',
         selector: 'UserMGMT.AppMainView'
     },{
@@ -46,7 +49,81 @@ Ext.define('UserApp.controller.AppMainView',{
     updateUser : function(p) {
         console.log(p);
         console.log(this.getWin1().show());
-    }
+    },
+    
+    
+    
+    
+    
+    
+    
+    //   saveUserHandler  : function (){ // .getForm().updateRecord(record);  //formPanel.getValues()
+    //     console.log(1)
+    //     var formPanel     = this.getApp().getUserForm();
+
+    //     formPanel.getForm().updateRecord()
+    //     formPanel.getRecord().save(
+//            {
+//            success:function (model){          // arguments[0] = action: "update"
+//               var rGrid = this.getApp().getRGrid(),
+//                   bGrid = this.getApp().getBGrid()
+
+
+//                console.log(arguments,this)
+//                rGrid.reconfigure( model.userEntitlements());
+//                bGrid.reconfigure(  model.userSplits()   );
+
+//            },
+//            scope:this
+//        }
+        // );
+
+
+        //.getForm().isDirty()
+
+//        formPanel.getForm().updateRecord(record)
+//        formPanel.getValues()
+
+//        if (basicForm.isValid())
+//        if (!record) {
+//            record = Ext.data.StoreManager.lookup('theModel').add( this.up('form').getForm().getFieldValues())[0];
+//            basicForm.loadRecord(record);
+//        } else {
+//            basicForm.updateRecord(record);
+//        }
+
+//	 formPanel.getRecord()//  - not updated record
+//  	 formPanel.getValues() - raw values
+
+// 	 formPanel.getForm().updateRecord() - update values
+
+//     	 formPanel.getForm().getRecord()
+// 	 formPanel.getForm()..getValues()
+
+//        myForm.setValues(myForm.getValues());
+
+//        Ext.override(Ext.form.BasicForm, {
+//            clearDirty: function() {
+//                var i, it = this.items.items, l = it.length, c;
+//                for (i = 0; i < l; i++) {
+//                    c = it[i];
+//                    c.originalValue = String(c.getValue());
+//                }
+//            }
+//        });
+
+//        Ext.form.FormPanel.prototype.initValues = function() {
+//            if(this.form) {
+//                this.form.items.each(function() {
+//                    this.initValue();
+//                });
+//            }
+//        };
+ //   },
+    
+    
+    
+    
 });
 
 
