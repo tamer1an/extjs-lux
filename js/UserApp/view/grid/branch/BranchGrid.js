@@ -42,14 +42,16 @@ Ext.define('UserApp.view.grid.branch.BranchGrid',{
             header: 'TITLE2',      
             dataIndex: 'ShortName'  ,  
             editor: {
-                allowBlank: false
+                allowBlank: false,
+                vtype: 'alpha'
             } 
         },
         { 
             header: 'Description', 
             dataIndex: 'LongName'  ,  
             editor: {
-                allowBlank: false
+                allowBlank: false,
+                vtype: 'alphanum'
             } 
         }
     ],

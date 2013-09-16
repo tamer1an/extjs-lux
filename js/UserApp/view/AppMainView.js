@@ -59,14 +59,16 @@ Ext.define('UserApp.view.AppMainView',{    // requires: [ // ],
                width: 370,
                fieldLabel: 'First',
                labelWidth: 150,
-               padding:'0 0 0 15'
+               padding:'0 0 0 15',
+               vtype: 'alpha'
            }, {
                xtype: 'textfield',
                disabled: UserApp.config.Runtime.getUserAuth(),
                width: 371,
                fieldLabel: 'Last',
                labelWidth: 150,
-               padding:'0 0 0 15'
+               padding:'0 0 0 15',
+               vtype: 'alpha'
            }, {
                xtype: 'textfield',
                disabled: true,

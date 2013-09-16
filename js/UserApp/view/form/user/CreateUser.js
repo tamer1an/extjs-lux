@@ -16,7 +16,8 @@ Ext.define('UserApp.view.form.user.CreateUser',{
     // }],
     items: [{
         xtype: 'textfield',
-        fieldLabel: 'Login'
+        fieldLabel: 'Login',
+        vtype: 'alphanum'
     },{
         xtype: 'textfield',
         margin: '5px 0 0 0',
