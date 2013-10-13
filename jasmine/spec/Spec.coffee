@@ -1,4 +1,4 @@
-describe "EOMS Application", ->
+describe "Application", ->
   app = null
   mainCtrl = null
 #  view = null

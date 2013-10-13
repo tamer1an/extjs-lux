@@ -1,5 +1,5 @@
 (function() {
-  describe("EOMS Application", function() {
+  describe("Application", function() {
     it("has loaded ExtJS 4", function() {
       expect(typeof Ext).toEqual('object');
       expect(Ext).toBeDefined();
@@ -7,7 +7,7 @@
       return expect(Ext.getVersion().major).toEqual(4);
     });
     return it("has loaded Application", function() {
-      return expect(window.EOMS).toBeDefined();
+      return expect(window.UserApp).toBeDefined();
     });
   });
 }).call(this);
