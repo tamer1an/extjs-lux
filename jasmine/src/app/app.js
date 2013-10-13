@@ -1,5 +1,5 @@
 /** Application domain model
- *  @namespace {EOMS} namespace
+ *  @namespace {MYTEST} namespace
  * 
  *   Ext.Loader.setConfig({
  *      enabled: true,
@@ -7,19 +7,19 @@
  *       paths: {UsersApp: 'app', Ext: 'ext-4.1.0'}
  *   });
  *
- *  @constructs {EOMS.config.Runtime.constructor()}
- *  @interface {EOMS.config.Runtime.getSomeValue()}
+ *  @constructs {MYTEST.config.Runtime.constructor()}
+ *  @interface {MYTEST.config.Runtime.getSomeValue()}
  *  @optional Runtime.setupApplication: function(){ // }, to add extra control or use Runtime
- *  @return EOMS
+ *  @return MYTEST
  *
  *  @description { Main application controller and mainframe ui-interface }
  *  @author {Andrii Trybynenko}
  */
 Ext.application({
     autoCreateViewport: true,
-    name:'EOMS',
-    appFolder:'src/EOMS',
-    requires : ['EOMS.config.Runtime'],
+    name:'MYTEST',
+    appFolder:'src/MYTEST',
+    requires : ['MYTEST.config.Runtime'],
     controllers:[
         'AppMainView'
        ,'ui.Order'
@@ -27,7 +27,7 @@ Ext.application({
     ],
     refs: [{
         ref:       'CorePopup',
-        selector:  'EOMS.core.WindowView',
+        selector:  'MYTEST.core.WindowView',
         xtype:     'coreWindow',
         autoCreate:true,
         modal:     true,
@@ -35,7 +35,7 @@ Ext.application({
         resizable: false
     },{
         ref:       'CoreConfirm',
-        selector:  'EOMS.core.ConfirmView',
+        selector:  'MYTEST.core.ConfirmView',
         xtype:     'coreConfirm',
         autoCreate:true
     },{
@@ -56,6 +56,6 @@ Ext.application({
     }]
     ,launch: function(){
         console.log('app lunch');
-        this.runtime = EOMS.config.Runtime;
+        this.runtime = MYTEST.config.Runtime;
     }
 });

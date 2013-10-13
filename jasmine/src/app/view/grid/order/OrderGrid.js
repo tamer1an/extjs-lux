@@ -1,12 +1,12 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  *
  * @return {RoleGrid}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.view.grid.order.OrderGrid',{
-    extend: 'EOMS.core.GridView',
-    alias: ['widget.nsEOMS.order.OrderGrid','widget.oGrid'],
+Ext.define('MYTEST.view.grid.order.OrderGrid',{
+    extend: 'MYTEST.core.GridView',
+    alias: ['widget.nsMYTEST.order.OrderGrid','widget.oGrid'],
     requires: ['Ext.ux.CheckColumn'],
     title: '',
     height:300,
@@ -21,7 +21,7 @@ Ext.define('EOMS.view.grid.order.OrderGrid',{
                 xtype: 'checkcolumn',
                 header: '',
                 dataIndex: 'assigned',
-                hidden: !EOMS.config.Runtime.getEditMode(),
+                hidden: !MYTEST.config.Runtime.getEditMode(),
                 width: 40
             },
             { header: 'ID',  dataIndex: 'id'},

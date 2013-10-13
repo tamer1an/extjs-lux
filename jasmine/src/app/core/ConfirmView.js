@@ -7,9 +7,9 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.ConfirmView', {
+Ext.define('MYTEST.core.ConfirmView', {
     extend: 'Ext.window.MessageBox',
-    alias: ['widget.nsEOMS.core.ConfirmView', 'widget.coreConfirm']
+    alias: ['widget.nsMYTEST.core.ConfirmView', 'widget.coreConfirm']
 
 //    buttons: Ext.Msg.OKCANCEL,
 //    icon: Ext.Msg.QUESTION,

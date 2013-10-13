@@ -7,9 +7,9 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.FormView',{
+Ext.define('MYTEST.core.FormView',{
     extend: 'Ext.form.Panel',
-    alias: ['widget.nsEOMS.core.Form' , 'widget.coreForm'] //,fieldDefaults: {xtype:'textfield', fieldCls:'my-custom-class'}
+    alias: ['widget.nsMYTEST.core.Form' , 'widget.coreForm'] //,fieldDefaults: {xtype:'textfield', fieldCls:'my-custom-class'}
 });
 
 

@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.Ajax',{
+Ext.define('MYTEST.core.Ajax',{
     extend: 'Ext.data.Connection',
     disableCaching:true
 //    defaultHeaders: { 'Accept': 'application/json' }

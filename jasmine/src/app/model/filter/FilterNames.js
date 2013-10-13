@@ -1,12 +1,12 @@
 /**
  * @description Model representing a User object
  * @field {USR_UUNM_I} @type {string} UUName
- * @extends {EOMS.core.Model}
+ * @extends {MYTEST.core.Model}
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.model.filter.FilterNames',{
-    extend: 'EOMS.core.Model',
+Ext.define('MYTEST.model.filter.FilterNames',{
+    extend: 'MYTEST.core.Model',
     idProperty: 'uuName',
     
     fields:[{  // id field

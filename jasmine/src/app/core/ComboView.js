@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.ComboView',{
+Ext.define('MYTEST.core.ComboView',{
     extend: 'Ext.form.ComboBox',
-    alias: ['widget.nsEOMS.core.Combo', 'widget.coreCombo']
+    alias: ['widget.nsMYTEST.core.Combo', 'widget.coreCombo']
 });

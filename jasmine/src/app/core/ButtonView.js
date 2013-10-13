@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.ButtonView',{
+Ext.define('MYTEST.core.ButtonView',{
     extend: 'Ext.button.Button',
-    alias: ['widget.nsEOMS.core.Button','widget.coreBtn']
+    alias: ['widget.nsMYTEST.core.Button','widget.coreBtn']
 });

@@ -1,15 +1,15 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  * @description {Displays UserCombo form for user selecting from auto DropDown menu field}
- * @extends  {EOMS.core.PanelView}
+ * @extends  {MYTEST.core.PanelView}
  *
  * @return {UserCombo}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.view.form.filter.FilterCombo',{
-    extend: 'EOMS.core.ComboView',
-    alias: ['widget.nsEOMS.filter.FilterCombo','widget.SelectFilterCombo'],
-    store: 'EOMS.store.filter.FilterNames',
+Ext.define('MYTEST.view.form.filter.FilterCombo',{
+    extend: 'MYTEST.core.ComboView',
+    alias: ['widget.nsMYTEST.filter.FilterCombo','widget.SelectFilterCombo'],
+    store: 'MYTEST.store.filter.FilterNames',
     queryMode: 'local',
 
     fieldLabel: 'Filters:',

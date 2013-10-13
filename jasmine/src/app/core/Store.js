@@ -7,6 +7,6 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.Store',{
+Ext.define('MYTEST.core.Store',{
     extend:'Ext.data.Store'
 });

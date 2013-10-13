@@ -7,6 +7,6 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.Controller',{
+Ext.define('MYTEST.core.Controller',{
     extend:'Ext.app.Controller'
 });

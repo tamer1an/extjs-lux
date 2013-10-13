@@ -7,9 +7,9 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.GridView',{
+Ext.define('MYTEST.core.GridView',{
     extend: 'Ext.grid.Panel',
-    alias: ['widget.nsEOMS.core.Grid' , 'widget.coreGrid']
+    alias: ['widget.nsMYTEST.core.Grid' , 'widget.coreGrid']
 });
 
 

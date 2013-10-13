@@ -1,14 +1,14 @@
 /**
- * @namespace {eoms} namespace
+ * @namespace {MYTEST} namespace
  * @description {Displays role ui-interface}
  * @memberOf {Ext.app.Controller}
- * @extends  {eoms.core.Controller}
+ * @extends  {MYTEST.core.Controller}
  *
  * @return {Role}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.controller.ui.Order',{
-    extend:'EOMS.core.Controller',
+Ext.define('MYTEST.controller.ui.Order',{
+    extend:'MYTEST.core.Controller',
     views: ['panel.order.OrderListPanel','grid.order.OrderGrid'],
     init: function() {
         console.log('order ctrl');

@@ -1,5 +1,5 @@
 /** Application domain model
- *  @namespace {EOMS} namespace
+ *  @namespace {MYTEST} namespace
  *
  *  @static config : {
  *       modeArr:['disable','enable'],
@@ -13,15 +13,15 @@
  *  @author {Andrii Trybynenko}
  *
  */
-Ext.define('EOMS.config.action.MainDockedItems',{
+Ext.define('MYTEST.config.action.MainDockedItems',{
     config : {
         modeArr:['disable','enable'],
         mode:0,
-        tplNames:["eomsReport","eomsImport","eomsExport","eomsGUISave"],
+        tplNames:["MYTESTReport","MYTESTImport","MYTESTExport","MYTESTGUISave"],
         btnNames:[]
     },
     toggleBtn :  function(btn){
-        var runtime = EOMS.config.Runtime,
+        var runtime = MYTEST.config.Runtime,
             docked = runtime.mainDockedItems,
             modeAction, mode, list;
 

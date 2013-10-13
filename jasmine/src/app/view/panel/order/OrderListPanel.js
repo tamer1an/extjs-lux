@@ -1,17 +1,17 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  *
  * @return {RoleListPanel}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.view.panel.order.OrderListPanel',{
-    extend: 'EOMS.core.PanelView',
-    alias: ['widget.nsEOMS.order.OrderListPanel','widget.oList'],
+Ext.define('MYTEST.view.panel.order.OrderListPanel',{
+    extend: 'MYTEST.core.PanelView',
+    alias: ['widget.nsMYTEST.order.OrderListPanel','widget.oList'],
     layout: 'anchor',
     bodyPadding: 10,
 
     items: [{
-        xtype: 'nsEOMS.order.OrderGrid'
+        xtype: 'nsMYTEST.order.OrderGrid'
     }],
         
     initComponent:function(){

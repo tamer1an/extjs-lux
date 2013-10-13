@@ -1,15 +1,15 @@
-Ext.define('EOMS.view.Viewport', {
+Ext.define('MYTEST.view.Viewport', {
     extend:'Ext.container.Container',
-    alias: ["widget.nsEOMS.mainFrame" , "widget.mainFrame"],
+    alias: ["widget.nsMYTEST.mainFrame" , "widget.mainFrame"],
     layout:'auto',
     width:1200,
     height:500,
-    renderTo: document.getElementById('EOMS-App'),
+    renderTo: document.getElementById('MYTEST-App'),
     initComponent: function(){
         console.log('app viewport');
 
         this.items= [{
-            xtype:  'nsEOMS.core.Panel',
+            xtype:  'nsMYTEST.core.Panel',
             layout: 'anchor',
             itemId: 'mainFrame',
             region: 'center',
@@ -19,7 +19,7 @@ Ext.define('EOMS.view.Viewport', {
             bbar:    this.getAppBBar(),     // add bottom bar
 
             items:[{
-                xtype:  'nsEOMS.AppMainView',
+                xtype:  'nsMYTEST.AppMainView',
                 anchor: '100% 100%',
                 height: 500
             }]
@@ -31,9 +31,9 @@ Ext.define('EOMS.view.Viewport', {
             disabled = true,
             xtype    = 'coreBtn',
             fields   = {
-                eomsReport:  'Generate Report',
-                eomsImport:  'Import',
-                eomsExport:  'Export'
+                MYTESTReport:  'Generate Report',
+                MYTESTImport:  'Import',
+                MYTESTExport:  'Export'
             };
 
          for(var item in fields) {

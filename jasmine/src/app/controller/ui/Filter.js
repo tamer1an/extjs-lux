@@ -1,14 +1,14 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  * @description {Displays user ui-interface}
  * @memberOf {Ext.app.Controller}
- * @extends  {EOMS.core.Controller}
+ * @extends  {MYTEST.core.Controller}
  *
  * @return {User}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.controller.ui.Filter',{
-    extend:'EOMS.core.Controller',
+Ext.define('MYTEST.controller.ui.Filter',{
+    extend:'MYTEST.core.Controller',
     views: [
          'form.filter.FilterCombo'
        , 'form.filter.Filter'

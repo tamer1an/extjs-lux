@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.Model',{
+Ext.define('MYTEST.core.Model',{
     extend: 'Ext.data.Model',
 
     /**

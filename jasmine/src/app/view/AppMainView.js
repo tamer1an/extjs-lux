@@ -1,15 +1,15 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  * @description {Displays application user, branch, role ui-interface}
  * @memberOf {Ext.app.Controller}
- * @extends  {EOMS.core.PanelView}
+ * @extends  {MYTEST.core.PanelView}
  *
  * @return {AppMainView}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.view.AppMainView',{
-    extend: 'EOMS.core.PanelView',
-    alias: ['widget.nsEOMS.AppMainView','widget.main'],
+Ext.define('MYTEST.view.AppMainView',{
+    extend: 'MYTEST.core.PanelView',
+    alias: ['widget.nsMYTEST.AppMainView','widget.main'],
     defaults:{ collapsible: true }, //frame:true
     height: 1200,
     autoScroll:true,
@@ -18,7 +18,7 @@ Ext.define('EOMS.view.AppMainView',{
          console.log('init appmainView')
 
         this.items = [{
-            xtype:'nsEOMS.core.Panel',
+            xtype:'nsMYTEST.core.Panel',
             border: false,
             layout: {
                 type: 'fit',
@@ -26,10 +26,10 @@ Ext.define('EOMS.view.AppMainView',{
             },
             title: this.getAppTitle(),
             tbar:  this.getAppTools(),
-            items: [{xtype: 'nsEOMS.filter.FilterForm'}]
+            items: [{xtype: 'nsMYTEST.filter.FilterForm'}]
         }
         ,{
-            xtype: 'nsEOMS.order.OrderListPanel'
+            xtype: 'nsMYTEST.order.OrderListPanel'
         }
         ];
 
@@ -40,11 +40,11 @@ Ext.define('EOMS.view.AppMainView',{
     },
     getAppTools: function() {
        return [{
-           xtype: 'nsEOMS.filter.FilterCombo'
+           xtype: 'nsMYTEST.filter.FilterCombo'
        },'->','-',{
            xtype   :'coreBtn',
            action  :"createOrderWindow",
-           disabled: !EOMS.config.Runtime.getEditMode(),
+           disabled: !MYTEST.config.Runtime.getEditMode(),
            text    : 'Add New Order'
        }];
     }

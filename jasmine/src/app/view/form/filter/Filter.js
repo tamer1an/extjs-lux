@@ -1,14 +1,14 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  * @description {Displays and populate FilterForm after search results}
- * @extends  {EOMS.core.FormView}
+ * @extends  {MYTEST.core.FormView}
  *
  * @return {UserCombo}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.view.form.filter.Filter',{
-    extend: 'EOMS.core.FormView',
-    alias: ['widget.nsEOMS.filter.FilterForm','widget.fForm'],
+Ext.define('MYTEST.view.form.filter.Filter',{
+    extend: 'MYTEST.core.FormView',
+    alias: ['widget.nsMYTEST.filter.FilterForm','widget.fForm'],
     padding:'10',
     fieldLabel: '',
     itemId: 'FilterForm',

@@ -12,7 +12,7 @@
 
   <!-- include source files here... -->
 	<link rel="stylesheet" type="text/css" href="../extjs/resources/css/ext-all.css">
-	<script type="text/javascript" src="../extjs/ext-all-debug-w-comments"></script>
+	<script type="text/javascript" src="../extjs/ext-all-debug-w-comments.js"></script>
 	<script type="text/javascript" src="../js/UserApp/app-unit.js"></script>
 
   <!-- include spec files here... -->
@@ -20,6 +20,8 @@
  
  
   <script type="text/javascript">
+  
+  
     (function() {
       var jasmineEnv = jasmine.getEnv();
       jasmineEnv.updateInterval = 1000;
@@ -42,7 +44,9 @@
       };
 
       function execJasmine() {
-        jasmineEnv.execute();
+         Ext.onReady(function() {
+            jasmineEnv.execute();
+          });
       }
 
     })();
@@ -51,16 +55,7 @@
 
 <body>
 
-<div id="testingObject"> 
-	<table border="0" align="center">
-		<tr>
-			<td>
-				<div id="EOMS-App"></div>
-			</td>
-		</tr>
-	</table>
-		<div id="addUserContainerDivId"></div>
-		</div>
+	<div id="app" style="width:500px;height:500px;background:red;margin:10px auto;"> </div> 
 	
 	
 	

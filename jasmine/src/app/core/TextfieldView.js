@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.TextfieldView',{
+Ext.define('MYTEST.core.TextfieldView',{
     extend: 'Ext.form.field.Text',
-    alias: ['widget.nsEOMS.core.TextfieldView', 'widget.coreTxtF']
+    alias: ['widget.nsMYTEST.core.TextfieldView', 'widget.coreTxtF']
 });

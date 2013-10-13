@@ -12,7 +12,7 @@
  *  @return UserApp
  *
  */
-appOptions = {    
+Ext.application({    
     name:'UserApp',
     appFolder:'../js/UserApp',   
     
@@ -37,7 +37,7 @@ appOptions = {
 
          Ext.create('Ext.container.Viewport', {
             layout: 'fit',
-            renderTo: document.getElementById('app'),
+            renderTo: document.getElementById('User-App'),
             items: [{
                 xtype:  'UserMGMT.core.Panel',
                 layout: 'anchor',
@@ -89,4 +89,4 @@ appOptions = {
     getAppTitle : function() {
         return 'Main Menu';
     }
-}
+});

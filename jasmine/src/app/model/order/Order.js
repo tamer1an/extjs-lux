@@ -3,12 +3,12 @@
  * @field {APF_I} @type {string} UUName
  * @field {NAME} @type {string} Status
  * @field {DESCRIPTION}  @type {string} First Name
- * @extends {EOMS.core.Model}
+ * @extends {MYTEST.core.Model}
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.model.order.Order',{
-    extend: 'EOMS.core.Model',
+Ext.define('MYTEST.model.order.Order',{
+    extend: 'MYTEST.core.Model',
     idProperty: 'id',
     
     fields:[{     // id field

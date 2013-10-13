@@ -1,25 +1,25 @@
 /**
- * @namespace {EOMS} namespace
+ * @namespace {MYTEST} namespace
  * @description {Logic for branch, role, ui-interface}
  * @memberOf {Ext.app.Controller}
- * @extends  {EOMS.core.Controller}
+ * @extends  {MYTEST.core.Controller}
  *
  * @return {AppMainView}
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.controller.AppMainView',{
-    extend:'EOMS.core.Controller',
+Ext.define('MYTEST.controller.AppMainView',{
+    extend:'MYTEST.core.Controller',
     stores: [
-//        ,'EOMS.store.order.Order'
-        'EOMS.store.filter.FilterNames'
+//        ,'MYTEST.store.order.Order'
+        'MYTEST.store.filter.FilterNames'
     ],
 
     views: [
-             'EOMS.core.ButtonView'
-            ,'EOMS.core.ComboView'
-            ,'EOMS.core.TextfieldView'
-            ,'EOMS.core.WindowView'
-            ,'EOMS.core.ConfirmView'
+             'MYTEST.core.ButtonView'
+            ,'MYTEST.core.ComboView'
+            ,'MYTEST.core.TextfieldView'
+            ,'MYTEST.core.WindowView'
+            ,'MYTEST.core.ConfirmView'
         ,'Viewport'
         ,'AppMainView'
     ],
@@ -76,8 +76,8 @@ Ext.define('EOMS.controller.AppMainView',{
     },
     cfgSetup: function(){
         this.setApp(this.application);
-        this.setRuntime(EOMS.config.Runtime);
-        this.setAjax(EOMS.config.Runtime.ajax);
-        this.setActionBtns(EOMS.config.Runtime.mainDockedItems);
+        this.setRuntime(MYTEST.config.Runtime);
+        this.setAjax(MYTEST.config.Runtime.ajax);
+        this.setActionBtns(MYTEST.config.Runtime.mainDockedItems);
     }
 });

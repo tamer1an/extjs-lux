@@ -1,5 +1,5 @@
 /** Application domain model
- *  @namespace {EOMS} namespace
+ *  @namespace {MYTEST} namespace
  *
  *  @static getEditMode()
  *  @return Runtime
@@ -9,8 +9,8 @@
  *  @author {Andrii Trybynenko}
  *
  */
-Ext.define('EOMS.config.Runtime',{
-    requires : ['EOMS.config.action.MainDockedItems'],
+Ext.define('MYTEST.config.Runtime',{
+    requires : ['MYTEST.config.action.MainDockedItems'],
     singleton : true,
     config : {
         editMode: false
@@ -23,15 +23,15 @@ Ext.define('EOMS.config.Runtime',{
 //        }
     }
     //    sm: Ext.create('Ext.selection.CheckboxModel'),
-    , mainDockedItems:  Ext.create('EOMS.config.action.MainDockedItems')
-    , ajax:             Ext.create('EOMS.core.Ajax'),
+    , mainDockedItems:  Ext.create('MYTEST.config.action.MainDockedItems')
+    , ajax:             Ext.create('MYTEST.core.Ajax'),
 
 //  , rowEdit:          Ext.create('Ext.grid.plugin.RowEditing', {
 //      clicksToMoveEditor: 1,
 //      autoCancel: false,
 //      listeners : {
 //          beforeedit : function(ev) {
-//              return EOMS.config.Runtime.getEditMode();
+//              return MYTEST.config.Runtime.getEditMode();
 //          }
 //      }
 //  }),

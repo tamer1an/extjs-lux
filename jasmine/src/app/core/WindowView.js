@@ -7,7 +7,7 @@
  *
  * @author {Andrii Trybynenko}
  */
-Ext.define('EOMS.core.WindowView', {
+Ext.define('MYTEST.core.WindowView', {
     extend: 'Ext.window.Window',
-    alias: ['widget.nsEOMS.core.WindowView', 'widget.coreWindow']
+    alias: ['widget.nsMYTEST.core.WindowView', 'widget.coreWindow']
 });
