@@ -6,7 +6,7 @@
     beforeEach(function() {
       var option;
       option = appOptions;
-      return app = Ext.application("UserApp", option);
+      return app = Ext.application(option);
     });
     afterEach(function() {});
     it("has loaded ExtJS 4", function() {
@@ -15,7 +15,9 @@
       expect(Ext.getVersion()).toBeTruthy();
       return expect(Ext.getVersion().major).toEqual(4);
     });
-    return it("Application Unit", function() {});
+    return it("Application Unit", function() {
+      return expect(app).toBeDefined();
+    });
   });
 
 }).call(this);

@@ -4,7 +4,7 @@ describe "Application", ->
 
   beforeEach ->
     option = appOptions
-    app = Ext.application "UserApp", option
+    app = Ext.application option
     
   afterEach ->
      #Ext.destroy(app);
@@ -16,5 +16,5 @@ describe "Application", ->
     expect( Ext.getVersion().major ).toEqual( 4 )
     
   it "Application Unit", ->
-
+    expect( app ).toBeDefined()
     
