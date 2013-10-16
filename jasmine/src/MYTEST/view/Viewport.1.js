@@ -4,7 +4,7 @@ Ext.define('MYTEST.view.Viewport', {
     layout:'auto',
     width:1200,
     height:500,
-    renderTo: document.getElementById('MYTEST-App'),
+    renderTo: document.getElementById('app'),
     initComponent: function(){
         console.log('app viewport');
 

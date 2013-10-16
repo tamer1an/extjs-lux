@@ -9,11 +9,10 @@
  */
 Ext.define('MYTEST.controller.AppMainView',{
     extend:'MYTEST.core.Controller',
-    stores: [
-//        ,'MYTEST.store.order.Order'
-        'MYTEST.store.filter.FilterNames'
-    ],
-
+    // stores: [
+        //  ,'MYTEST.store.order.Order'
+        //   'MYTEST.store.filter.FilterNames'
+    // ],
     views: [
              'MYTEST.core.ButtonView'
             ,'MYTEST.core.ComboView'

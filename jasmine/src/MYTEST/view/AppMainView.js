@@ -26,26 +26,19 @@ Ext.define('MYTEST.view.AppMainView',{
             },
             title: this.getAppTitle(),
             tbar:  this.getAppTools(),
-            items: [{xtype: 'nsMYTEST.filter.FilterForm'}]
-        }
-        ,{
-            xtype: 'nsMYTEST.order.OrderListPanel'
-        }
-        ];
-
+          
+        }];
         this.callParent(arguments);
     },
     getAppTitle: function() {
         return 'Search';
     },
     getAppTools: function() {
-       return [{
-           xtype: 'nsMYTEST.filter.FilterCombo'
-       },'->','-',{
+       return ['->','-',{
            xtype   :'coreBtn',
            action  :"createOrderWindow",
            disabled: !MYTEST.config.Runtime.getEditMode(),
-           text    : 'Add New Order'
+           text    : 'Add New(+)'
        }];
     }
 });

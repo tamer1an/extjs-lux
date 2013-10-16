@@ -10,24 +10,24 @@
     ],
     
     launch: function(){                                     console.log(' launch ');
-         Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
-            renderTo: document.getElementById('app'),
-            items: [{
-                xtype:  'UserMGMT.core.Panel',
-                layout: 'anchor',
-                region: 'center',
+        //  Ext.create('Ext.container.Viewport', {
+        //     layout: 'fit',
+        //     renderTo: document.getElementById('app'),
+        //     items: [{
+        //         xtype:  'UserMGMT.core.Panel',
+        //         layout: 'anchor',
+        //         region: 'center',
                 
-                title:   this.getAppTitle(),
-                tools:   this.getAppTools(),
-                bbar:    this.getAppBBar(),
+        //         title:   this.getAppTitle(),
+        //         tools:   this.getAppTools(),
+        //         bbar:    this.getAppBBar(),
                 
-                items:[{
-                    xtype:  'UserMGMT.AppMainView',
-                    anchor: '100% 100%'
-                }]
-            }]
-        });
+        //         items:[{
+        //             xtype:  'UserMGMT.AppMainView',
+        //             anchor: '100% 100%'
+        //         }]
+        //     }]
+        // });
     },
     getAppBBar : function() {
        var auth = UserApp.config.Runtime.getUserAuth(),

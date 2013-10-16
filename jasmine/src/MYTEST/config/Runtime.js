@@ -12,6 +12,7 @@
 Ext.define('MYTEST.config.Runtime',{
     requires : ['MYTEST.config.action.MainDockedItems'],
     singleton : true,
+    getUserAuth: function () {return true},
     config : {
         editMode: false
 //       , editModeHandler : {
