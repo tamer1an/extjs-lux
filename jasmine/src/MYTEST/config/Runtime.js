@@ -1,13 +1,6 @@
 /** Application domain model
  *  @namespace {MYTEST} namespace
  *
- *  @static getEditMode()
- *  @return Runtime
- *
- *  @description { Main place to store global variables, init additional Frameworks(ACE)
- *  and runtime logic application }
- *  @author {Andrii Trybynenko}
- *
  */
 Ext.define('MYTEST.config.Runtime',{
     requires : ['MYTEST.config.action.MainDockedItems'],

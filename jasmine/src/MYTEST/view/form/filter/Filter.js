@@ -1,6 +1,6 @@
 /**
  * @namespace {MYTEST} namespace
- * @description {Displays and populate FilterForm after search results}
+ * @description {Displays}
  * @extends  {MYTEST.core.FormView}
  *
  * @return {UserCombo}

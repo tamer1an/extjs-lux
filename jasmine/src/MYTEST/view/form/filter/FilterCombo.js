@@ -1,6 +1,6 @@
 /**
  * @namespace {MYTEST} namespace
- * @description {Displays UserCombo form for user selecting from auto DropDown menu field}
+ * @description {Displays}
  * @extends  {MYTEST.core.PanelView}
  *
  * @return {UserCombo}

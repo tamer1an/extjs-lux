@@ -1,10 +1,5 @@
 /**
  * @namespace {MYTEST} namespace
- * @description {Logic for branch, role, ui-interface}
- * @memberOf {Ext.app.Controller}
- * @extends  {MYTEST.core.Controller}
- *
- * @return {AppMainView}
  * @author {Andrii Trybynenko}
  */
 Ext.define('MYTEST.controller.AppMainView',{

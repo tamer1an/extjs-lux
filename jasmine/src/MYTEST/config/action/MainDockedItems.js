@@ -1,17 +1,6 @@
 /** Application domain model
  *  @namespace {MYTEST} namespace
  *
- *  @static config : {
- *       modeArr:['disable','enable'],
- *       mode:0,
- *       tplNames:["saveUser","resetChanges","resetPassword","disableUser","deleteUser"],
- *       btnNames:[]
- *   }
- *  @return MainDockedItemsActions
- *
- *  @description { Main place to store docked items logic }
- *  @author {Andrii Trybynenko}
- *
  */
 Ext.define('MYTEST.config.action.MainDockedItems',{
     config : {

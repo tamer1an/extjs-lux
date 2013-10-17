@@ -1,6 +1,6 @@
 /**
  * @namespace {MYTEST} namespace
- * @description {Displays application user, branch, role ui-interface}
+ * @description {Displays application user & ui-interface e.t.c.}
  * @memberOf {Ext.app.Controller}
  * @extends  {MYTEST.core.PanelView}
  *

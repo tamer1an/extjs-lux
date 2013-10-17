@@ -2,9 +2,9 @@ describe "Application", ->
   app = null
   #mainCtrl = null
 
-  #beforeEach ->
-    #option = appOptions
-    #app = Ext.application option
+  beforeEach ->
+    option = appOptions
+    app = Ext.application option
     
   #afterEach ->
      #Ext.destroy(app);
